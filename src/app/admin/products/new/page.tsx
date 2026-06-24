@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -307,30 +307,60 @@ export default function NewProductPage() {
                 <FiImage className="text-[#D4AF37]" size={18} />
                 <h3 className="text-lg font-semibold text-[#F8F4EE]">Images</h3>
               </div>
-              <div
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  toast("Image upload coming soon with Cloudinary", { icon: "📸" });
-                }}
-                className="border-2 border-dashed border-[#D4AF37]/30 rounded-xl p-8 text-center hover:border-[#D4AF37] transition-colors cursor-pointer"
-              >
+              <div className="border-2 border-dashed border-[#D4AF37]/30 rounded-xl p-8 text-center hover:border-[#D4AF37] transition-colors">
                 <FiImage className="mx-auto text-[#F8F4EE]/30 text-3xl mb-3" />
-                <p className="text-sm text-[#F8F4EE]/50 font-medium">Drag & drop images here</p>
-                <p className="text-xs text-[#F8F4EE]/40 mt-1">or click to browse</p>
+                <p className="text-sm text-[#F8F4EE]/50 font-medium">Click to upload product images</p>
+                <p className="text-xs text-[#F8F4EE]/40 mt-1">PNG, JPG up to 5MB</p>
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  className="hidden"
+                  id="imageUpload"
+                  onChange={async (e) => {
+                    const files = e.target.files;
+                    if (!files?.length) return;
+                    const file = files[0];
+                    if (file.size > 5 * 1024 * 1024) {
+                      toast.error("Image must be under 5MB");
+                      return;
+                    }
+                    const fd = new FormData();
+                    fd.append("file", file);
+                    const uploadToast = toast.loading("Uploading...");
+                    try {
+                      const res = await fetch("/api/upload", { method: "POST", body: fd });
+                      const data = await res.json();
+                      if (data.success) {
+                        setForm((prev) => ({ ...prev, images: [...prev.images, data.url] }));
+                        toast.success("Image uploaded", { id: uploadToast });
+                      } else {
+                        toast.error("Upload failed", { id: uploadToast });
+                      }
+                    } catch {
+                      toast.error("Upload failed", { id: uploadToast });
+                    }
+                  }}
+                />
                 <button
                   type="button"
-                  onClick={() => toast("Image upload coming soon with Cloudinary", { icon: "📸" })}
+                  onClick={() => document.getElementById("imageUpload")?.click()}
                   className="mt-3 px-4 py-2 text-sm text-[#D4AF37] border border-[#D4AF37] rounded-lg hover:bg-[#D4AF37]/5 transition-colors"
                 >
-                  Upload Images
+                  Choose File
                 </button>
               </div>
               {form.images.length > 0 && (
-                <div className="flex gap-3 mt-4">
+                <div className="flex gap-3 mt-4 flex-wrap">
                   {form.images.map((img, i) => (
-                    <div key={i} className="w-20 h-20 rounded-lg bg-[#120A07] overflow-hidden">
+                    <div key={i} className="relative w-20 h-20 rounded-lg bg-[#120A07] overflow-hidden group">
                       <img src={img} alt="" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => setForm((prev) => ({ ...prev, images: prev.images.filter((_, idx) => idx !== i) }))}
+                        className="absolute top-0.5 right-0.5 w-5 h-5 bg-red-500/80 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        ×
+                      </button>
                     </div>
                   ))}
                 </div>
