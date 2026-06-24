@@ -64,6 +64,13 @@ export async function GET(request: NextRequest) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+
+    let categoryId = body.categoryId;
+    if (!categoryId && body.category) {
+      const cat = await prisma.category.findUnique({ where: { name: body.category } });
+      if (cat) categoryId = cat.id;
+    }
+
     const product = await prisma.product.create({
       data: {
         name: body.name,
@@ -76,7 +83,7 @@ export async function POST(request: Request) {
         discountPrice: body.discountPrice ? parseFloat(body.discountPrice) : null,
         stockQuantity: parseInt(body.stockQuantity || "0", 10),
         images: body.images || [],
-        categoryId: body.categoryId,
+        categoryId,
         isFeatured: body.isFeatured || false,
         isBestSeller: body.isBestSeller || false,
         isActive: body.isActive ?? true,

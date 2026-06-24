@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,9 +8,7 @@ import {
   FiPlus,
   FiEdit,
   FiTrash2,
-  FiEye,
   FiSearch,
-  FiCopy,
   FiPackage,
   FiStar,
   FiBox,
@@ -18,130 +16,23 @@ import {
   FiChevronRight,
 } from "react-icons/fi";
 import toast from "react-hot-toast";
-import { formatPrice, getDiscountPercentage } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 
-const sampleProducts = [
-  {
-    id: "1",
-    name: "Classic Chocolate Chip",
-    sku: "ZIXO-CC-001",
-    category: "Chocolate",
-    price: 499,
-    discountPrice: 399,
-    stockQuantity: 45,
-    isActive: true,
-    isFeatured: true,
-    isBestSeller: true,
-  },
-  {
-    id: "2",
-    name: "Double Oreo Delight",
-    sku: "ZIXO-OD-002",
-    category: "Oreo",
-    price: 599,
-    discountPrice: null,
-    stockQuantity: 30,
-    isActive: true,
-    isFeatured: false,
-    isBestSeller: true,
-  },
-  {
-    id: "3",
-    name: "Red Velvet Bliss",
-    sku: "ZIXO-RV-003",
-    category: "Red Velvet",
-    price: 699,
-    discountPrice: 549,
-    stockQuantity: 3,
-    isActive: true,
-    isFeatured: true,
-    isBestSeller: false,
-  },
-  {
-    id: "4",
-    name: "Butter Classic",
-    sku: "ZIXO-BC-004",
-    category: "Butter",
-    price: 399,
-    discountPrice: null,
-    stockQuantity: 60,
-    isActive: true,
-    isFeatured: false,
-    isBestSeller: false,
-  },
-  {
-    id: "5",
-    name: "Chocolate Fudge Supreme",
-    sku: "ZIXO-CF-005",
-    category: "Chocolate",
-    price: 799,
-    discountPrice: 649,
-    stockQuantity: 12,
-    isActive: true,
-    isFeatured: true,
-    isBestSeller: true,
-  },
-  {
-    id: "6",
-    name: "Oreo Cheesecake",
-    sku: "ZIXO-OC-006",
-    category: "Oreo",
-    price: 699,
-    discountPrice: null,
-    stockQuantity: 0,
-    isActive: false,
-    isFeatured: false,
-    isBestSeller: false,
-  },
-  {
-    id: "7",
-    name: "Red Velvet Truffle",
-    sku: "ZIXO-RT-007",
-    category: "Red Velvet",
-    price: 899,
-    discountPrice: 749,
-    stockQuantity: 18,
-    isActive: true,
-    isFeatured: false,
-    isBestSeller: true,
-  },
-  {
-    id: "8",
-    name: "Butter Pecan Crunch",
-    sku: "ZIXO-BP-008",
-    category: "Butter",
-    price: 449,
-    discountPrice: null,
-    stockQuantity: 8,
-    isActive: true,
-    isFeatured: false,
-    isBestSeller: false,
-  },
-  {
-    id: "9",
-    name: "Assorted Gift Box (12 pcs)",
-    sku: "ZIXO-MB-009",
-    category: "Mixed Boxes",
-    price: 1499,
-    discountPrice: 1199,
-    stockQuantity: 25,
-    isActive: true,
-    isFeatured: true,
-    isBestSeller: true,
-  },
-  {
-    id: "10",
-    name: "Chocolate Walnut Brownie",
-    sku: "ZIXO-CW-010",
-    category: "Chocolate",
-    price: 549,
-    discountPrice: null,
-    stockQuantity: 2,
-    isActive: true,
-    isFeatured: false,
-    isBestSeller: false,
-  },
-];
+interface AdminProduct {
+  id: string;
+  name: string;
+  sku: string;
+  price: number;
+  discountPrice: number | null;
+  stockQuantity: number;
+  isActive: boolean;
+  isFeatured: boolean;
+  isBestSeller: boolean;
+  images: string[];
+  category: { id: string; name: string };
+  rating: number;
+  createdAt: string;
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -159,7 +50,8 @@ const itemVariants = {
 const categories = ["All", "Chocolate", "Oreo", "Red Velvet", "Butter", "Mixed Boxes"];
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState(sampleProducts);
+  const [products, setProducts] = useState<AdminProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -168,19 +60,27 @@ export default function AdminProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 5;
 
+  useEffect(() => {
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) setProducts(data.products);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
     if (search.trim()) {
       const q = search.toLowerCase();
       result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q)
+        (p) => p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q)
       );
     }
 
     if (categoryFilter !== "All") {
-      result = result.filter((p) => p.category === categoryFilter);
+      result = result.filter((p) => p.category.name === categoryFilter);
     }
 
     if (statusFilter !== "All") {
@@ -226,262 +126,221 @@ export default function AdminProductsPage() {
     setSelectedIds(next);
   };
 
-  const handleDelete = (id: string, name: string) => {
-    if (window.confirm(`Are you sure you want to delete "${name}"?`)) {
-      setProducts((prev) => prev.filter((p) => p.id !== id));
-      setSelectedIds((prev) => { const n = new Set(prev); n.delete(id); return n; });
-      toast.success(`"${name}" deleted successfully`);
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete "${name}"?`)) return;
+    try {
+      const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.success) {
+        setProducts((prev) => prev.filter((p) => p.id !== id));
+        toast.success("Product deleted successfully");
+      } else {
+        toast.error(data.error || "Failed to delete product");
+      }
+    } catch {
+      toast.error("Failed to delete product");
     }
   };
 
-  const handleDuplicate = (product: typeof sampleProducts[0]) => {
-    toast.success(`"${product.name}" duplicated`);
-  };
-
-  const handleBulkDelete = () => {
-    if (selectedIds.size === 0) return;
-    if (window.confirm(`Delete ${selectedIds.size} selected products?`)) {
-      setProducts((prev) => prev.filter((p) => !selectedIds.has(p.id)));
-      toast.success(`${selectedIds.size} products deleted`);
-      setSelectedIds(new Set());
-    }
-  };
-
-  const handleToggleStatus = (id: string, name: string, current: boolean) => {
-    setProducts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, isActive: !current } : p))
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-dark p-8">
+        <p className="text-cream/60">Loading products...</p>
+      </div>
     );
-    toast.success(`"${name}" ${current ? "disabled" : "enabled"}`);
-  };
-
-  const getStockColor = (qty: number) => {
-    if (qty > 20) return "text-green-600 bg-green-50";
-    if (qty >= 5) return "text-yellow-600 bg-yellow-50";
-    return "text-red-600 bg-red-50";
-  };
+  }
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="min-h-screen bg-[#0A0503]"
-    >
-      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div className="min-h-screen bg-dark p-4 md:p-6 lg:p-8">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-[#F8F4EE]">Products</h1>
-          <p className="text-[#F8F4EE]/50 mt-1">Manage your cookie product catalog</p>
+          <h1 className="text-2xl md:text-3xl font-bold font-playfair text-cream">Products</h1>
+          <p className="text-sm text-cream/60 mt-1">Manage your cookie inventory</p>
         </div>
-        <Link
-          href="/admin/products/new"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#D4AF37] text-[#0A0503] rounded-xl font-medium text-sm hover:bg-[#D4AF37]/90 transition-all hover:shadow-lg hover:shadow-[#D4AF37]/25 self-start"
-        >
+        <Link href="/admin/products/new" className="btn-primary self-start">
           <FiPlus size={16} />
-          Add New Product
+          Add Product
         </Link>
-      </motion.div>
+      </div>
 
-      <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {[
-          { label: "Total Products", value: totalProducts, icon: FiPackage, color: "text-blue-600 bg-blue-50" },
-          { label: "Active", value: activeProducts, icon: FiBox, color: "text-green-600 bg-green-50" },
-          { label: "Low Stock", value: lowStockItems, icon: FiStar, color: "text-red-600 bg-red-50" },
-          { label: "Featured", value: featuredItems, icon: FiStar, color: "text-amber-600 bg-amber-50" },
-        ].map((stat) => (
-          <div key={stat.label} className="admin-card flex items-center gap-3 bg-[#120A07] border border-[#D4AF37]/10">
-            <div className={`p-2.5 rounded-lg ${stat.color}`}>
-              <stat.icon size={18} />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-[#F8F4EE]">{stat.value}</p>
-              <p className="text-xs text-[#F8F4EE]/50">{stat.label}</p>
+          { label: "Total Products", value: totalProducts, icon: FiPackage, color: "gold" },
+          { label: "Active", value: activeProducts, icon: FiStar, color: "green" },
+          { label: "Low Stock", value: lowStockItems, icon: FiBox, color: "red" },
+          { label: "Featured", value: featuredItems, icon: FiStar, color: "purple" },
+        ].map((stat, i) => (
+          <div key={i} className="glass-card rounded-xl p-4 border border-gold/10">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-lg bg-${stat.color}/10 flex items-center justify-center`}>
+                <stat.icon className={`text-${stat.color}`} size={18} />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-cream">{stat.value}</p>
+                <p className="text-xs text-cream/60">{stat.label}</p>
+              </div>
             </div>
           </div>
         ))}
-      </motion.div>
+      </div>
 
-      <motion.div variants={itemVariants} className="admin-card mb-6 bg-[#120A07] border border-[#D4AF37]/10">
-        <div className="flex flex-col md:flex-row gap-4 mb-4">
-          <div className="relative flex-1">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-[#F8F4EE]/40" size={16} />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
-              placeholder="Search products by name or SKU..."
-              className="w-full pl-9 pr-4 py-2.5 bg-[#0A0503] border border-[#D4AF37]/20 rounded-lg text-sm text-[#F8F4EE] placeholder:text-[#F8F4EE]/40 focus:outline-none focus:border-[#D4AF37] focus:bg-[#120A07] transition-all"
-            />
-          </div>
-          <select
-            value={categoryFilter}
-            onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }}
-            className="px-3 py-2.5 bg-[#0A0503] border border-[#D4AF37]/20 rounded-lg text-sm text-[#F8F4EE] focus:outline-none focus:border-[#D4AF37] transition-all"
-          >
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>{cat === "All" ? "All Categories" : cat}</option>
-            ))}
-          </select>
-          <select
-            value={statusFilter}
-            onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
-            className="px-3 py-2.5 bg-[#0A0503] border border-[#D4AF37]/20 rounded-lg text-sm text-[#F8F4EE] focus:outline-none focus:border-[#D4AF37] transition-all"
-          >
-            <option value="All">All Status</option>
-            <option value="Active">Active</option>
-            <option value="Disabled">Disabled</option>
-          </select>
-          <select
-            value={stockFilter}
-            onChange={(e) => { setStockFilter(e.target.value); setCurrentPage(1); }}
-            className="px-3 py-2.5 bg-[#0A0503] border border-[#D4AF37]/20 rounded-lg text-sm text-[#F8F4EE] focus:outline-none focus:border-[#D4AF37] transition-all"
-          >
-            <option value="All">All Stock</option>
-            <option value="Low">Low (&lt;5)</option>
-            <option value="Medium">Medium (5-20)</option>
-            <option value="High">High (&gt;20)</option>
-          </select>
+      {/* Filters */}
+      <div className="flex flex-col md:flex-row gap-3 mb-6">
+        <div className="relative flex-1">
+          <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-cream/40" size={16} />
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
+            className="w-full bg-dark-card border border-gold/20 rounded-lg pl-10 pr-4 py-2.5 text-sm text-cream placeholder-cream/40 focus:outline-none focus:border-gold/50"
+          />
         </div>
+        <select
+          value={categoryFilter}
+          onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }}
+          className="bg-dark-card border border-gold/20 rounded-lg px-4 py-2.5 text-sm text-cream focus:outline-none focus:border-gold/50"
+        >
+          {categories.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+        <select
+          value={statusFilter}
+          onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+          className="bg-dark-card border border-gold/20 rounded-lg px-4 py-2.5 text-sm text-cream focus:outline-none focus:border-gold/50"
+        >
+          <option value="All">All Status</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+        <select
+          value={stockFilter}
+          onChange={(e) => { setStockFilter(e.target.value); setCurrentPage(1); }}
+          className="bg-dark-card border border-gold/20 rounded-lg px-4 py-2.5 text-sm text-cream focus:outline-none focus:border-gold/50"
+        >
+          <option value="All">All Stock</option>
+          <option value="Low">Low (&lt;5)</option>
+          <option value="Medium">Medium (5-20)</option>
+          <option value="High">High (&gt;20)</option>
+        </select>
+      </div>
 
+      {/* Table */}
+      <div className="glass-card rounded-xl border border-gold/10 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#D4AF37]/10">
-                <th className="py-3 pr-2 w-10">
+              <tr className="border-b border-gold/10 bg-dark-card">
+                <th className="w-10 p-4">
                   <input
                     type="checkbox"
                     checked={allSelected}
-                    ref={(el) => { if (el) el.indeterminate = someSelected && !allSelected; }}
                     onChange={handleSelectAll}
-                    className="w-4 h-4 rounded border-[#D4AF37]/30 accent-[#D4AF37] cursor-pointer"
+                    className="rounded border-gold/30 accent-gold"
                   />
                 </th>
-                <th className="text-left py-3 px-2 text-[#F8F4EE] font-semibold">Image</th>
-                <th className="text-left py-3 px-2 text-[#F8F4EE] font-semibold">Product Name</th>
-                <th className="text-left py-3 px-2 text-[#F8F4EE] font-semibold">SKU</th>
-                <th className="text-left py-3 px-2 text-[#F8F4EE] font-semibold">Category</th>
-                <th className="text-left py-3 px-2 text-[#F8F4EE] font-semibold">Price</th>
-                <th className="text-left py-3 px-2 text-[#F8F4EE] font-semibold">Stock</th>
-                <th className="text-left py-3 px-2 text-[#F8F4EE] font-semibold">Status</th>
-                <th className="text-left py-3 px-2 text-[#F8F4EE] font-semibold">Badges</th>
-                <th className="text-right py-3 px-2 text-[#F8F4EE] font-semibold">Actions</th>
+                <th className="text-left p-4 text-cream/60 font-medium">Product</th>
+                <th className="text-left p-4 text-cream/60 font-medium">SKU</th>
+                <th className="text-left p-4 text-cream/60 font-medium">Category</th>
+                <th className="text-right p-4 text-cream/60 font-medium">Price</th>
+                <th className="text-center p-4 text-cream/60 font-medium">Stock</th>
+                <th className="text-center p-4 text-cream/60 font-medium">Status</th>
+                <th className="text-center p-4 text-cream/60 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {paginatedProducts.map((product) => {
-                const discountPct = product.discountPrice
-                  ? getDiscountPercentage(product.price, product.discountPrice)
-                  : null;
-                return (
-                  <tr
-                    key={product.id}
-                    className="border-b border-[#D4AF37]/10 hover:bg-[#120A07] transition-colors"
-                  >
-                    <td className="py-3 pr-2">
-                      <input
-                        type="checkbox"
-                        checked={selectedIds.has(product.id)}
-                        onChange={() => handleSelectOne(product.id)}
-                        className="w-4 h-4 rounded border-[#D4AF37]/30 accent-[#D4AF37] cursor-pointer"
-                      />
-                    </td>
-                    <td className="py-3 px-2">
-                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-[#D4AF37]/20">
-                        {(product as any).images?.[0] ? (
-                          <Image src={(product as any).images[0]} alt={product.name} width={40} height={40} className="object-cover w-full h-full" />
+              {paginatedProducts.map((product) => (
+                <motion.tr
+                  key={product.id}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="border-b border-gold/5 hover:bg-gold/5 transition-colors"
+                >
+                  <td className="p-4">
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(product.id)}
+                      onChange={() => handleSelectOne(product.id)}
+                      className="rounded border-gold/30 accent-gold"
+                    />
+                  </td>
+                  <td className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-amber-900/30 overflow-hidden flex-shrink-0 relative">
+                        {product.images?.[0] ? (
+                          <Image src={product.images[0]} alt="" fill className="object-cover" sizes="40px" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <FiBox className="text-[#D4AF37]/60" size={16} />
+                          <div className="w-full h-full flex items-center justify-center text-gold/30">
+                            <FiPackage size={18} />
                           </div>
                         )}
                       </div>
-                    </td>
-                    <td className="py-3 px-2">
-                      <span className="font-medium text-[#F8F4EE]">{product.name}</span>
-                    </td>
-                    <td className="py-3 px-2">
-                      <span className="font-mono text-xs text-[#F8F4EE]/50">{product.sku}</span>
-                    </td>
-                    <td className="py-3 px-2">
-                      <span className="text-[#F8F4EE]/60">{product.category}</span>
-                    </td>
-                    <td className="py-3 px-2">
-                      <div className="flex flex-col">
-                        {product.discountPrice ? (
-                          <>
-                            <span className="font-medium text-[#F8F4EE]">{formatPrice(product.discountPrice)}</span>
-                            <span className="text-xs text-[#F8F4EE]/40 line-through">{formatPrice(product.price)}</span>
-                            <span className="text-xs text-green-600 font-medium">-{discountPct}%</span>
-                          </>
-                        ) : (
-                          <span className="font-medium text-[#F8F4EE]">{formatPrice(product.price)}</span>
-                        )}
+                      <div>
+                        <p className="font-medium text-cream">{product.name}</p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          {product.isFeatured && <span className="text-[10px] bg-gold/20 text-gold px-1.5 py-0.5 rounded">Featured</span>}
+                          {product.isBestSeller && <span className="text-[10px] bg-amber-500/20 text-amber-500 px-1.5 py-0.5 rounded">Best Seller</span>}
+                          <span className="text-[10px] text-cream/40">{product.rating.toFixed(1)} ★</span>
+                        </div>
                       </div>
-                    </td>
-                    <td className="py-3 px-2">
-                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${getStockColor(product.stockQuantity)}`}>
-                        <FiBox size={12} />
-                        {product.stockQuantity}
-                      </span>
-                    </td>
-                    <td className="py-3 px-2">
-                      <button
-                        onClick={() => handleToggleStatus(product.id, product.name, product.isActive)}
-                        className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium transition-all ${
-                          product.isActive
-                            ? "bg-green-50 text-green-700 hover:bg-green-100"
-                            : "bg-[#120A07] text-[#F8F4EE]/50 hover:bg-[#0A0503]"
-                        }`}
+                    </div>
+                  </td>
+                  <td className="p-4 text-cream/60 font-mono text-xs">{product.sku}</td>
+                  <td className="p-4">
+                    <span className="bg-gold/10 text-gold text-xs px-2 py-1 rounded-full">
+                      {product.category.name}
+                    </span>
+                  </td>
+                  <td className="p-4 text-right">
+                    <span className="text-cream font-medium">{formatPrice(product.discountPrice || product.price)}</span>
+                    {product.discountPrice && (
+                      <span className="text-cream/40 line-through text-xs ml-1">{formatPrice(product.price)}</span>
+                    )}
+                  </td>
+                  <td className="p-4 text-center">
+                    <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+                      product.stockQuantity === 0 ? "bg-red-500/20 text-red-400" :
+                      product.stockQuantity < 5 ? "bg-amber-500/20 text-amber-400" :
+                      "bg-green-500/20 text-green-400"
+                    }`}>
+                      {product.stockQuantity}
+                    </span>
+                  </td>
+                  <td className="p-4 text-center">
+                    <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+                      product.isActive ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
+                    }`}>
+                      {product.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex items-center justify-center gap-2">
+                      <Link
+                        href={`/admin/products/${product.id}`}
+                        className="w-8 h-8 flex items-center justify-center rounded-lg bg-gold/10 text-gold hover:bg-gold/20 transition-colors"
+                        title="Edit"
                       >
-                        {product.isActive ? "Active" : "Disabled"}
+                        <FiEdit size={14} />
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(product.id, product.name)}
+                        className="w-8 h-8 flex items-center justify-center rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
+                        title="Delete"
+                      >
+                        <FiTrash2 size={14} />
                       </button>
-                    </td>
-                    <td className="py-3 px-2">
-                      <div className="flex items-center gap-1">
-                        {product.isFeatured && (
-                          <span className="flex items-center gap-0.5 text-[10px] font-medium text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">
-                            <FiStar size={10} /> Featured
-                          </span>
-                        )}
-                        {product.isBestSeller && (
-                          <span className="flex items-center gap-0.5 text-[10px] font-medium text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded">
-                            <FiStar size={10} /> Best
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-3 px-2 text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <Link
-                          href={`/admin/products/${product.id}`}
-                          className="p-1.5 rounded-lg text-[#D4AF37] hover:bg-[#D4AF37]/10 transition-colors"
-                          title="Edit"
-                        >
-                          <FiEdit size={15} />
-                        </Link>
-                        <button
-                          onClick={() => handleDuplicate(product)}
-                          className="p-1.5 rounded-lg text-[#F8F4EE]/60 hover:text-[#D4AF37] hover:bg-[#120A07] transition-colors"
-                          title="Duplicate"
-                        >
-                          <FiCopy size={15} />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(product.id, product.name)}
-                          className="p-1.5 rounded-lg text-red-400 hover:text-red-600 hover:bg-red-50/10 transition-colors"
-                          title="Delete"
-                        >
-                          <FiTrash2 size={15} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                    </div>
+                  </td>
+                </motion.tr>
+              ))}
               {paginatedProducts.length === 0 && (
                 <tr>
-                  <td colSpan={10} className="py-12 text-center text-[#F8F4EE]/40">
-                    <FiPackage size={32} className="mx-auto mb-2 opacity-40" />
-                    <p>No products found</p>
+                  <td colSpan={8} className="text-center py-12 text-cream/40">
+                    No products found
                   </td>
                 </tr>
               )}
@@ -489,38 +348,26 @@ export default function AdminProductsPage() {
           </table>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-[#D4AF37]/10">
-          <div className="flex items-center gap-3">
-            {selectedIds.size > 0 && (
-              <button
-                onClick={handleBulkDelete}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
-              >
-                <FiTrash2 size={14} />
-                Delete ({selectedIds.size})
-              </button>
-            )}
-            <span className="text-sm text-[#F8F4EE]/50">
-              {filteredProducts.length} product{filteredProducts.length !== 1 && "s"}
-            </span>
-          </div>
-          {totalPages > 1 && (
-            <div className="flex items-center gap-1">
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-4 py-3 border-t border-gold/10">
+            <p className="text-sm text-cream/50">
+              Page {currentPage} of {totalPages}
+            </p>
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
-                className="p-1.5 rounded-lg text-[#F8F4EE]/40 hover:text-[#F8F4EE] hover:bg-[#120A07] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-gold/10 text-cream disabled:opacity-30 hover:bg-gold/20 transition-colors"
               >
-                <FiChevronLeft size={16} />
+                <FiChevronLeft size={14} />
               </button>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <button
                   key={page}
                   onClick={() => setCurrentPage(page)}
-                  className={`w-8 h-8 rounded-lg text-sm font-medium transition-all ${
-                    page === currentPage
-                      ? "bg-[#D4AF37] text-[#0A0503]"
-                      : "text-[#F8F4EE]/50 hover:bg-[#120A07]"
+                  className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                    page === currentPage ? "bg-gold text-dark" : "bg-gold/10 text-cream hover:bg-gold/20"
                   }`}
                 >
                   {page}
@@ -529,14 +376,14 @@ export default function AdminProductsPage() {
               <button
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
-                className="p-1.5 rounded-lg text-[#F8F4EE]/40 hover:text-[#F8F4EE] hover:bg-[#120A07] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-gold/10 text-cream disabled:opacity-30 hover:bg-gold/20 transition-colors"
               >
-                <FiChevronRight size={16} />
+                <FiChevronRight size={14} />
               </button>
             </div>
-          )}
-        </div>
-      </motion.div>
-    </motion.div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

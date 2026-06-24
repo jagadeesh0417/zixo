@@ -33,6 +33,12 @@ export async function PUT(
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
+    let categoryId = body.categoryId;
+    if (!categoryId && body.category) {
+      const cat = await prisma.category.findUnique({ where: { name: body.category } });
+      if (cat) categoryId = cat.id;
+    }
+
     const product = await prisma.product.update({
       where: { id },
       data: {
@@ -46,7 +52,7 @@ export async function PUT(
         discountPrice: body.discountPrice !== undefined ? (body.discountPrice ? parseFloat(body.discountPrice) : null) : undefined,
         stockQuantity: body.stockQuantity !== undefined ? parseInt(body.stockQuantity, 10) : undefined,
         images: body.images,
-        categoryId: body.categoryId,
+        categoryId,
         isFeatured: body.isFeatured,
         isBestSeller: body.isBestSeller,
         isActive: body.isActive,
