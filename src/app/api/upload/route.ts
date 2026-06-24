@@ -29,7 +29,13 @@ export async function POST(request: Request) {
       url: result.secure_url,
       publicId: result.public_id,
     }, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+  } catch (err) {
+    const envCheck = {
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? "found" : "MISSING",
+      api_key: process.env.CLOUDINARY_API_KEY ? "found" : "MISSING",
+      api_secret: process.env.CLOUDINARY_API_SECRET ? "found" : "MISSING",
+    };
+    const message = err instanceof Error ? err.message : "Upload failed";
+    return NextResponse.json({ error: message, env: envCheck }, { status: 500 });
   }
 }
