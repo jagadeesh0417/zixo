@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,69 +9,17 @@ import { useCartStore } from "@/store/cart";
 import { toast } from "react-hot-toast";
 import { formatPrice } from "@/lib/utils";
 
-const products = [
-  {
-    id: "cc-001",
-    name: "Classic Chocolate Chip Cookie",
-    image: "/images/products/classic-chocolate-chip.svg",
-    price: 199,
-    discountPrice: null,
-    rating: 4.8,
-    reviews: 124,
-    slug: "classic-chocolate-chip",
-  },
-  {
-    id: "od-002",
-    name: "Oreo Delight Cookie",
-    image: "/images/products/oreo-delight.svg",
-    price: 249,
-    discountPrice: 199,
-    rating: 4.9,
-    reviews: 98,
-    slug: "oreo-delight",
-  },
-  {
-    id: "rv-003",
-    name: "Red Velvet Cookie",
-    image: "/images/products/red-velvet.svg",
-    price: 229,
-    discountPrice: null,
-    rating: 4.7,
-    reviews: 87,
-    slug: "red-velvet",
-  },
-  {
-    id: "gb-004",
-    name: "Golden Butter Cookie",
-    image: "/images/products/golden-butter.svg",
-    price: 179,
-    discountPrice: null,
-    rating: 4.6,
-    reviews: 65,
-    slug: "golden-butter",
-  },
-  {
-    id: "dc-005",
-    name: "Double Chocolate Fudge Cookie",
-    image: "/images/products/double-chocolate.svg",
-    price: 259,
-    discountPrice: null,
-    rating: 4.9,
-    reviews: 112,
-    slug: "double-chocolate-fudge",
-  },
-  {
-    id: "mb-006",
-    name: "Signature Mixed Box",
-    image: "/images/products/mixed-box.svg",
-    price: 599,
-    discountPrice: 549,
-    rating: 4.8,
-    reviews: 203,
-    slug: "signature-mixed-box",
-    tag: "6 cookies assorted",
-  },
-];
+interface BestSellerProduct {
+  id: string;
+  name: string;
+  slug: string;
+  image: string;
+  price: number;
+  discountPrice: number | null;
+  rating: number;
+  reviewCount: number;
+  tag?: string;
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -88,7 +36,6 @@ const cardVariants = {
 
 function StarRating({ rating }: { rating: number }) {
   const full = Math.floor(rating);
-  const hasHalf = rating % 1 >= 0.5;
   return (
     <div className="flex items-center gap-1">
       <div className="flex gap-0.5">
@@ -113,8 +60,25 @@ export default function BestSellers() {
   const toggleWishlist = useCartStore((s) => s.toggleWishlist);
   const isInWishlist = useCartStore((s) => s.isInWishlist);
   const [wishlistStates, setWishlistStates] = useState<Record<string, boolean>>({});
+  const [products, setProducts] = useState<BestSellerProduct[]>([]);
 
-  const handleAddToCart = (product: (typeof products)[0]) => {
+  useEffect(() => {
+    fetch("/api/products?sort=rating&limit=6")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setProducts(
+            data.products.map((p: { images: string[]; reviewCount?: number }) => ({
+              ...p,
+              image: p.images?.[0] || "/images/products/classic-chocolate-chip.svg",
+              reviewCount: p.reviewCount ?? 0,
+            }))
+          );
+        }
+      });
+  }, []);
+
+  const handleAddToCart = (product: BestSellerProduct) => {
     const cartProduct = {
       id: product.id,
       name: product.name,
@@ -126,7 +90,7 @@ export default function BestSellers() {
       price: product.price,
       discountPrice: product.discountPrice,
       stockQuantity: 50,
-      images: [],
+      images: [product.image],
       categoryId: "cat-1",
       category: { id: "cat-1", name: "Cookies", slug: "cookies", image: null },
       isFeatured: true,
@@ -135,7 +99,7 @@ export default function BestSellers() {
       seoTitle: null,
       seoDescription: null,
       rating: product.rating,
-      reviewCount: product.reviews,
+      reviewCount: product.reviewCount,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -172,115 +136,119 @@ export default function BestSellers() {
           </p>
         </motion.div>
 
-        <motion.div
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"
-        >
-          {products.map((product) => {
-            const discountPct = product.discountPrice
-              ? Math.round(
-                  ((product.price - product.discountPrice) / product.price) * 100
-                )
-              : 0;
-            const inWishlist =
-              wishlistStates[product.id] !== undefined
-                ? wishlistStates[product.id]
-                : isInWishlist(product.id);
+        {products.length === 0 ? (
+          <p className="text-center text-cream/60">Loading best sellers...</p>
+        ) : (
+          <motion.div
+            ref={ref}
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"
+          >
+            {products.map((product) => {
+              const discountPct = product.discountPrice
+                ? Math.round(
+                    ((product.price - product.discountPrice) / product.price) * 100
+                  )
+                : 0;
+              const inWishlist =
+                wishlistStates[product.id] !== undefined
+                  ? wishlistStates[product.id]
+                  : isInWishlist(product.id);
 
-            return (
-              <motion.div
-                key={product.id}
-                variants={cardVariants}
-                whileHover={{ y: -6 }}
-                className="group glass-card rounded-2xl overflow-hidden"
-              >
-                <div className="relative overflow-hidden">
-                  <div className="relative w-full h-48 md:h-72 overflow-hidden">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                  </div>
+              return (
+                <motion.div
+                  key={product.id}
+                  variants={cardVariants}
+                  whileHover={{ y: -6 }}
+                  className="group glass-card rounded-2xl overflow-hidden"
+                >
+                  <div className="relative overflow-hidden">
+                    <div className="relative w-full h-48 md:h-72 overflow-hidden">
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    </div>
 
-                  {discountPct > 0 && (
-                    <span className="absolute top-3 left-3 bg-gold text-dark text-xs font-bold px-2.5 py-1 rounded-full">
-                      {discountPct}% OFF
-                    </span>
-                  )}
-
-                  {product.tag && (
-                    <span className="absolute top-3 right-3 bg-dark-card text-cream text-xs font-medium px-2.5 py-1 rounded-full border border-gold/20">
-                      {product.tag}
-                    </span>
-                  )}
-
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="bg-gold text-dark p-3 rounded-full hover:bg-gold/90 transition-colors"
-                      title="Add to Cart"
-                    >
-                      <FaShoppingCart size={18} />
-                    </button>
-                    <Link
-                      href={`/shop`}
-                      className="bg-cream/90 text-dark p-3 rounded-full hover:bg-cream transition-colors"
-                      title="Quick View"
-                    >
-                      <FaEye size={18} />
-                    </Link>
-                    <button
-                      onClick={() => handleToggleWishlist(product.id)}
-                      className={`p-3 rounded-full transition-colors ${
-                        inWishlist
-                          ? "bg-red-500 text-white"
-                          : "bg-cream/90 text-dark hover:bg-cream"
-                      }`}
-                      title="Wishlist"
-                    >
-                      <FaHeart size={18} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="p-4 md:p-5">
-                  <Link href={`/shop`}>
-                    <h3 className="font-playfair text-lg font-semibold text-cream mb-2 hover:text-gold transition-colors">
-                      {product.name}
-                    </h3>
-                  </Link>
-
-                  <StarRating rating={product.rating} />
-
-                  <div className="flex items-center gap-2 mt-3 mb-4">
-                    <span className="text-xl font-bold text-gold">
-                      {formatPrice(product.discountPrice || product.price)}
-                    </span>
-                    {product.discountPrice && (
-                      <span className="text-sm text-cream/50 line-through">
-                        {formatPrice(product.price)}
+                    {discountPct > 0 && (
+                      <span className="absolute top-3 left-3 bg-gold text-dark text-xs font-bold px-2.5 py-1 rounded-full">
+                        {discountPct}% OFF
                       </span>
                     )}
+
+                    {product.tag && (
+                      <span className="absolute top-3 right-3 bg-dark-card text-cream text-xs font-medium px-2.5 py-1 rounded-full border border-gold/20">
+                        {product.tag}
+                      </span>
+                    )}
+
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className="bg-gold text-dark p-3 rounded-full hover:bg-gold/90 transition-colors"
+                        title="Add to Cart"
+                      >
+                        <FaShoppingCart size={18} />
+                      </button>
+                      <Link
+                        href={`/shop`}
+                        className="bg-cream/90 text-dark p-3 rounded-full hover:bg-cream transition-colors"
+                        title="Quick View"
+                      >
+                        <FaEye size={18} />
+                      </Link>
+                      <button
+                        onClick={() => handleToggleWishlist(product.id)}
+                        className={`p-3 rounded-full transition-colors ${
+                          inWishlist
+                            ? "bg-red-500 text-white"
+                            : "bg-cream/90 text-dark hover:bg-cream"
+                        }`}
+                        title="Wishlist"
+                      >
+                        <FaHeart size={18} />
+                      </button>
+                    </div>
                   </div>
 
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="w-full bg-gold/10 hover:bg-gold text-cream hover:text-dark font-semibold py-2.5 rounded-full border border-gold/30 hover:border-gold transition-all duration-300 flex items-center justify-center gap-2"
-                  >
-                    <FaShoppingCart size={14} />
-                    Add to Cart
-                  </button>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                  <div className="p-4 md:p-5">
+                    <Link href={`/shop`}>
+                      <h3 className="font-playfair text-lg font-semibold text-cream mb-2 hover:text-gold transition-colors">
+                        {product.name}
+                      </h3>
+                    </Link>
+
+                    <StarRating rating={product.rating} />
+
+                    <div className="flex items-center gap-2 mt-3 mb-4">
+                      <span className="text-xl font-bold text-gold">
+                        {formatPrice(product.discountPrice || product.price)}
+                      </span>
+                      {product.discountPrice && (
+                        <span className="text-sm text-cream/50 line-through">
+                          {formatPrice(product.price)}
+                        </span>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="w-full bg-gold/10 hover:bg-gold text-cream hover:text-dark font-semibold py-2.5 rounded-full border border-gold/30 hover:border-gold transition-all duration-300 flex items-center justify-center gap-2"
+                    >
+                      <FaShoppingCart size={14} />
+                      Add to Cart
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

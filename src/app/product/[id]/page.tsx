@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -16,85 +16,8 @@ import { formatPrice, getDiscountPercentage, truncate } from "@/lib/utils";
 import { ProductType } from "@/types";
 import ProductCard from "@/components/shop/ProductCard";
 
-const reviews = [
-  { id: "r1", name: "Priya Sharma", rating: 5, comment: "Absolutely delicious! The cookies were fresh and perfectly baked. Will definitely order again.", date: "2025-05-15" },
-  { id: "r2", name: "Rahul Verma", rating: 4, comment: "Great quality and taste. The packaging was excellent too. Perfect for gifting.", date: "2025-05-10" },
-  { id: "r3", name: "Ananya Patel", rating: 5, comment: "Best cookies I have ever had! The delivery was prompt and the cookies were still warm.", date: "2025-04-28" },
-  { id: "r4", name: "Vikram Singh", rating: 4, comment: "Loved the variety in the mixed box. Each cookie had its own unique flavor.", date: "2025-04-20" },
-];
-
-const allProducts: ProductType[] = [
-  {
-    id: "cc-001", name: "Classic Chocolate Chip Cookie", slug: "classic-chocolate-chip", sku: "CC-001",
-    description: "Our signature classic chocolate chip cookie baked to golden perfection. Made with premium Belgian chocolate chips and a secret family recipe that makes every bite irresistible. Each cookie is handcrafted with love, using the finest ingredients sourced from around the world. The result is a perfectly balanced cookie — crispy on the edges, chewy in the center, and loaded with rich, melted chocolate in every bite.\n\nWhether you enjoy it with a glass of cold milk or a hot cup of coffee, our Classic Chocolate Chip Cookie is the timeless treat that never goes out of style.",
-    ingredients: "Wheat flour, Butter, Sugar, Belgian chocolate chips (35%), Brown sugar, Eggs, Vanilla extract, Baking soda, Sea salt",
-    nutritionInfo: JSON.stringify({ servingSize: "1 cookie (60g)", calories: 280, totalFat: "14g", saturatedFat: "8g", carbohydrates: "36g", sugar: "20g", protein: "4g", fiber: "1g", sodium: "120mg" }),
-    price: 199, discountPrice: null, stockQuantity: 50, images: ["/images/products/classic-chocolate-chip.svg", "/images/products/classic-chocolate-chip.svg", "/images/products/classic-chocolate-chip.svg", "/images/products/classic-chocolate-chip.svg"], categoryId: "cat-1",
-    category: { id: "cat-1", name: "Chocolate", slug: "chocolate", image: null },
-    isFeatured: true, isBestSeller: true, isActive: true, rating: 4.8, reviewCount: 124,
-    seoTitle: "Classic Chocolate Chip Cookie | Zixo Cookies", seoDescription: "Our signature chocolate chip cookie with premium Belgian chocolate.",
-    createdAt: "2025-01-15", updatedAt: "2025-06-01",
-  },
-  {
-    id: "od-002", name: "Oreo Delight Cookie", slug: "oreo-delight", sku: "OD-002",
-    description: "A crunchy, creamy explosion of Oreo goodness in every cookie. Loaded with crushed Oreo pieces and white chocolate chunks for the ultimate cookie experience. Each bite delivers that nostalgic Oreo flavor you love, elevated with premium ingredients and our signature baking technique.\n\nPerfect for Oreo lovers looking for a new way to enjoy their favorite cookie.",
-    ingredients: "Wheat flour, Butter, Sugar, Oreo pieces (30%), White chocolate chunks, Eggs, Vanilla extract, Baking powder",
-    nutritionInfo: JSON.stringify({ servingSize: "1 cookie (65g)", calories: 310, totalFat: "16g", saturatedFat: "9g", carbohydrates: "40g", sugar: "24g", protein: "5g", fiber: "1g", sodium: "150mg" }),
-    price: 249, discountPrice: 199, stockQuantity: 35, images: ["/images/products/oreo-delight.svg", "/images/products/oreo-delight.svg", "/images/products/oreo-delight.svg", "/images/products/oreo-delight.svg"], categoryId: "cat-2",
-    category: { id: "cat-2", name: "Oreo", slug: "oreo", image: null },
-    isFeatured: true, isBestSeller: true, isActive: true, rating: 4.9, reviewCount: 98,
-    seoTitle: "Oreo Delight Cookie | Zixo Cookies", seoDescription: "Loaded with Oreo pieces and white chocolate chunks.",
-    createdAt: "2025-02-10", updatedAt: "2025-06-01",
-  },
-  {
-    id: "rv-003", name: "Red Velvet Cookie", slug: "red-velvet", sku: "RV-003",
-    description: "A stunning red velvet cookie with a soft, chewy texture and a hint of cocoa. Topped with creamy white chocolate chips that melt in your mouth. Our red velvet cookie is a feast for both the eyes and the palate, with its vibrant color and rich, buttery flavor.\n\nMade with real buttermilk and a touch of cocoa, this cookie captures the essence of the classic red velvet cake in a convenient, portable form.",
-    ingredients: "Wheat flour, Butter, Sugar, Cocoa powder, Buttermilk, Eggs, Red food coloring, White chocolate chips, Vanilla extract, Baking soda, Vinegar",
-    nutritionInfo: JSON.stringify({ servingSize: "1 cookie (60g)", calories: 270, totalFat: "13g", saturatedFat: "7g", carbohydrates: "35g", sugar: "19g", protein: "3g", fiber: "1g", sodium: "110mg" }),
-    price: 229, discountPrice: null, stockQuantity: 40, images: ["/images/products/red-velvet.svg", "/images/products/red-velvet.svg", "/images/products/red-velvet.svg", "/images/products/red-velvet.svg"], categoryId: "cat-3",
-    category: { id: "cat-3", name: "Red Velvet", slug: "red-velvet", image: null },
-    isFeatured: true, isBestSeller: true, isActive: true, rating: 4.7, reviewCount: 87,
-    seoTitle: "Red Velvet Cookie | Zixo Cookies", seoDescription: "Soft red velvet cookie with white chocolate chips.",
-    createdAt: "2025-01-20", updatedAt: "2025-06-01",
-  },
-  {
-    id: "gb-004", name: "Golden Butter Cookie", slug: "golden-butter", sku: "GB-004",
-    description: "A melt-in-your-mouth buttery cookie that's simple yet absolutely divine. Made with European butter and a touch of vanilla for that perfect golden crisp. Sometimes the simplest things are the most extraordinary — our Golden Butter Cookie is proof of that.\n\nWith its delicate crumb and rich, buttery flavor, this cookie pairs beautifully with tea or coffee and makes for an elegant treat any time of day.",
-    ingredients: "European butter (40%), Wheat flour, Sugar, Eggs, Vanilla bean, Salt",
-    nutritionInfo: JSON.stringify({ servingSize: "1 cookie (50g)", calories: 240, totalFat: "14g", saturatedFat: "9g", carbohydrates: "28g", sugar: "14g", protein: "3g", fiber: "0g", sodium: "90mg" }),
-    price: 179, discountPrice: null, stockQuantity: 60, images: ["/images/products/golden-butter.svg", "/images/products/golden-butter.svg", "/images/products/golden-butter.svg", "/images/products/golden-butter.svg"], categoryId: "cat-4",
-    category: { id: "cat-4", name: "Butter", slug: "butter", image: null },
-    isFeatured: false, isBestSeller: true, isActive: true, rating: 4.6, reviewCount: 65,
-    seoTitle: "Golden Butter Cookie | Zixo Cookies", seoDescription: "Melt-in-your-mouth buttery cookie with European butter.",
-    createdAt: "2025-03-05", updatedAt: "2025-06-01",
-  },
-  {
-    id: "dc-005", name: "Double Chocolate Fudge Cookie", slug: "double-chocolate-fudge", sku: "DC-005",
-    description: "For the ultimate chocolate lover — a rich, fudgy double chocolate cookie loaded with dark and milk chocolate chunks. Perfectly gooey on the inside with a slight crackle on top. This is our most indulgent chocolate creation, made with two types of premium chocolate for a deep, complex flavor.\n\nThe dark chocolate provides a rich intensity while the milk chocolate adds creamy sweetness, creating a perfectly balanced cookie that chocolate lovers dream about.",
-    ingredients: "Wheat flour, Butter, Dark chocolate (40%), Sugar, Eggs, Cocoa powder, Milk chocolate chunks, Vanilla extract, Baking soda, Salt",
-    nutritionInfo: JSON.stringify({ servingSize: "1 cookie (65g)", calories: 330, totalFat: "18g", saturatedFat: "11g", carbohydrates: "38g", sugar: "22g", protein: "5g", fiber: "2g", sodium: "130mg" }),
-    price: 259, discountPrice: null, stockQuantity: 30, images: ["/images/products/double-chocolate.svg", "/images/products/double-chocolate.svg", "/images/products/double-chocolate.svg", "/images/products/double-chocolate.svg"], categoryId: "cat-1",
-    category: { id: "cat-1", name: "Chocolate", slug: "chocolate", image: null },
-    isFeatured: true, isBestSeller: true, isActive: true, rating: 4.9, reviewCount: 112,
-    seoTitle: "Double Chocolate Fudge Cookie | Zixo Cookies", seoDescription: "Rich fudgy double chocolate cookie with chocolate chunks.",
-    createdAt: "2025-02-14", updatedAt: "2025-06-01",
-  },
-  {
-    id: "mb-006", name: "Signature Mixed Box", slug: "signature-mixed-box", sku: "MB-006",
-    description: "Our best-selling assortment featuring 6 handpicked cookie flavors. The perfect gift for any occasion, beautifully packed in a premium gift box. Each box contains a curated selection of our most popular flavors, carefully arranged to provide a delightful variety of tastes and textures.\n\nPerfect for parties, corporate gifting, or simply treating yourself to a taste of everything we have to offer.",
-    ingredients: "Assorted cookies: Chocolate Chip, Oreo Delight, Red Velvet, Golden Butter, Double Chocolate, Salted Caramel",
-    nutritionInfo: JSON.stringify({ servingSize: "1 box (360g)", calories: 1680, totalFat: "84g", saturatedFat: "52g", carbohydrates: "210g", sugar: "120g", protein: "24g", fiber: "6g", sodium: "720mg" }),
-    price: 599, discountPrice: 549, stockQuantity: 25, images: ["/images/products/mixed-box.svg", "/images/products/mixed-box.svg", "/images/products/mixed-box.svg", "/images/products/mixed-box.svg"], categoryId: "cat-5",
-    category: { id: "cat-5", name: "Mixed Boxes", slug: "mixed-boxes", image: null },
-    isFeatured: true, isBestSeller: true, isActive: true, rating: 4.8, reviewCount: 203,
-    seoTitle: "Signature Mixed Box | Zixo Cookies", seoDescription: "Assorted 6-cookie gift box with our best-selling flavors.",
-    createdAt: "2025-01-10", updatedAt: "2025-06-01",
-  },
-];
-
 function StarRating({ rating, size = 16 }: { rating: number; size?: number }) {
   const full = Math.floor(rating);
-  const hasHalf = rating % 1 >= 0.5;
   return (
     <div className="flex items-center gap-1">
       <div className="flex gap-0.5">
@@ -150,12 +73,34 @@ export default function ProductDetailPage() {
   const toggleWishlist = useCartStore((s) => s.toggleWishlist);
   const isInWishlist = useCartStore((s) => s.isInWishlist);
 
-  const product = allProducts.find((p) => p.id === id) || allProducts[0];
-  const relatedProducts = allProducts
-    .filter((p) => p.categoryId === product.categoryId && p.id !== product.id)
-    .slice(0, 4);
+  const [product, setProduct] = useState<ProductType | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<ProductType[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const discountPct = product.discountPrice
+  useEffect(() => {
+    fetch(`/api/products/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setProduct(data.product);
+        }
+      })
+      .finally(() => setLoading(false));
+
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setRelatedProducts(
+            data.products
+              .filter((p: ProductType) => p.id !== id)
+              .slice(0, 4)
+          );
+        }
+      });
+  }, [id]);
+
+  const discountPct = product?.discountPrice
     ? getDiscountPercentage(product.price, product.discountPrice)
     : 0;
 
@@ -164,23 +109,27 @@ export default function ProductDetailPage() {
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
-  const inWishlist = isInWishlist(product.id);
+  const inWishlist = product ? isInWishlist(product.id) : false;
 
-  const thumbnails = product.images.length > 0
-    ? product.images
+  const productImages = product?.images ?? [];
+  const thumbnails = productImages.length > 0
+    ? productImages
     : ["", "", "", ""];
 
   const handleAddToCart = () => {
+    if (!product) return;
     addToCart(product, quantity);
     toast.success(`${product.name} added to cart!`);
   };
 
   const handleBuyNow = () => {
+    if (!product) return;
     addToCart(product, quantity);
     toast.success("Proceeding to checkout...");
   };
 
   const handleToggleWishlist = () => {
+    if (!product) return;
     toggleWishlist(product.id);
     toast.success(inWishlist ? "Removed from wishlist" : "Added to wishlist!");
   };
@@ -188,7 +137,7 @@ export default function ProductDetailPage() {
   const handleShare = async () => {
     const url = window.location.href;
     if (navigator.share) {
-      await navigator.share({ title: product.name, url });
+      await navigator.share({ title: product?.name, url });
     } else {
       await navigator.clipboard.writeText(url);
       toast.success("Link copied to clipboard!");
@@ -204,10 +153,33 @@ export default function ProductDetailPage() {
 
   let nutrition: Record<string, string> = {};
   try {
-    if (product.nutritionInfo) {
+    if (product?.nutritionInfo) {
       nutrition = JSON.parse(product.nutritionInfo);
     }
   } catch {}
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-dark flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-pulse">🍪</div>
+          <p className="text-cream/60">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-dark flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">😢</div>
+          <h2 className="font-playfair text-2xl font-bold text-cream mb-2">Product not found</h2>
+          <Link href="/shop" className="btn-primary">Back to Shop</Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-dark">
@@ -274,7 +246,7 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="flex gap-3">
-              {thumbnails.map((img, idx) => (
+              {thumbnails.map((img: string, idx: number) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(idx)}
@@ -451,7 +423,7 @@ export default function ProductDetailPage() {
                 Here&apos;s what goes into making this cookie perfect:
               </p>
               <div className="flex flex-wrap gap-2">
-                {product.ingredients?.split(",").map((ing, i) => (
+                {product.ingredients?.split(",").map((ing: string, i: number) => (
                   <span
                     key={i}
                     className="bg-dark-card px-3 py-1.5 rounded-full text-xs text-cream/70 border border-gold/10"
@@ -486,16 +458,7 @@ export default function ProductDetailPage() {
 
           <AccordionSection title={`Reviews (${product.reviewCount})`}>
             <div className="space-y-5">
-              {reviews.map((review) => (
-                <div key={review.id} className="pb-4 border-b border-gold/10 last:border-0 last:pb-0">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-cream text-sm">{review.name}</span>
-                    <span className="text-xs text-cream/40">{review.date}</span>
-                  </div>
-                  <StarRating rating={review.rating} size={13} />
-                  <p className="text-sm text-cream/70 mt-1.5">{review.comment}</p>
-                </div>
-              ))}
+              <p className="text-sm text-cream/50">Reviews coming soon</p>
             </div>
           </AccordionSection>
         </motion.div>

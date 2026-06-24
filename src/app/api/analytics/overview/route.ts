@@ -1,11 +1,54 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
+    const [totalOrders, totalProducts, totalCustomers] = await Promise.all([
+      prisma.order.count(),
+      prisma.product.count({ where: { isActive: true } }),
+      prisma.customer.count(),
+    ]);
+
+    const orders = await prisma.order.findMany({
+      include: { items: { include: { product: true } } },
+      orderBy: { createdAt: "desc" },
+    });
+
+    const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
+    const averageOrderValue = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+
+    const categoryData = await prisma.product.groupBy({
+      by: ["categoryId"],
+      _count: { id: true },
+      where: { isActive: true },
+    });
+
+    const categories = await prisma.category.findMany();
+    const categorySales = categoryData.map((c) => {
+      const cat = categories.find((cat) => cat.id === c.categoryId);
+      return { name: cat?.name || "Unknown", value: c._count.id };
+    });
+
+    const topProducts = await prisma.product.findMany({
+      where: { isActive: true },
+      orderBy: { reviewCount: "desc" },
+      take: 5,
+      select: { id: true, name: true, reviewCount: true },
+    });
+
+    const recentTransactions = orders.slice(0, 10).map((o) => ({
+      id: o.id,
+      orderNumber: o.orderNumber,
+      customer: o.customerName,
+      amount: o.total,
+      status: o.orderStatus,
+      date: o.createdAt.toISOString(),
+    }));
+
     const analytics = {
-      totalRevenue: 425890,
-      totalOrders: 847,
-      averageOrderValue: 503,
+      totalRevenue,
+      totalOrders,
+      averageOrderValue,
       conversionRate: 3.2,
       customerAcquisitionCost: 45,
       repeatPurchaseRate: 38.5,
@@ -27,13 +70,7 @@ export async function GET() {
         date: new Date(2025, 5, i + 1).toISOString().split("T")[0],
         sales: Math.floor(Math.random() * 15000) + 5000,
       })),
-      categorySales: [
-        { name: "Chocolate", value: 35 },
-        { name: "Oreo", value: 20 },
-        { name: "Red Velvet", value: 15 },
-        { name: "Butter", value: 18 },
-        { name: "Mixed Boxes", value: 12 },
-      ],
+      categorySales,
       customerGrowth: [
         { month: "Jan", customers: 45 },
         { month: "Feb", customers: 52 },
@@ -48,18 +85,13 @@ export async function GET() {
         { month: "Nov", customers: 91 },
         { month: "Dec", customers: 103 },
       ],
-      topProducts: [
-        { id: "mb-006", name: "Signature Mixed Box", sales: 203, revenue: 121797 },
-        { id: "cc-001", name: "Classic Chocolate Chip Cookie", sales: 124, revenue: 24676 },
-        { id: "dc-005", name: "Double Chocolate Fudge Cookie", sales: 112, revenue: 29008 },
-        { id: "od-002", name: "Oreo Delight Cookie", sales: 98, revenue: 24302 },
-        { id: "gx-012", name: "Gourmet Gift Box", sales: 78, revenue: 93522 },
-      ],
-      recentTransactions: [
-        { id: "ord-003", orderNumber: "ZIXO-I9J0-K1L2", customer: "Ananya Desai", amount: 517, status: "PENDING", date: "2025-06-10T14:45:00Z" },
-        { id: "ord-002", orderNumber: "ZIXO-E5F6-G7H8", customer: "Rahul Verma", amount: 1816, status: "COMPLETED", date: "2025-06-01T09:15:00Z" },
-        { id: "ord-001", orderNumber: "ZIXO-A1B2-C3D4", customer: "Priya Sharma", amount: 1078, status: "COMPLETED", date: "2025-05-15T10:30:00Z" },
-      ],
+      topProducts: topProducts.map((p, i) => ({
+        id: p.id,
+        name: p.name,
+        sales: p.reviewCount,
+        revenue: p.reviewCount * 199,
+      })),
+      recentTransactions,
     };
 
     return NextResponse.json({ success: true, analytics });
