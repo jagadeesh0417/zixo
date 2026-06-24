@@ -31,14 +31,6 @@ const collections = [
     image: "/images/collections/gift-box.svg",
     align: "left",
   },
-  {
-    title: "Freshly Baked",
-    subtitle: "Warm, soft, straight from the oven",
-    description:
-      "Experience cookies at their absolute best. Each batch is baked fresh daily, delivering that perfect balance of crispy edges and soft, gooey centers that melt in your mouth.",
-    image: "/images/collections/fresh-baked.svg",
-    align: "right",
-  },
 ];
 
 export default function SignatureCollections() {
