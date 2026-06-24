@@ -12,7 +12,7 @@ const collections = [
     subtitle: "For the true chocoholic",
     description:
       "Dive into our richest, most indulgent chocolate cookies. Made with Belgian dark chocolate, cocoa nibs, and chocolate chunks for an intense experience that every chocolate lover dreams of.",
-    image: "/images/collections/chocolate-lovers.svg",
+    image: "/images/chocolate.png",
     align: "left",
   },
   {
@@ -20,7 +20,7 @@ const collections = [
     subtitle: "Crunchy, creamy, irresistible",
     description:
       "Our signature take on the classic favorite. Crushed Oreo pieces folded into our buttery cookie dough, topped with a creamy white chocolate drizzle. A crunchy, creamy delight in every bite.",
-    image: "/images/collections/oreo-special.svg",
+    image: "/images/oreo.png",
     align: "right",
   },
   {
@@ -28,7 +28,7 @@ const collections = [
     subtitle: "The ultimate cookie gifting experience",
     description:
       "Our beautifully curated gift boxes featuring a handpicked selection of our finest cookies. Perfect for birthdays, holidays, or any occasion that deserves something special.",
-    image: "/images/collections/gift-box.svg",
+    image: "/images/giftbox.png",
     align: "left",
   },
 ];
