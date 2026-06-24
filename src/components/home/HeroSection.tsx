@@ -23,7 +23,7 @@ const slides: Slide[] = [
   {
     heading: ["Freshly Baked Happiness", "Delivered to Your Door"],
     description: "Handcrafted gourmet cookies made with premium ingredients",
-    image: "/images/banners/hero-slide-1.svg",
+    image: "/images/banner.png",
   },
   {
     heading: ["Indulge in Our", "Signature Collection"],

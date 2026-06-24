@@ -105,7 +105,7 @@ export default function AdminBannersPage() {
   const [showPreview, setShowPreview] = useState(false);
 
   const bannerImageUrl = (banner: typeof sampleBanners[0]) =>
-    banner.image || `/images/banners/hero-slide-${(banners.indexOf(banner) % 3) + 1}.svg`;
+    banner.image || "/images/banner.png";
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [bannerImage, setBannerImage] = useState("");
