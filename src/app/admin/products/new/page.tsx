@@ -93,32 +93,63 @@ export default function NewProductPage() {
 
     setSaving(true);
 
-    setTimeout(() => {
-      toast.success(`Product "${form.name}" created successfully`);
-      setSaving(false);
-      if (addAnother) {
-        setForm({
-          name: "",
-          sku: "",
-          category: "",
-          description: "",
-          price: "",
-          discountPrice: "",
-          stockQuantity: "",
-          ingredients: "",
-          nutritionInfo: "",
-          seoTitle: "",
-          seoDescription: "",
-          isFeatured: false,
-          isBestSeller: false,
-          isActive: true,
-          images: [],
-        });
-        setErrors({});
+    try {
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          sku: form.sku,
+          slug: form.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+          category: form.category,
+          description: form.description,
+          price: parseFloat(form.price),
+          discountPrice: form.discountPrice ? parseFloat(form.discountPrice) : null,
+          stockQuantity: parseInt(form.stockQuantity) || 0,
+          ingredients: form.ingredients,
+          nutritionInfo: form.nutritionInfo,
+          seoTitle: form.seoTitle,
+          seoDescription: form.seoDescription,
+          isFeatured: form.isFeatured,
+          isBestSeller: form.isBestSeller,
+          isActive: form.isActive,
+          images: form.images,
+        }),
+      });
+
+      if (res.ok) {
+        toast.success(`Product "${form.name}" created successfully`);
+        setSaving(false);
+        if (addAnother) {
+          setForm({
+            name: "",
+            sku: "",
+            category: "",
+            description: "",
+            price: "",
+            discountPrice: "",
+            stockQuantity: "",
+            ingredients: "",
+            nutritionInfo: "",
+            seoTitle: "",
+            seoDescription: "",
+            isFeatured: false,
+            isBestSeller: false,
+            isActive: true,
+            images: [],
+          });
+          setErrors({});
+        } else {
+          router.push("/admin/products");
+        }
       } else {
-        router.push("/admin/products");
+        toast.error("Failed to create product");
+        setSaving(false);
       }
-    }, 800);
+    } catch {
+      toast.error("Failed to create product");
+      setSaving(false);
+    }
   };
 
   const handleAutoSku = () => {

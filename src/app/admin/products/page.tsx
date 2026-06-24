@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import {
   FiPlus,
   FiEdit,
@@ -384,8 +385,14 @@ export default function AdminProductsPage() {
                       />
                     </td>
                     <td className="py-3 px-2">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4AF37] to-amber-300 flex items-center justify-center">
-                        <FiPackage className="text-[#0A0503]/60" size={16} />
+                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-[#D4AF37]/20">
+                        {(product as any).images?.[0] ? (
+                          <Image src={(product as any).images[0]} alt={product.name} width={40} height={40} className="object-cover w-full h-full" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <FiBox className="text-[#D4AF37]/60" size={16} />
+                          </div>
+                        )}
                       </div>
                     </td>
                     <td className="py-3 px-2">

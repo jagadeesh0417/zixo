@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiPlus,
@@ -103,6 +104,12 @@ export default function AdminBannersPage() {
   const [editingBanner, setEditingBanner] = useState<typeof sampleBanners[0] | null>(null);
   const [showPreview, setShowPreview] = useState(false);
 
+  const bannerImageUrl = (banner: typeof sampleBanners[0]) =>
+    banner.image || `/images/banners/hero-slide-${(banners.indexOf(banner) % 3) + 1}.svg`;
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [bannerImage, setBannerImage] = useState("");
+
   const [formData, setFormData] = useState({
     title: "",
     subtitle: "",
@@ -114,12 +121,14 @@ export default function AdminBannersPage() {
 
   const openAddForm = () => {
     setEditingBanner(null);
+    setBannerImage("");
     setFormData({ title: "", subtitle: "", link: "", position: "hero", order: banners.length + 1, isActive: true });
     setShowForm(true);
   };
 
   const openEditForm = (banner: typeof sampleBanners[0]) => {
     setEditingBanner(banner);
+    setBannerImage(banner.image || "");
     setFormData({
       title: banner.title,
       subtitle: banner.subtitle,
@@ -139,7 +148,7 @@ export default function AdminBannersPage() {
     if (editingBanner) {
       setBanners((prev) =>
         prev.map((b) =>
-          b.id === editingBanner.id ? { ...b, ...formData } : b
+          b.id === editingBanner.id ? { ...b, ...formData, image: bannerImage } : b
         )
       );
     } else {
@@ -147,7 +156,7 @@ export default function AdminBannersPage() {
         id: String(Date.now()),
         title: formData.title,
         subtitle: formData.subtitle,
-        image: "",
+        image: bannerImage,
         link: formData.link,
         position: formData.position,
         order: formData.order,
@@ -180,8 +189,26 @@ export default function AdminBannersPage() {
     );
   };
 
-  const handleImageUpload = () => {
-    toast.success("Image upload coming soon");
+  const handleImageUpload = async (file: File) => {
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be under 5MB");
+      return;
+    }
+    const fd = new FormData();
+    fd.append("file", file);
+    const uploadToast = toast.loading("Uploading...");
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.success) {
+        setBannerImage(data.url);
+        toast.success("Image uploaded", { id: uploadToast });
+      } else {
+        toast.error("Upload failed", { id: uploadToast });
+      }
+    } catch {
+      toast.error("Upload failed", { id: uploadToast });
+    }
   };
 
   const sortedBanners = [...banners].sort((a, b) => a.order - b.order);
@@ -300,22 +327,20 @@ export default function AdminBannersPage() {
           >
             <div className="flex flex-col md:flex-row gap-5">
               <div className="md:w-64 lg:w-80 flex-shrink-0">
-                <div
-                  className="relative w-full h-28 md:h-full min-h-[100px] rounded-xl overflow-hidden cursor-pointer group"
-                  onClick={handleImageUpload}
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${gradientBgs[idx % gradientBgs.length]}`} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                <div className="relative w-full h-28 md:h-full min-h-[100px] rounded-xl overflow-hidden">
+                  <Image
+                    src={bannerImageUrl(banner)}
+                    alt={banner.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 50vw, 20vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <div className="relative z-10 p-4 h-full flex flex-col justify-end">
                     <h4 className="font-bold text-white text-sm leading-tight">{banner.title}</h4>
                     {banner.subtitle && (
                       <p className="text-white/70 text-xs mt-0.5 line-clamp-1">{banner.subtitle}</p>
                     )}
-                  </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <FiUpload className="text-white" size={20} />
-                    </div>
                   </div>
                 </div>
               </div>
@@ -450,14 +475,37 @@ export default function AdminBannersPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Image</label>
-                  <div
-                    onClick={handleImageUpload}
-                    className="w-full h-36 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:border-caramel hover:text-caramel transition-all bg-gray-50"
-                  >
-                    <FiUpload size={28} className="mb-2" />
-                    <span className="text-sm font-medium">Click to upload banner image</span>
-                    <span className="text-xs mt-1">Recommended: 1920 x 600 px</span>
-                  </div>
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImageUpload(file);
+                    }}
+                  />
+                  {bannerImage ? (
+                    <div className="relative w-full h-36 rounded-xl overflow-hidden border border-gray-200">
+                      <Image src={bannerImage} alt="Banner preview" fill className="object-cover" sizes="400px" />
+                      <button
+                        type="button"
+                        onClick={() => setBannerImage("")}
+                        className="absolute top-2 right-2 w-6 h-6 bg-red-500/80 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600 transition-colors"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full h-36 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:border-caramel hover:text-caramel transition-all bg-gray-50"
+                    >
+                      <FiUpload size={28} className="mb-2" />
+                      <span className="text-sm font-medium">Click to upload banner image</span>
+                      <span className="text-xs mt-1">Recommended: 1920 x 600 px</span>
+                    </div>
+                  )}
                 </div>
 
                 <div>

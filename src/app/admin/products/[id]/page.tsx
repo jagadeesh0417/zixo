@@ -211,11 +211,42 @@ export default function EditProductPage() {
 
     setSaving(true);
 
-    setTimeout(() => {
-      toast.success(`Product "${form.name}" updated successfully`);
+    try {
+      const res = await fetch(`/api/products/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          sku: form.sku,
+          slug: form.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+          category: form.category,
+          description: form.description,
+          price: parseFloat(form.price),
+          discountPrice: form.discountPrice ? parseFloat(form.discountPrice) : null,
+          stockQuantity: parseInt(form.stockQuantity) || 0,
+          ingredients: form.ingredients,
+          nutritionInfo: form.nutritionInfo,
+          seoTitle: form.seoTitle,
+          seoDescription: form.seoDescription,
+          isFeatured: form.isFeatured,
+          isBestSeller: form.isBestSeller,
+          isActive: form.isActive,
+          images: form.images,
+        }),
+      });
+
+      if (res.ok) {
+        toast.success(`Product "${form.name}" updated successfully`);
+        setSaving(false);
+        router.push("/admin/products");
+      } else {
+        toast.error("Failed to update product");
+        setSaving(false);
+      }
+    } catch {
+      toast.error("Failed to update product");
       setSaving(false);
-      router.push("/admin/products");
-    }, 800);
+    }
   };
 
   const handleDelete = () => {
