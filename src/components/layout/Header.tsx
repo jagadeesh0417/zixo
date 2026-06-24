@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FaCookieBite,
   FaSearch,
   FaHeart,
   FaShoppingBag,
@@ -79,16 +79,15 @@ export default function Header() {
             </button>
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <FaCookieBite className="text-[#D4AF37] text-2xl md:text-3xl group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]" />
-              <span className="font-playfair text-xl md:text-2xl font-bold tracking-wide">
-                <span className="bg-gradient-to-r from-[#D4AF37] via-[#F5E6A3] to-[#D4AF37] bg-clip-text text-transparent">
-                  ZIXO
-                </span>
-                <span className="text-[#F8F4EE]/80 ml-1.5 text-base md:text-lg">
-                  COOKIES
-                </span>
-              </span>
+            <Link href="/" className="flex items-center group">
+              <Image
+                src="/images/general/logo.svg"
+                alt="Zixo Cookies"
+                width={140}
+                height={50}
+                className="h-8 md:h-10 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
+                priority
+              />
             </Link>
 
             {/* Desktop nav */}
@@ -198,12 +197,13 @@ export default function Header() {
                   className="flex items-center gap-2"
                   onClick={() => setMobileOpen(false)}
                 >
-                  <FaCookieBite className="text-[#D4AF37] text-xl drop-shadow-[0_0_6px_rgba(212,175,55,0.3)]" />
-                  <span className="font-playfair text-lg font-bold">
-                    <span className="bg-gradient-to-r from-[#D4AF37] to-[#F5E6A3] bg-clip-text text-transparent">
-                      ZIXO
-                    </span>
-                  </span>
+                  <Image
+                    src="/images/general/logo.svg"
+                    alt="Zixo Cookies"
+                    width={100}
+                    height={36}
+                    className="h-7 w-auto"
+                  />
                 </Link>
                 <button
                   onClick={() => setMobileOpen(false)}

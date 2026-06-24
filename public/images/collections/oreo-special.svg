@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <radialGradient id="osBg" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#2C1A14"/>
+      <stop offset="50%" stop-color="#1A0E0A"/>
+      <stop offset="100%" stop-color="#0C0604"/>
+    </radialGradient>
+    <radialGradient id="osCookie" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#3D2B1A"/>
+      <stop offset="40%" stop-color="#2E1E10"/>
+      <stop offset="70%" stop-color="#1F1208"/>
+      <stop offset="100%" stop-color="#0C0603"/>
+    </radialGradient>
+    <radialGradient id="osCream" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="40%" stop-color="#F8F6F0"/>
+      <stop offset="100%" stop-color="#EAE4D8"/>
+    </radialGradient>
+    <linearGradient id="osGold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="rgba(218,165,32,0.3)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <filter id="osShadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="osCreamShadow">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.2"/>
+    </filter>
+    <filter id="osTextGlow">
+      <feGaussianBlur stdDeviation="1.5"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#osBg)"/>
+  <ellipse cx="400" cy="520" rx="350" ry="60" fill="rgba(255,255,255,0.02)"/>
+
+  <!-- Cookies -->
+  <ellipse cx="280" cy="380" rx="95" ry="36" fill="url(#osCookie)" filter="url(#osShadow)"/>
+  <ellipse cx="450" cy="370" rx="100" ry="38" fill="url(#osCookie)" filter="url(#osShadow)"/>
+  <ellipse cx="370" cy="330" rx="90" ry="34" fill="url(#osCookie)" filter="url(#osShadow)"/>
+  <ellipse cx="530" cy="385" rx="88" ry="33" fill="url(#osCookie)" filter="url(#osShadow)"/>
+  <ellipse cx="200" cy="360" rx="85" ry="32" fill="url(#osCookie)" filter="url(#osShadow)" opacity="0.5"/>
+
+  <!-- Cream fillings -->
+  <ellipse cx="280" cy="380" rx="35" ry="14" fill="url(#osCream)" filter="url(#osCreamShadow)"/>
+  <ellipse cx="450" cy="370" rx="38" ry="15" fill="url(#osCream)" filter="url(#osCreamShadow)"/>
+  <ellipse cx="370" cy="330" rx="32" ry="12" fill="url(#osCream)" filter="url(#osCreamShadow)"/>
+
+  <!-- Crushed Oreo pieces -->
+  <g fill="url(#osCookie)" filter="url(#osShadow)">
+    <ellipse cx="340" cy="410" rx="15" ry="8" transform="rotate(-15,340,410)"/>
+    <ellipse cx="510" cy="410" rx="12" ry="7" transform="rotate(10,510,410)"/>
+    <ellipse cx="420" cy="430" rx="10" ry="6" transform="rotate(-5,420,430)"/>
+  </g>
+
+  <!-- Text -->
+  <text x="400" y="160" font-family="Georgia, serif" font-size="36" fill="#FFF8E0" text-anchor="middle" font-weight="bold" filter="url(#osTextGlow)" letter-spacing="3">Oreo Special</text>
+  <rect x="290" y="175" width="220" height="1" fill="url(#osGold)"/>
+  <text x="400" y="200" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,235,210,0.4)" text-anchor="middle" letter-spacing="4">A CRUNCHY DELIGHT</text>
+
+  <rect x="0" y="500" width="800" height="100" fill="url(#osBg)" opacity="0.6"/>
+</svg>

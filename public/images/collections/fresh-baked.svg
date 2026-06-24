@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <radialGradient id="fbBg" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#3A2418"/>
+      <stop offset="50%" stop-color="#24140C"/>
+      <stop offset="100%" stop-color="#140A06"/>
+    </radialGradient>
+    <radialGradient id="fbCookie1" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="40%" stop-color="#D4A853"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <radialGradient id="fbCookie2" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#4A2A18"/>
+      <stop offset="40%" stop-color="#2A1208"/>
+      <stop offset="100%" stop-color="#120804"/>
+    </radialGradient>
+    <radialGradient id="fbCookie3" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#B8453A"/>
+      <stop offset="40%" stop-color="#8B2C22"/>
+      <stop offset="100%" stop-color="#521610"/>
+    </radialGradient>
+    <radialGradient id="fbCookie4" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#F5D98E"/>
+      <stop offset="40%" stop-color="#D9B34A"/>
+      <stop offset="100%" stop-color="#A88028"/>
+    </radialGradient>
+    <radialGradient id="chipGrad" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3D1C02"/>
+      <stop offset="60%" stop-color="#2A1200"/>
+      <stop offset="100%" stop-color="#1A0A00"/>
+    </radialGradient>
+    <linearGradient id="fbGold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="rgba(218,165,32,0.3)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <filter id="fbShadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <filter id="chipShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="fbTextGlow">
+      <feGaussianBlur stdDeviation="1.5"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#fbBg)"/>
+  <ellipse cx="400" cy="520" rx="350" ry="60" fill="rgba(255,255,255,0.02)"/>
+
+  <!-- Cookies spread -->
+  <ellipse cx="250" cy="390" rx="95" ry="36" fill="url(#fbCookie1)" filter="url(#fbShadow)"/>
+  <ellipse cx="430" cy="380" rx="100" ry="38" fill="url(#fbCookie2)" filter="url(#fbShadow)"/>
+  <ellipse cx="580" cy="400" rx="90" ry="34" fill="url(#fbCookie3)" filter="url(#fbShadow)"/>
+  <ellipse cx="330" cy="340" rx="88" ry="33" fill="url(#fbCookie4)" filter="url(#fbShadow)"/>
+  <ellipse cx="500" cy="335" rx="92" ry="35" fill="url(#fbCookie1)" filter="url(#fbShadow)"/>
+  <ellipse cx="400" cy="300" rx="85" ry="32" fill="url(#fbCookie2)" filter="url(#fbShadow)"/>
+
+  <!-- Chips on light cookies -->
+  <g fill="url(#chipGrad)" filter="url(#chipShadow)">
+    <ellipse cx="220" cy="385" rx="8" ry="6" transform="rotate(-10,220,385)"/>
+    <ellipse cx="280" cy="380" rx="7" ry="5" transform="rotate(15,280,380)"/>
+    <ellipse cx="310" cy="335" rx="8" ry="6" transform="rotate(-20,310,335)"/>
+    <ellipse cx="480" cy="330" rx="7" ry="5" transform="rotate(5,480,330)"/>
+    <ellipse cx="380" cy="295" rx="8" ry="6" transform="rotate(-15,380,295)"/>
+  </g>
+
+  <!-- Text -->
+  <text x="400" y="160" font-family="Georgia, serif" font-size="36" fill="#FFF8E0" text-anchor="middle" font-weight="bold" filter="url(#fbTextGlow)" letter-spacing="3">Fresh Baked</text>
+  <rect x="280" y="175" width="240" height="1" fill="url(#fbGold)"/>
+  <text x="400" y="200" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,235,210,0.4)" text-anchor="middle" letter-spacing="4">STRAIGHT FROM THE OVEN</text>
+
+  <!-- Steam wisps -->
+  <g fill="none" stroke="rgba(255,235,210,0.06)" stroke-width="2" stroke-linecap="round">
+    <path d="M330,290 C328,275 332,260 330,245"/>
+    <path d="M400,270 C398,255 402,240 400,225"/>
+    <path d="M480,285 C478,270 482,255 480,240"/>
+  </g>
+
+  <rect x="0" y="500" width="800" height="100" fill="url(#fbBg)" opacity="0.6"/>
+</svg>

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 800" width="1920" height="800">
+  <defs>
+    <radialGradient id="slide4Bg" cx="50%" cy="45%" r="55%" fx="40%" fy="40%">
+      <stop offset="0%" stop-color="#2D1A12"/>
+      <stop offset="35%" stop-color="#1C0E0A"/>
+      <stop offset="70%" stop-color="#120806"/>
+      <stop offset="100%" stop-color="#080302"/>
+    </radialGradient>
+    <radialGradient id="slide4Glow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="rgba(200,160,80,0.10)"/>
+      <stop offset="50%" stop-color="rgba(180,140,60,0.03)"/>
+      <stop offset="100%" stop-color="rgba(160,120,40,0)"/>
+    </radialGradient>
+    <radialGradient id="s4Cookie" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="40%" stop-color="#D4A853"/>
+      <stop offset="70%" stop-color="#B8883A"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <linearGradient id="goldText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="50%" stop-color="#FFE080"/>
+      <stop offset="100%" stop-color="#DAA520"/>
+    </linearGradient>
+    <filter id="s4Shadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="15" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="s4TextGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="chipShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <radialGradient id="chipGrad" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3D1C02"/>
+      <stop offset="60%" stop-color="#2A1200"/>
+      <stop offset="100%" stop-color="#1A0A00"/>
+    </radialGradient>
+    <linearGradient id="decoLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="rgba(218,165,32,0.4)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="800" fill="url(#slide4Bg)"/>
+  <rect width="1920" height="800" fill="url(#slide4Glow)"/>
+
+  <!-- Left cookie cluster -->
+  <ellipse cx="260" cy="490" rx="160" ry="58" fill="url(#s4Cookie)" filter="url(#s4Shadow)"/>
+  <ellipse cx="280" cy="440" rx="155" ry="55" fill="url(#s4Cookie)" filter="url(#s4Shadow)"/>
+  <ellipse cx="270" cy="390" rx="150" ry="52" fill="url(#s4Cookie)" filter="url(#s4Shadow)"/>
+  <ellipse cx="290" cy="340" rx="145" ry="50" fill="url(#s4Cookie)" filter="url(#s4Shadow)"/>
+
+  <!-- Chips left -->
+  <g fill="url(#chipGrad)" filter="url(#chipShadow)">
+    <ellipse cx="220" cy="480" rx="12" ry="9" transform="rotate(-10,220,480)"/>
+    <ellipse cx="320" cy="470" rx="11" ry="8" transform="rotate(15,320,470)"/>
+    <ellipse cx="240" cy="430" rx="10" ry="7" transform="rotate(-20,240,430)"/>
+    <ellipse cx="330" cy="420" rx="12" ry="9" transform="rotate(5,330,420)"/>
+    <ellipse cx="230" cy="380" rx="11" ry="8" transform="rotate(-15,230,380)"/>
+    <ellipse cx="320" cy="370" rx="10" ry="7" transform="rotate(10,320,370)"/>
+    <ellipse cx="250" cy="330" rx="12" ry="9" transform="rotate(-5,250,330)"/>
+    <ellipse cx="330" cy="325" rx="11" ry="8" transform="rotate(20,330,325)"/>
+  </g>
+
+  <!-- Right side cookies -->
+  <ellipse cx="1520" cy="460" rx="180" ry="62" fill="url(#s4Cookie)" filter="url(#s4Shadow)"/>
+  <ellipse cx="1500" cy="410" rx="170" ry="58" fill="url(#s4Cookie)" filter="url(#s4Shadow)"/>
+  <ellipse cx="1510" cy="360" rx="165" ry="55" fill="url(#s4Cookie)" filter="url(#s4Shadow)"/>
+
+  <!-- Chips right -->
+  <g fill="url(#chipGrad)" filter="url(#chipShadow)">
+    <ellipse cx="1460" cy="450" rx="13" ry="9" transform="rotate(-10,1460,450)"/>
+    <ellipse cx="1580" cy="440" rx="12" ry="8" transform="rotate(15,1580,440)"/>
+    <ellipse cx="1440" cy="400" rx="11" ry="8" transform="rotate(-20,1440,400)"/>
+    <ellipse cx="1560" cy="395" rx="13" ry="9" transform="rotate(5,1560,395)"/>
+    <ellipse cx="1450" cy="350" rx="12" ry="8" transform="rotate(-10,1450,350)"/>
+    <ellipse cx="1570" cy="345" rx="11" ry="8" transform="rotate(15,1570,345)"/>
+  </g>
+
+  <!-- Text -->
+  <text x="960" y="320" font-family="Georgia, serif" font-size="64" fill="#FFF8E0" text-anchor="middle" font-weight="bold" filter="url(#s4TextGlow)" letter-spacing="2">Taste The</text>
+  <text x="960" y="395" font-family="Georgia, serif" font-size="56" fill="url(#goldText)" text-anchor="middle" font-weight="bold" filter="url(#s4TextGlow)" letter-spacing="4">ZIXO DIFFERENCE</text>
+
+  <rect x="830" y="415" width="260" height="1.5" fill="url(#decoLine)"/>
+
+  <text x="960" y="455" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,235,210,0.4)" text-anchor="middle" letter-spacing="6">WHERE TRADITION MEETS INNOVATION</text>
+
+  <!-- Bottom fade -->
+  <rect x="0" y="700" width="1920" height="100" fill="url(#slide4Bg)" opacity="0.7"/>
+</svg>

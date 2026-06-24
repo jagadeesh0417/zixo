@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <radialGradient id="i1Bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3A2018"/>
+      <stop offset="100%" stop-color="#1A0E08"/>
+    </radialGradient>
+    <radialGradient id="i1Cookie" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="40%" stop-color="#D4A853"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <radialGradient id="chipGrad" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3D1C02"/>
+      <stop offset="60%" stop-color="#2A1200"/>
+      <stop offset="100%" stop-color="#1A0A00"/>
+    </radialGradient>
+    <filter id="i1Shadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="chipShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#i1Bg)"/>
+  <ellipse cx="300" cy="480" rx="240" ry="40" fill="rgba(255,255,255,0.02)"/>
+  <ellipse cx="300" cy="470" rx="220" ry="35" fill="rgba(0,0,0,0.4)"/>
+
+  <!-- Top-down cookie -->
+  <circle cx="300" cy="300" r="180" fill="url(#i1Cookie)" filter="url(#i1Shadow)"/>
+  <circle cx="280" cy="275" r="120" fill="rgba(255,235,190,0.06)"/>
+
+  <!-- Chips -->
+  <g fill="url(#chipGrad)" filter="url(#chipShadow)">
+    <ellipse cx="240" cy="260" rx="14" ry="10" transform="rotate(-15,240,260)"/>
+    <ellipse cx="350" cy="250" rx="13" ry="9" transform="rotate(10,350,250)"/>
+    <ellipse cx="300" cy="350" rx="15" ry="11" transform="rotate(-20,300,350)"/>
+    <ellipse cx="220" cy="330" rx="12" ry="8" transform="rotate(5,220,330)"/>
+    <ellipse cx="380" cy="320" rx="14" ry="10" transform="rotate(-10,380,320)"/>
+    <ellipse cx="270" cy="220" rx="11" ry="8" transform="rotate(20,270,220)"/>
+    <ellipse cx="360" cy="380" rx="12" ry="9" transform="rotate(-5,360,380)"/>
+    <ellipse cx="200" cy="280" rx="10" ry="7" transform="rotate(15,200,280)"/>
+    <ellipse cx="330" cy="300" rx="13" ry="9" transform="rotate(-25,330,300)"/>
+    <ellipse cx="400" cy="280" rx="11" ry="8" transform="rotate(8,400,280)"/>
+    <ellipse cx="260" cy="380" rx="10" ry="7" transform="rotate(-12,260,380)"/>
+    <ellipse cx="320" cy="420" rx="12" ry="8" transform="rotate(18,320,420)"/>
+  </g>
+
+  <!-- Highlights -->
+  <ellipse cx="260" cy="250" rx="60" ry="25" fill="rgba(255,235,190,0.06)" transform="rotate(-15,260,250)"/>
+
+  <!-- Subtle top-left rim light -->
+  <path d="M150,200 A180,180 0 0,1 450,200" fill="none" stroke="rgba(255,235,190,0.08)" stroke-width="3"/>
+</svg>

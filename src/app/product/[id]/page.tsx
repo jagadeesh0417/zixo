@@ -4,9 +4,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 import {
   FaStar, FaHeart, FaShoppingCart, FaMinus, FaPlus, FaShare,
-  FaArrowLeft, FaChevronDown, FaCookieBite, FaCheck, FaTruck,
+  FaArrowLeft, FaChevronDown, FaCheck, FaTruck,
   FaShieldAlt, FaExchangeAlt, FaLeaf,
 } from "react-icons/fa";
 import { useCartStore } from "@/store/cart";
@@ -28,7 +29,7 @@ const allProducts: ProductType[] = [
     description: "Our signature classic chocolate chip cookie baked to golden perfection. Made with premium Belgian chocolate chips and a secret family recipe that makes every bite irresistible. Each cookie is handcrafted with love, using the finest ingredients sourced from around the world. The result is a perfectly balanced cookie — crispy on the edges, chewy in the center, and loaded with rich, melted chocolate in every bite.\n\nWhether you enjoy it with a glass of cold milk or a hot cup of coffee, our Classic Chocolate Chip Cookie is the timeless treat that never goes out of style.",
     ingredients: "Wheat flour, Butter, Sugar, Belgian chocolate chips (35%), Brown sugar, Eggs, Vanilla extract, Baking soda, Sea salt",
     nutritionInfo: JSON.stringify({ servingSize: "1 cookie (60g)", calories: 280, totalFat: "14g", saturatedFat: "8g", carbohydrates: "36g", sugar: "20g", protein: "4g", fiber: "1g", sodium: "120mg" }),
-    price: 199, discountPrice: null, stockQuantity: 50, images: [], categoryId: "cat-1",
+    price: 199, discountPrice: null, stockQuantity: 50, images: ["/images/products/classic-chocolate-chip.svg", "/images/products/classic-chocolate-chip.svg", "/images/products/classic-chocolate-chip.svg", "/images/products/classic-chocolate-chip.svg"], categoryId: "cat-1",
     category: { id: "cat-1", name: "Chocolate", slug: "chocolate", image: null },
     isFeatured: true, isBestSeller: true, isActive: true, rating: 4.8, reviewCount: 124,
     seoTitle: "Classic Chocolate Chip Cookie | Zixo Cookies", seoDescription: "Our signature chocolate chip cookie with premium Belgian chocolate.",
@@ -39,7 +40,7 @@ const allProducts: ProductType[] = [
     description: "A crunchy, creamy explosion of Oreo goodness in every cookie. Loaded with crushed Oreo pieces and white chocolate chunks for the ultimate cookie experience. Each bite delivers that nostalgic Oreo flavor you love, elevated with premium ingredients and our signature baking technique.\n\nPerfect for Oreo lovers looking for a new way to enjoy their favorite cookie.",
     ingredients: "Wheat flour, Butter, Sugar, Oreo pieces (30%), White chocolate chunks, Eggs, Vanilla extract, Baking powder",
     nutritionInfo: JSON.stringify({ servingSize: "1 cookie (65g)", calories: 310, totalFat: "16g", saturatedFat: "9g", carbohydrates: "40g", sugar: "24g", protein: "5g", fiber: "1g", sodium: "150mg" }),
-    price: 249, discountPrice: 199, stockQuantity: 35, images: [], categoryId: "cat-2",
+    price: 249, discountPrice: 199, stockQuantity: 35, images: ["/images/products/oreo-delight.svg", "/images/products/oreo-delight.svg", "/images/products/oreo-delight.svg", "/images/products/oreo-delight.svg"], categoryId: "cat-2",
     category: { id: "cat-2", name: "Oreo", slug: "oreo", image: null },
     isFeatured: true, isBestSeller: true, isActive: true, rating: 4.9, reviewCount: 98,
     seoTitle: "Oreo Delight Cookie | Zixo Cookies", seoDescription: "Loaded with Oreo pieces and white chocolate chunks.",
@@ -50,7 +51,7 @@ const allProducts: ProductType[] = [
     description: "A stunning red velvet cookie with a soft, chewy texture and a hint of cocoa. Topped with creamy white chocolate chips that melt in your mouth. Our red velvet cookie is a feast for both the eyes and the palate, with its vibrant color and rich, buttery flavor.\n\nMade with real buttermilk and a touch of cocoa, this cookie captures the essence of the classic red velvet cake in a convenient, portable form.",
     ingredients: "Wheat flour, Butter, Sugar, Cocoa powder, Buttermilk, Eggs, Red food coloring, White chocolate chips, Vanilla extract, Baking soda, Vinegar",
     nutritionInfo: JSON.stringify({ servingSize: "1 cookie (60g)", calories: 270, totalFat: "13g", saturatedFat: "7g", carbohydrates: "35g", sugar: "19g", protein: "3g", fiber: "1g", sodium: "110mg" }),
-    price: 229, discountPrice: null, stockQuantity: 40, images: [], categoryId: "cat-3",
+    price: 229, discountPrice: null, stockQuantity: 40, images: ["/images/products/red-velvet.svg", "/images/products/red-velvet.svg", "/images/products/red-velvet.svg", "/images/products/red-velvet.svg"], categoryId: "cat-3",
     category: { id: "cat-3", name: "Red Velvet", slug: "red-velvet", image: null },
     isFeatured: true, isBestSeller: true, isActive: true, rating: 4.7, reviewCount: 87,
     seoTitle: "Red Velvet Cookie | Zixo Cookies", seoDescription: "Soft red velvet cookie with white chocolate chips.",
@@ -61,7 +62,7 @@ const allProducts: ProductType[] = [
     description: "A melt-in-your-mouth buttery cookie that's simple yet absolutely divine. Made with European butter and a touch of vanilla for that perfect golden crisp. Sometimes the simplest things are the most extraordinary — our Golden Butter Cookie is proof of that.\n\nWith its delicate crumb and rich, buttery flavor, this cookie pairs beautifully with tea or coffee and makes for an elegant treat any time of day.",
     ingredients: "European butter (40%), Wheat flour, Sugar, Eggs, Vanilla bean, Salt",
     nutritionInfo: JSON.stringify({ servingSize: "1 cookie (50g)", calories: 240, totalFat: "14g", saturatedFat: "9g", carbohydrates: "28g", sugar: "14g", protein: "3g", fiber: "0g", sodium: "90mg" }),
-    price: 179, discountPrice: null, stockQuantity: 60, images: [], categoryId: "cat-4",
+    price: 179, discountPrice: null, stockQuantity: 60, images: ["/images/products/golden-butter.svg", "/images/products/golden-butter.svg", "/images/products/golden-butter.svg", "/images/products/golden-butter.svg"], categoryId: "cat-4",
     category: { id: "cat-4", name: "Butter", slug: "butter", image: null },
     isFeatured: false, isBestSeller: true, isActive: true, rating: 4.6, reviewCount: 65,
     seoTitle: "Golden Butter Cookie | Zixo Cookies", seoDescription: "Melt-in-your-mouth buttery cookie with European butter.",
@@ -72,7 +73,7 @@ const allProducts: ProductType[] = [
     description: "For the ultimate chocolate lover — a rich, fudgy double chocolate cookie loaded with dark and milk chocolate chunks. Perfectly gooey on the inside with a slight crackle on top. This is our most indulgent chocolate creation, made with two types of premium chocolate for a deep, complex flavor.\n\nThe dark chocolate provides a rich intensity while the milk chocolate adds creamy sweetness, creating a perfectly balanced cookie that chocolate lovers dream about.",
     ingredients: "Wheat flour, Butter, Dark chocolate (40%), Sugar, Eggs, Cocoa powder, Milk chocolate chunks, Vanilla extract, Baking soda, Salt",
     nutritionInfo: JSON.stringify({ servingSize: "1 cookie (65g)", calories: 330, totalFat: "18g", saturatedFat: "11g", carbohydrates: "38g", sugar: "22g", protein: "5g", fiber: "2g", sodium: "130mg" }),
-    price: 259, discountPrice: null, stockQuantity: 30, images: [], categoryId: "cat-1",
+    price: 259, discountPrice: null, stockQuantity: 30, images: ["/images/products/double-chocolate.svg", "/images/products/double-chocolate.svg", "/images/products/double-chocolate.svg", "/images/products/double-chocolate.svg"], categoryId: "cat-1",
     category: { id: "cat-1", name: "Chocolate", slug: "chocolate", image: null },
     isFeatured: true, isBestSeller: true, isActive: true, rating: 4.9, reviewCount: 112,
     seoTitle: "Double Chocolate Fudge Cookie | Zixo Cookies", seoDescription: "Rich fudgy double chocolate cookie with chocolate chunks.",
@@ -83,7 +84,7 @@ const allProducts: ProductType[] = [
     description: "Our best-selling assortment featuring 6 handpicked cookie flavors. The perfect gift for any occasion, beautifully packed in a premium gift box. Each box contains a curated selection of our most popular flavors, carefully arranged to provide a delightful variety of tastes and textures.\n\nPerfect for parties, corporate gifting, or simply treating yourself to a taste of everything we have to offer.",
     ingredients: "Assorted cookies: Chocolate Chip, Oreo Delight, Red Velvet, Golden Butter, Double Chocolate, Salted Caramel",
     nutritionInfo: JSON.stringify({ servingSize: "1 box (360g)", calories: 1680, totalFat: "84g", saturatedFat: "52g", carbohydrates: "210g", sugar: "120g", protein: "24g", fiber: "6g", sodium: "720mg" }),
-    price: 599, discountPrice: 549, stockQuantity: 25, images: [], categoryId: "cat-5",
+    price: 599, discountPrice: 549, stockQuantity: 25, images: ["/images/products/mixed-box.svg", "/images/products/mixed-box.svg", "/images/products/mixed-box.svg", "/images/products/mixed-box.svg"], categoryId: "cat-5",
     category: { id: "cat-5", name: "Mixed Boxes", slug: "mixed-boxes", image: null },
     isFeatured: true, isBestSeller: true, isActive: true, rating: 4.8, reviewCount: 203,
     seoTitle: "Signature Mixed Box | Zixo Cookies", seoDescription: "Assorted 6-cookie gift box with our best-selling flavors.",
@@ -142,13 +143,6 @@ function AccordionSection({
   );
 }
 
-const gradients = [
-  "from-amber-200 to-orange-300",
-  "from-purple-200 to-pink-300",
-  "from-red-200 to-rose-300",
-  "from-yellow-200 to-amber-300",
-];
-
 export default function ProductDetailPage() {
   const params = useParams();
   const id = params.id as string;
@@ -175,8 +169,6 @@ export default function ProductDetailPage() {
   const thumbnails = product.images.length > 0
     ? product.images
     : ["", "", "", ""];
-
-  const gradientIdx = parseInt(product.id.replace(/\D/g, ""), 10) % gradients.length || 0;
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -248,18 +240,30 @@ export default function ProductDetailPage() {
             >
               {product.images && product.images[selectedImage] ? (
                 <div
-                  className="w-full h-full bg-cover bg-center transition-transform duration-200"
+                  className="relative w-full h-full transition-transform duration-200"
                   style={{
-                    backgroundImage: `url(${product.images[selectedImage]})`,
                     transform: isZoomed ? "scale(1.5)" : "scale(1)",
                     transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
                   }}
-                />
-              ) : (
-                <div
-                  className={`w-full h-full bg-gradient-to-br ${gradients[gradientIdx]} flex items-center justify-center`}
                 >
-                  <FaCookieBite size={120} className="text-white/50" />
+                  <Image
+                    src={product.images[selectedImage]}
+                    alt={product.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                </div>
+              ) : (
+                <div className="w-full h-full bg-amber-900/30 flex items-center justify-center">
+                  <Image
+                    src="/images/products/classic-chocolate-chip.svg"
+                    alt={product.name}
+                    fill
+                    className="object-cover opacity-50"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
                 </div>
               )}
               {discountPct > 0 && (
@@ -281,10 +285,12 @@ export default function ProductDetailPage() {
                   }`}
                 >
                   {img ? (
-                    <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${img})` }} />
+                    <div className="relative w-full h-full">
+                      <Image src={img} alt={`${product.name} ${idx + 1}`} fill className="object-cover" sizes="80px" />
+                    </div>
                   ) : (
-                    <div className={`w-full h-full bg-gradient-to-br ${gradients[idx % gradients.length]} flex items-center justify-center`}>
-                      <FaCookieBite size={24} className="text-white/50" />
+                    <div className="w-full h-full bg-amber-900/30 flex items-center justify-center">
+                      <Image src="/images/products/classic-chocolate-chip.svg" alt={product.name} fill className="object-cover opacity-50" sizes="80px" />
                     </div>
                   )}
                 </button>
@@ -299,7 +305,7 @@ export default function ProductDetailPage() {
             className="flex flex-col"
           >
             <div className="inline-flex items-center gap-2 bg-gold/10 text-gold text-xs font-medium px-3 py-1 rounded-full border border-gold/20 w-fit mb-3">
-              <FaCookieBite size={12} />
+              <span className="w-1.5 h-1.5 rounded-full bg-gold inline-block" />
               {product.category.name}
             </div>
 
@@ -504,7 +510,7 @@ export default function ProductDetailPage() {
             <h2 className="font-playfair text-2xl md:text-3xl font-bold text-cream mb-8 text-center">
               You May Also Like
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {relatedProducts.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

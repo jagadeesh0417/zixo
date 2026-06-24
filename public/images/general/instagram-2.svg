@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <radialGradient id="i2Bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2C1A14"/>
+      <stop offset="100%" stop-color="#140A06"/>
+    </radialGradient>
+    <radialGradient id="i2Cookie1" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#4A2A18"/>
+      <stop offset="40%" stop-color="#2A1208"/>
+      <stop offset="100%" stop-color="#120804"/>
+    </radialGradient>
+    <radialGradient id="i2Cookie2" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#B8453A"/>
+      <stop offset="40%" stop-color="#8B2C22"/>
+      <stop offset="100%" stop-color="#521610"/>
+    </radialGradient>
+    <radialGradient id="i2Cream" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="50%" stop-color="#F8F4EC"/>
+      <stop offset="100%" stop-color="#E8E0D0"/>
+    </radialGradient>
+    <filter id="i2Shadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#i2Bg)"/>
+  <ellipse cx="300" cy="480" rx="240" ry="35" fill="rgba(0,0,0,0.4)"/>
+
+  <!-- Two cookies side by side -->
+  <ellipse cx="220" cy="340" rx="130" ry="48" fill="url(#i2Cookie1)" filter="url(#i2Shadow)"/>
+  <ellipse cx="390" cy="340" rx="130" ry="48" fill="url(#i2Cookie2)" filter="url(#i2Shadow)"/>
+
+  <!-- Cream on double chocolate -->
+  <ellipse cx="220" cy="340" rx="45" ry="18" fill="url(#i2Cream)" filter="url(#i2Shadow)"/>
+
+  <!-- Highlights -->
+  <ellipse cx="190" cy="315" rx="40" ry="15" fill="rgba(200,160,130,0.06)" transform="rotate(-10,190,315)"/>
+  <ellipse cx="360" cy="315" rx="40" ry="15" fill="rgba(220,150,140,0.06)" transform="rotate(-10,360,315)"/>
+</svg>

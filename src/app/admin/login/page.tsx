@@ -38,7 +38,22 @@ export default function AdminLoginPage() {
 
     setLoading(true);
 
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        localStorage.setItem("admin_token", "demo-token-zixo-admin");
+        toast.success("Welcome back, Admin!");
+        router.push("/admin");
+      } else {
+        toast.error(data.error || "Invalid email or password");
+      }
+    } catch {
       if (email === "admin@zixocookies.com" && password === "Admin@123") {
         localStorage.setItem("admin_token", "demo-token-zixo-admin");
         toast.success("Welcome back, Admin!");
@@ -46,8 +61,8 @@ export default function AdminLoginPage() {
       } else {
         toast.error("Invalid email or password");
       }
-      setLoading(false);
-    }, 1200);
+    }
+    setLoading(false);
   };
 
   return (
@@ -76,9 +91,12 @@ export default function AdminLoginPage() {
             </p>
           </motion.div>
 
-          <h2 className="text-[#F8F4EE] text-xl font-semibold mb-6 text-center">
+          <h2 className="text-[#F8F4EE] text-xl font-semibold mb-2 text-center">
             Admin Login
           </h2>
+          <p className="text-[#D4AF37]/60 text-xs text-center mb-6">
+            Demo: <span className="text-[#D4AF37]">admin@zixocookies.com</span> / <span className="text-[#D4AF37]">Admin@123</span>
+          </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>

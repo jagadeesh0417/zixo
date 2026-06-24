@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { FaCookieBite, FaArrowRight } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 
 const collections = [
   {
@@ -11,8 +12,7 @@ const collections = [
     subtitle: "For the true chocoholic",
     description:
       "Dive into our richest, most indulgent chocolate cookies. Made with Belgian dark chocolate, cocoa nibs, and chocolate chunks for an intense experience that every chocolate lover dreams of.",
-    gradient: "from-amber-800 to-brown-900",
-    image: "🍫",
+    image: "/images/collections/chocolate-lovers.svg",
     align: "left",
   },
   {
@@ -20,18 +20,24 @@ const collections = [
     subtitle: "Crunchy, creamy, irresistible",
     description:
       "Our signature take on the classic favorite. Crushed Oreo pieces folded into our buttery cookie dough, topped with a creamy white chocolate drizzle. A crunchy, creamy delight in every bite.",
-    gradient: "from-blue-900 to-purple-900",
-    image: "🍪",
+    image: "/images/collections/oreo-special.svg",
     align: "right",
   },
   {
-    title: "Red Velvet Collection",
-    subtitle: "Elegance in every bite",
+    title: "Premium Gift Box",
+    subtitle: "The ultimate cookie gifting experience",
     description:
-      "Beautiful crimson cookies with a hint of cocoa, studded with white chocolate chips. Topped with a cream cheese drizzle, these cookies are as stunning as they are delicious.",
-    gradient: "from-red-800 to-rose-900",
-    image: "❤️",
+      "Our beautifully curated gift boxes featuring a handpicked selection of our finest cookies. Perfect for birthdays, holidays, or any occasion that deserves something special.",
+    image: "/images/collections/gift-box.svg",
     align: "left",
+  },
+  {
+    title: "Freshly Baked",
+    subtitle: "Warm, soft, straight from the oven",
+    description:
+      "Experience cookies at their absolute best. Each batch is baked fresh daily, delivering that perfect balance of crispy edges and soft, gooey centers that melt in your mouth.",
+    image: "/images/collections/fresh-baked.svg",
+    align: "right",
   },
 ];
 
@@ -58,7 +64,6 @@ export default function SignatureCollections() {
         <div ref={ref} className="space-y-16 md:space-y-24">
           {collections.map((collection, idx) => {
             const isLeft = collection.align === "left";
-            const isOdd = idx % 2 === 1;
 
             return (
               <motion.div
@@ -71,16 +76,13 @@ export default function SignatureCollections() {
                 } gap-8 md:gap-12 items-center`}
               >
                 <div className="w-full md:w-1/2">
-                  <div
-                    className={`w-full h-72 md:h-96 rounded-2xl bg-gradient-to-br ${collection.gradient} flex items-center justify-center shadow-xl overflow-hidden relative`}
-                  >
-                    <span className="text-8xl md:text-9xl opacity-40 select-none">
-                      {collection.image}
-                    </span>
-                    <div className="absolute inset-0 bg-black/10" />
-                    <div className="absolute top-4 right-4 w-16 h-16 border border-gold/40 rounded-full flex items-center justify-center">
-                      <FaCookieBite className="text-gold/60" size={28} />
-                    </div>
+                  <div className="relative h-96 overflow-hidden">
+                    <Image
+                      src={collection.image}
+                      alt={collection.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
                   </div>
                 </div>
 

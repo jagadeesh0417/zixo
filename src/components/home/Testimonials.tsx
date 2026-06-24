@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaStar, FaQuoteLeft, FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -8,6 +9,7 @@ const testimonials = [
   {
     name: "Priya Sharma",
     initials: "PS",
+    avatar: "/images/general/testimonial-1.svg",
     text: "Absolutely the best cookies I have ever had! The Chocolate Chip cookies are divine. They arrived fresh and the packaging was beautiful. My whole family loved them!",
     rating: 5,
     gradient: "from-pink-400 to-rose-500",
@@ -15,6 +17,7 @@ const testimonials = [
   {
     name: "Rahul Verma",
     initials: "RV",
+    avatar: "/images/general/testimonial-2.svg",
     text: "Ordered the Signature Mixed Box for a party and it was a huge hit. Every cookie was unique and delicious. Fast delivery and great presentation. Will order again!",
     rating: 5,
     gradient: "from-blue-400 to-indigo-500",
@@ -22,6 +25,7 @@ const testimonials = [
   {
     name: "Ananya Gupta",
     initials: "AG",
+    avatar: "/images/general/testimonial-3.svg",
     text: "The Red Velvet cookies are to die for! So soft, chewy, and the cream cheese drizzle is perfect. Zixo Cookies has become my go-to for gifting.",
     rating: 5,
     gradient: "from-purple-400 to-pink-500",
@@ -29,6 +33,7 @@ const testimonials = [
   {
     name: "Arjun Patel",
     initials: "AP",
+    avatar: "/images/general/testimonial-4.svg",
     text: "Finally a bakery that understands quality. The Double Chocolate Fudge is rich and indulgent. You can taste the premium ingredients in every bite. Highly recommended!",
     rating: 5,
     gradient: "from-amber-400 to-orange-500",
@@ -36,6 +41,7 @@ const testimonials = [
   {
     name: "Neha Singh",
     initials: "NS",
+    avatar: "/images/general/testimonial-1.svg",
     text: "As a cookie lover, I can confidently say Zixo makes the best cookies in town. The Oreo Delight is my personal favorite. Fresh, delicious, and worth every penny!",
     rating: 5,
     gradient: "from-emerald-400 to-teal-500",
@@ -114,12 +120,8 @@ export default function Testimonials() {
                     size={36}
                   />
 
-                  <div
-                    className={`w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br ${t.gradient} flex items-center justify-center`}
-                  >
-                    <span className="text-white text-xl font-bold">
-                      {t.initials}
-                    </span>
+                  <div className="relative w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden ring-2 ring-[#D4AF37]/30">
+                    <Image src={t.avatar} alt={t.name} fill className="object-cover" />
                   </div>
 
                   <div className="flex justify-center gap-1 mb-4">

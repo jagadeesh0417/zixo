@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 800" width="1920" height="800">
+  <defs>
+    <radialGradient id="heroBg" cx="50%" cy="40%" r="60%" fx="45%" fy="35%">
+      <stop offset="0%" stop-color="#3A2018"/>
+      <stop offset="40%" stop-color="#281410"/>
+      <stop offset="70%" stop-color="#1A0E0A"/>
+      <stop offset="100%" stop-color="#0E0805"/>
+    </radialGradient>
+    <radialGradient id="warmGlow" cx="35%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="rgba(220,160,80,0.15)"/>
+      <stop offset="50%" stop-color="rgba(200,140,60,0.05)"/>
+      <stop offset="100%" stop-color="rgba(180,120,40,0)"/>
+    </radialGradient>
+    <radialGradient id="cookieBase" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="30%" stop-color="#D4A853"/>
+      <stop offset="60%" stop-color="#C4913A"/>
+      <stop offset="85%" stop-color="#A0702A"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <radialGradient id="cookieDark" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#4A2A18"/>
+      <stop offset="40%" stop-color="#2A1208"/>
+      <stop offset="100%" stop-color="#120804"/>
+    </radialGradient>
+    <radialGradient id="cookieRed" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#B8453A"/>
+      <stop offset="40%" stop-color="#8B2C22"/>
+      <stop offset="100%" stop-color="#521610"/>
+    </radialGradient>
+    <radialGradient id="cookieGolden" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#F5D98E"/>
+      <stop offset="40%" stop-color="#D9B34A"/>
+      <stop offset="100%" stop-color="#A88028"/>
+    </radialGradient>
+    <radialGradient id="chipGrad" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3D1C02"/>
+      <stop offset="60%" stop-color="#2A1200"/>
+      <stop offset="100%" stop-color="#1A0A00"/>
+    </radialGradient>
+    <linearGradient id="textGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="50%" stop-color="#FFC107"/>
+      <stop offset="100%" stop-color="#DAA520"/>
+    </linearGradient>
+    <filter id="heroShadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="cookieDropShadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="textGlowFilter">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="chipShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <linearGradient id="goldLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="20%" stop-color="rgba(218,165,32,0.3)"/>
+      <stop offset="50%" stop-color="rgba(255,215,0,0.5)"/>
+      <stop offset="80%" stop-color="rgba(218,165,32,0.3)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1920" height="800" fill="url(#heroBg)"/>
+  <rect width="1920" height="800" fill="url(#warmGlow)"/>
+
+  <!-- Subtle texture overlay -->
+  <g opacity="0.03">
+    <rect x="0" y="0" width="1920" height="800" fill="#8B7355" style="mix-blend-mode: overlay"/>
+  </g>
+
+  <!-- Decorative gold line top -->
+  <rect x="0" y="0" width="1920" height="2" fill="url(#goldLine)"/>
+
+  <!-- Warm spotlight from top-left -->
+  <ellipse cx="400" cy="300" rx="800" ry="500" fill="rgba(255,200,100,0.04)"/>
+
+  <!-- Left side: Cookie stack -->
+  <!-- Cookie 1 (bottom) -->
+  <ellipse cx="340" cy="520" rx="140" ry="50" fill="url(#cookieBase)" filter="url(#cookieDropShadow)"/>
+  <!-- Cookie 2 -->
+  <ellipse cx="360" cy="470" rx="135" ry="48" fill="url(#cookieDark)" filter="url(#cookieDropShadow)"/>
+  <!-- Cookie 3 -->
+  <ellipse cx="350" cy="420" rx="130" ry="46" fill="url(#cookieRed)" filter="url(#cookieDropShadow)"/>
+  <!-- Cookie 4 -->
+  <ellipse cx="370" cy="370" rx="130" ry="46" fill="url(#cookieGolden)" filter="url(#cookieDropShadow)"/>
+  <!-- Cookie 5 (top) -->
+  <ellipse cx="360" cy="320" rx="125" ry="44" fill="url(#cookieBase)" filter="url(#cookieDropShadow)"/>
+
+  <!-- Chocolate chips on visible cookies -->
+  <g fill="url(#chipGrad)" filter="url(#chipShadow)">
+    <ellipse cx="300" cy="510" rx="10" ry="8" transform="rotate(-15,300,510)"/>
+    <ellipse cx="400" cy="500" rx="12" ry="9" transform="rotate(10,400,500)"/>
+    <ellipse cx="340" cy="520" rx="8" ry="6" transform="rotate(-5,340,520)"/>
+    <ellipse cx="320" cy="460" rx="10" ry="7" transform="rotate(20,320,460)"/>
+    <ellipse cx="400" cy="450" rx="11" ry="8" transform="rotate(-10,400,450)"/>
+    <ellipse cx="340" cy="410" rx="9" ry="7" transform="rotate(15,340,410)"/>
+    <ellipse cx="390" cy="400" rx="10" ry="8" transform="rotate(-20,390,400)"/>
+    <ellipse cx="330" cy="360" rx="8" ry="6" transform="rotate(5,330,360)"/>
+    <ellipse cx="410" cy="350" rx="11" ry="8" transform="rotate(-15,410,350)"/>
+    <ellipse cx="350" cy="310" rx="9" ry="7" transform="rotate(10,350,310)"/>
+    <ellipse cx="390" cy="305" rx="10" ry="7" transform="rotate(-8,390,305)"/>
+  </g>
+
+  <!-- Right side: Single featured cookie -->
+  <ellipse cx="1200" cy="420" rx="200" ry="75" fill="url(#cookieBase)" filter="url(#heroShadow)"/>
+  <!-- Highlight on featured cookie -->
+  <ellipse cx="1150" cy="390" rx="100" ry="35" fill="rgba(255,235,190,0.08)" transform="rotate(-10,1150,390)"/>
+
+  <!-- Chocolate chips on featured cookie -->
+  <g fill="url(#chipGrad)" filter="url(#chipShadow)">
+    <ellipse cx="1140" cy="400" rx="14" ry="10" transform="rotate(-10,1140,400)"/>
+    <ellipse cx="1250" cy="390" rx="12" ry="9" transform="rotate(15,1250,390)"/>
+    <ellipse cx="1190" cy="440" rx="13" ry="9" transform="rotate(-20,1190,440)"/>
+    <ellipse cx="1100" cy="430" rx="11" ry="8" transform="rotate(5,1100,430)"/>
+    <ellipse cx="1280" cy="430" rx="10" ry="7" transform="rotate(-15,1280,430)"/>
+    <ellipse cx="1170" cy="370" rx="11" ry="8" transform="rotate(10,1170,370)"/>
+    <ellipse cx="1220" cy="450" rx="10" ry="7" transform="rotate(-5,1220,450)"/>
+  </g>
+
+  <!-- Steam/crumb particles -->
+  <g fill="rgba(255,235,190,0.06)">
+    <circle cx="360" cy="280" r="3"/>
+    <circle cx="380" cy="270" r="2"/>
+    <circle cx="340" cy="290" r="2.5"/>
+    <circle cx="1200" cy="380" r="3"/>
+    <circle cx="1180" cy="370" r="2"/>
+  </g>
+
+  <!-- Center text area -->
+  <text x="800" y="320" font-family="Georgia, serif" font-size="72" fill="url(#textGlow)" text-anchor="middle" font-weight="bold" filter="url(#textGlowFilter)" letter-spacing="3">ZIXO COOKIES</text>
+  <text x="800" y="380" font-family="Georgia, serif" font-size="28" fill="rgba(218,165,32,0.8)" text-anchor="middle" letter-spacing="6">PREMIUM BAKERY</text>
+
+  <!-- Decorative line under title -->
+  <rect x="680" y="400" width="240" height="1" fill="url(#goldLine)"/>
+
+  <text x="800" y="450" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,235,210,0.5)" text-anchor="middle" letter-spacing="4">ARTISANALLY CRAFTED • FINEST INGREDIENTS</text>
+
+  <!-- Bottom vignette -->
+  <rect x="0" y="700" width="1920" height="100" fill="url(#heroBg)" opacity="0.8"/>
+
+  <!-- Decorative gold line bottom -->
+  <rect x="0" y="798" width="1920" height="2" fill="url(#goldLine)"/>
+</svg>

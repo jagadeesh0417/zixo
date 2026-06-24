@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 800" width="1920" height="800">
+  <defs>
+    <radialGradient id="slide3Bg" cx="50%" cy="45%" r="55%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#2C1A12"/>
+      <stop offset="40%" stop-color="#1E1008"/>
+      <stop offset="75%" stop-color="#120A06"/>
+      <stop offset="100%" stop-color="#080402"/>
+    </radialGradient>
+    <radialGradient id="slide3Glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(220,180,120,0.08)"/>
+      <stop offset="60%" stop-color="rgba(200,160,100,0.03)"/>
+      <stop offset="100%" stop-color="rgba(180,140,80,0)"/>
+    </radialGradient>
+    <linearGradient id="giftBox" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5C3A22"/>
+      <stop offset="50%" stop-color="#3A1E10"/>
+      <stop offset="100%" stop-color="#241208"/>
+    </linearGradient>
+    <linearGradient id="giftRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DAA520"/>
+      <stop offset="30%" stop-color="#FFD700"/>
+      <stop offset="70%" stop-color="#DAA520"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <radialGradient id="giftCookie" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="40%" stop-color="#D4A853"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <filter id="s3Shadow">
+      <feDropShadow dx="0" dy="10" stdDeviation="20" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="s3ShadowLight">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="s3TextGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <linearGradient id="goldLine3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="rgba(218,165,32,0.35)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="800" fill="url(#slide3Bg)"/>
+  <rect width="1920" height="800" fill="url(#slide3Glow)"/>
+
+  <!-- Gift box left -->
+  <rect x="150" y="350" width="250" height="220" rx="6" fill="url(#giftBox)" filter="url(#s3Shadow)"/>
+  <!-- Ribbon -->
+  <rect x="150" y="390" width="250" height="6" fill="url(#giftRibbon)"/>
+  <rect x="150" y="510" width="250" height="6" fill="url(#giftRibbon)"/>
+  <rect x="270" y="350" width="10" height="220" fill="url(#giftRibbon)"/>
+  <!-- Bow -->
+  <path d="M275,350 C260,330 240,340 250,360 C260,380 275,370 275,350Z" fill="url(#giftRibbon)"/>
+  <path d="M275,350 C290,330 310,340 300,360 C290,380 275,370 275,350Z" fill="url(#giftRibbon)"/>
+  <ellipse cx="275" cy="350" rx="5" ry="7" fill="#B8860B"/>
+
+  <!-- Gift box right -->
+  <rect x="450" y="370" width="220" height="200" rx="6" fill="#4A2C1A" filter="url(#s3Shadow)"/>
+  <rect x="450" y="400" width="220" height="5" fill="url(#giftRibbon)"/>
+  <rect x="450" y="510" width="220" height="5" fill="url(#giftRibbon)"/>
+  <rect x="555" y="370" width="10" height="200" fill="url(#giftRibbon)"/>
+  <path d="M560,370 C548,355 533,362 540,378 C547,394 560,386 560,370Z" fill="url(#giftRibbon)"/>
+  <path d="M560,370 C572,355 587,362 580,378 C573,394 560,386 560,370Z" fill="url(#giftRibbon)"/>
+  <ellipse cx="560" cy="370" rx="4" ry="6" fill="#B8860B"/>
+
+  <!-- Cookies inside boxes (peeking out) -->
+  <ellipse cx="250" cy="355" rx="45" ry="16" fill="url(#giftCookie)" filter="url(#s3ShadowLight)"/>
+  <ellipse cx="320" cy="358" rx="42" ry="15" fill="url(#giftCookie)" filter="url(#s3ShadowLight)"/>
+  <ellipse cx="530" cy="375" rx="40" ry="14" fill="url(#giftCookie)" filter="url(#s3ShadowLight)"/>
+
+  <!-- Right side scattered cookies -->
+  <ellipse cx="1480" cy="480" rx="150" ry="55" fill="url(#giftCookie)" filter="url(#s3Shadow)"/>
+  <ellipse cx="1500" cy="430" rx="145" ry="52" fill="url(#giftCookie)" filter="url(#s3Shadow)"/>
+  <ellipse cx="1300" cy="500" rx="140" ry="50" fill="url(#giftCookie)" filter="url(#s3Shadow)"/>
+
+  <!-- Text -->
+  <text x="960" y="310" font-family="Georgia, serif" font-size="58" fill="#FFF8E0" text-anchor="middle" font-weight="bold" filter="url(#s3TextGlow)" letter-spacing="3">Perfect</text>
+  <text x="960" y="385" font-family="Georgia, serif" font-size="54" fill="url(#giftRibbon)" text-anchor="middle" font-weight="bold" filter="url(#s3TextGlow)" letter-spacing="5">GIFTS</text>
+
+  <rect x="840" y="405" width="240" height="1.5" fill="url(#goldLine3)"/>
+
+  <text x="960" y="450" font-family="Arial, sans-serif" font-size="15" fill="rgba(255,235,210,0.4)" text-anchor="middle" letter-spacing="5">PREMIUM GIFT BOXES FOR EVERY OCCASION</text>
+
+  <rect x="0" y="700" width="1920" height="100" fill="url(#slide3Bg)" opacity="0.7"/>
+</svg>

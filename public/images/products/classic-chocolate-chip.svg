@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="cookieBase" cx="50%" cy="45%" r="50%" fx="45%" fy="40%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="30%" stop-color="#D4A853"/>
+      <stop offset="60%" stop-color="#C4913A"/>
+      <stop offset="85%" stop-color="#A0702A"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <radialGradient id="cookieHighlight" cx="40%" cy="35%" r="40%">
+      <stop offset="0%" stop-color="rgba(255,235,190,0.6)"/>
+      <stop offset="50%" stop-color="rgba(255,235,190,0.15)"/>
+      <stop offset="100%" stop-color="rgba(255,235,190,0)"/>
+    </radialGradient>
+    <radialGradient id="cookieShadow" cx="50%" cy="55%" r="50%">
+      <stop offset="70%" stop-color="rgba(0,0,0,0)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0.35)"/>
+    </radialGradient>
+    <radialGradient id="chipGrad1" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3D1C02"/>
+      <stop offset="60%" stop-color="#2A1200"/>
+      <stop offset="100%" stop-color="#1A0A00"/>
+    </radialGradient>
+    <radialGradient id="chipGrad2" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#4A2210"/>
+      <stop offset="60%" stop-color="#341808"/>
+      <stop offset="100%" stop-color="#1E0D03"/>
+    </radialGradient>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2C1810"/>
+      <stop offset="100%" stop-color="#1A0E08"/>
+    </radialGradient>
+    <filter id="shadowFilter">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="innerGlow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+      <feOffset dx="0" dy="0"/>
+      <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1"/>
+      <feFlood flood-color="#FFD700" flood-opacity="0.15"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite operator="over" in2="SourceGraphic"/>
+    </filter>
+    <filter id="chipShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <clipPath id="cookieClip">
+      <ellipse cx="400" cy="410" rx="260" ry="245"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#bgGrad)"/>
+
+  <!-- Subtle surface texture -->
+  <rect width="800" height="800" fill="url(#bgGrad)" opacity="0.3"/>
+
+  <!-- Plate / surface -->
+  <ellipse cx="400" cy="580" rx="340" ry="60" fill="rgba(255,255,255,0.04)"/>
+
+  <!-- Shadow under cookie -->
+  <ellipse cx="400" cy="570" rx="270" ry="45" fill="rgba(0,0,0,0.4)" filter="url(#shadowFilter)"/>
+
+  <!-- Cookie body - irregular shape -->
+  <path d="M200,420 C185,370 210,310 260,280 C290,260 330,245 380,248 C420,250 460,260 500,280 C550,305 580,340 590,390 C600,440 585,490 550,520 C520,545 480,555 440,558 C390,560 340,550 300,530 C250,505 215,475 200,420Z"
+        fill="url(#cookieBase)" filter="url(#shadowFilter)"/>
+
+  <!-- Cookie surface highlight -->
+  <path d="M200,420 C185,370 210,310 260,280 C290,260 330,245 380,248 C420,250 460,260 500,280 C550,305 580,340 590,390 C600,440 585,490 550,520 C520,545 480,555 440,558 C390,560 340,550 300,530 C250,505 215,475 200,420Z"
+        fill="url(#cookieHighlight)"/>
+
+  <!-- Texture cracks -->
+  <g stroke="#A0702A" stroke-width="1.5" fill="none" opacity="0.3" clip-path="url(#cookieClip)">
+    <path d="M300,350 L320,370 L310,395"/>
+    <path d="M450,300 L470,330 L460,360"/>
+    <path d="M350,450 L380,460 L400,445"/>
+    <path d="M500,400 L520,420 L510,440"/>
+    <path d="M280,430 L300,440"/>
+    <path d="M420,500 L450,490 L470,510"/>
+    <path d="M350,310 L370,320"/>
+    <path d="M530,370 L550,380"/>
+  </g>
+
+  <!-- Chocolate Chips -->
+  <!-- Chip 1 -->
+  <path d="M320,330 C325,320 338,322 335,335 C333,345 320,342 320,330Z" fill="url(#chipGrad1)" filter="url(#chipShadow)"/>
+  <!-- Chip 2 -->
+  <path d="M450,350 C458,338 472,342 468,358 C465,370 448,365 450,350Z" fill="url(#chipGrad2)" filter="url(#chipShadow)"/>
+  <!-- Chip 3 -->
+  <path d="M380,420 C388,408 402,412 398,428 C395,438 378,433 380,420Z" fill="url(#chipGrad1)" filter="url(#chipShadow)"/>
+  <!-- Chip 4 -->
+  <path d="M280,400 C286,390 298,393 295,405 C293,414 280,411 280,400Z" fill="url(#chipGrad2)" filter="url(#chipShadow)"/>
+  <!-- Chip 5 -->
+  <path d="M500,440 C508,428 522,432 518,448 C515,458 498,453 500,440Z" fill="url(#chipGrad1)" filter="url(#chipShadow)"/>
+  <!-- Chip 6 -->
+  <path d="M420,300 C426,290 438,293 435,305 C433,314 420,311 420,300Z" fill="url(#chipGrad2)" filter="url(#chipShadow)"/>
+  <!-- Chip 7 -->
+  <path d="M350,490 C356,480 368,483 365,495 C363,504 350,501 350,490Z" fill="url(#chipGrad1)" filter="url(#chipShadow)"/>
+  <!-- Chip 8 -->
+  <path d="M520,380 C527,370 540,374 537,388 C535,398 520,394 520,380Z" fill="url(#chipGrad2)" filter="url(#chipShadow)"/>
+  <!-- Chip 9 -->
+  <path d="M260,340 C266,330 278,333 275,345 C273,354 260,351 260,340Z" fill="url(#chipGrad1)" filter="url(#chipShadow)"/>
+  <!-- Chip 10 -->
+  <path d="M470,480 C477,470 490,474 487,488 C485,498 470,494 470,480Z" fill="url(#chipGrad2)" filter="url(#chipShadow)"/>
+  <!-- Chip 11 -->
+  <path d="M340,380 C346,370 358,373 355,385 C353,394 340,391 340,380Z" fill="url(#chipGrad1)" filter="url(#chipShadow)"/>
+  <!-- Chip 12 -->
+  <path d="M550,430 C556,420 568,423 565,435 C563,444 550,441 550,430Z" fill="url(#chipGrad2)" filter="url(#chipShadow)"/>
+  <!-- Chip 13 -->
+  <path d="M390,280 C396,270 408,273 405,285 C403,294 390,291 390,280Z" fill="url(#chipGrad1)" filter="url(#chipShadow)"/>
+  <!-- Chip 14 -->
+  <path d="M300,480 C306,470 318,473 315,485 C313,494 300,491 300,480Z" fill="url(#chipGrad2)" filter="url(#chipShadow)"/>
+  <!-- Chip 15 - large chunk -->
+  <path d="M440,430 C450,416 468,420 464,440 C460,455 438,448 440,430Z" fill="url(#chipGrad1)" filter="url(#chipShadow)"/>
+  <!-- Chip 16 -->
+  <path d="M360,450 C366,440 378,443 375,455 C373,464 360,461 360,450Z" fill="url(#chipGrad2)" filter="url(#chipShadow)"/>
+
+  <!-- Chip highlights -->
+  <g opacity="0.3">
+    <ellipse cx="326" cy="328" rx="4" ry="2" fill="#8B5E3C" transform="rotate(-20,326,328)"/>
+    <ellipse cx="456" cy="348" rx="4" ry="2" fill="#8B5E3C" transform="rotate(-20,456,348)"/>
+    <ellipse cx="386" cy="418" rx="4" ry="2" fill="#8B5E3C" transform="rotate(-20,386,418)"/>
+    <ellipse cx="446" cy="428" rx="5" ry="2.5" fill="#8B5E3C" transform="rotate(-20,446,428)"/>
+  </g>
+
+  <!-- Golden top edge highlight -->
+  <path d="M260,280 C290,260 330,245 380,248 C420,250 460,260 500,280"
+        fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="4" filter="url(#innerGlow)"/>
+
+  <!-- Specular highlight on top -->
+  <ellipse cx="360" cy="300" rx="60" ry="30" fill="rgba(255,235,190,0.08)" transform="rotate(-15,360,300)"/>
+  <ellipse cx="340" cy="290" rx="30" ry="12" fill="rgba(255,245,220,0.06)" transform="rotate(-20,340,290)"/>
+</svg>

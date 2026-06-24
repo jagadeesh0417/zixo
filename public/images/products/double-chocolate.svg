@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="dcBase" cx="48%" cy="42%" r="52%" fx="45%" fy="38%">
+      <stop offset="0%" stop-color="#4A2A18"/>
+      <stop offset="25%" stop-color="#3A1E10"/>
+      <stop offset="55%" stop-color="#2A1208"/>
+      <stop offset="80%" stop-color="#1E0C05"/>
+      <stop offset="100%" stop-color="#120804"/>
+    </radialGradient>
+    <radialGradient id="dcHighlight" cx="38%" cy="35%" r="45%">
+      <stop offset="0%" stop-color="rgba(140,90,60,0.25)"/>
+      <stop offset="40%" stop-color="rgba(100,65,40,0.1)"/>
+      <stop offset="100%" stop-color="rgba(60,35,20,0)"/>
+    </radialGradient>
+    <radialGradient id="dcGloss" cx="35%" cy="32%" r="30%">
+      <stop offset="0%" stop-color="rgba(200,160,130,0.15)"/>
+      <stop offset="100%" stop-color="rgba(200,160,130,0)"/>
+    </radialGradient>
+    <radialGradient id="chipDC1" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#1A0A04"/>
+      <stop offset="60%" stop-color="#0D0502"/>
+      <stop offset="100%" stop-color="#080200"/>
+    </radialGradient>
+    <radialGradient id="chipDC2" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#2A1508"/>
+      <stop offset="60%" stop-color="#1A0A04"/>
+      <stop offset="100%" stop-color="#0A0301"/>
+    </radialGradient>
+    <radialGradient id="bgDC" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1A0F0A"/>
+      <stop offset="100%" stop-color="#0E0805"/>
+    </radialGradient>
+    <radialGradient id="shinySpot" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="rgba(120,80,50,0.12)"/>
+      <stop offset="100%" stop-color="rgba(120,80,50,0)"/>
+    </radialGradient>
+    <filter id="shadowDC">
+      <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="chipShadowDC">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="glowFilter">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <clipPath id="dcClip">
+      <path d="M190,410 C175,355 200,295 260,265 C295,245 340,232 390,235 C435,238 475,248 515,270 C565,298 600,338 612,395 C625,455 608,505 570,538 C538,565 492,575 445,578 C390,580 335,568 290,545 C238,518 205,475 190,410Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#bgDC)"/>
+
+  <!-- Surface -->
+  <ellipse cx="400" cy="590" rx="350" ry="55" fill="rgba(255,255,255,0.03)"/>
+
+  <!-- Shadow under cookie -->
+  <ellipse cx="400" cy="585" rx="280" ry="48" fill="rgba(0,0,0,0.55)" filter="url(#shadowDC)"/>
+
+  <!-- Cookie body -->
+  <path d="M190,410 C175,355 200,295 260,265 C295,245 340,232 390,235 C435,238 475,248 515,270 C565,298 600,338 612,395 C625,455 608,505 570,538 C538,565 492,575 445,578 C390,580 335,568 290,545 C238,518 205,475 190,410Z"
+        fill="url(#dcBase)" filter="url(#shadowDC)"/>
+
+  <!-- Warm undertone -->
+  <path d="M190,410 C175,355 200,295 260,265 C295,245 340,232 390,235 C435,238 475,248 515,270 C565,298 600,338 612,395 C625,455 608,505 570,538 C538,565 492,575 445,578 C390,580 335,568 290,545 C238,518 205,475 190,410Z"
+        fill="url(#dcHighlight)"/>
+
+  <!-- Glossy surface -->
+  <path d="M190,410 C175,355 200,295 260,265 C295,245 340,232 390,235 C435,238 475,248 515,270 C565,298 600,338 612,395 C625,455 608,505 570,538 C538,565 492,575 445,578 C390,580 335,568 290,545 C238,518 205,475 190,410Z"
+        fill="url(#dcGloss)"/>
+
+  <!-- Shiny spot -->
+  <ellipse cx="370" cy="320" rx="80" ry="40" fill="url(#shinySpot)" transform="rotate(-10,370,320)"/>
+
+  <!-- Surface cracks/texture -->
+  <g stroke="#3A1E10" stroke-width="1.5" fill="none" opacity="0.25" clip-path="url(#dcClip)">
+    <path d="M300,340 L325,365 L315,390"/>
+    <path d="M440,290 L465,325 L455,355"/>
+    <path d="M360,440 L390,455 L410,438"/>
+    <path d="M490,400 L515,425 L505,450"/>
+    <path d="M270,430 L295,445"/>
+    <path d="M430,500 L460,488 L480,510"/>
+    <path d="M340,300 L365,315"/>
+    <path d="M530,360 L555,375"/>
+    <path d="M250,380 L270,395"/>
+    <path d="M410,540 L440,530"/>
+  </g>
+
+  <!-- Chocolate chunks - dark -->
+  <path d="M310,320 C318,308 332,312 328,328 C325,340 308,335 310,320Z" fill="url(#chipDC1)" filter="url(#chipShadowDC)"/>
+  <path d="M460,340 C470,326 486,330 482,348 C478,362 458,356 460,340Z" fill="url(#chipDC2)" filter="url(#chipShadowDC)"/>
+  <path d="M380,420 C390,406 406,410 402,428 C398,442 378,436 380,420Z" fill="url(#chipDC1)" filter="url(#chipShadowDC)"/>
+  <path d="M270,390 C278,378 290,381 287,395 C284,406 270,402 270,390Z" fill="url(#chipDC2)" filter="url(#chipShadowDC)"/>
+  <path d="M510,430 C520,416 536,420 532,438 C528,452 508,446 510,430Z" fill="url(#chipDC1)" filter="url(#chipShadowDC)"/>
+  <path d="M420,290 C428,278 440,281 437,295 C434,306 420,302 420,290Z" fill="url(#chipDC2)" filter="url(#chipShadowDC)"/>
+  <path d="M340,480 C348,468 360,471 357,485 C354,496 340,492 340,480Z" fill="url(#chipDC1)" filter="url(#chipShadowDC)"/>
+  <path d="M530,370 C538,358 550,361 547,375 C544,386 530,382 530,370Z" fill="url(#chipDC2)" filter="url(#chipShadowDC)"/>
+  <path d="M250,340 C258,328 270,331 267,345 C264,356 250,352 250,340Z" fill="url(#chipDC1)" filter="url(#chipShadowDC)"/>
+  <path d="M480,470 C488,458 500,461 497,475 C494,486 480,482 480,470Z" fill="url(#chipDC2)" filter="url(#chipShadowDC)"/>
+  <path d="M350,380 C358,368 370,371 367,385 C364,396 350,392 350,380Z" fill="url(#chipDC1)" filter="url(#chipShadowDC)"/>
+  <path d="M560,420 C568,408 580,411 577,425 C574,436 560,432 560,420Z" fill="url(#chipDC2)" filter="url(#chipShadowDC)"/>
+  <path d="M400,270 C408,258 420,261 417,275 C414,286 400,282 400,270Z" fill="url(#chipDC1)" filter="url(#chipShadowDC)"/>
+  <path d="M290,480 C298,468 310,471 307,485 C304,496 290,492 290,480Z" fill="url(#chipDC2)" filter="url(#chipShadowDC)"/>
+  <path d="M450,440 C460,424 478,428 474,448 C470,464 448,456 450,440Z" fill="url(#chipDC1)" filter="url(#chipShadowDC)"/>
+
+  <!-- Glossy highlights on chunks -->
+  <g opacity="0.2">
+    <ellipse cx="316" cy="318" rx="3" ry="1.5" fill="#8B5E3C" transform="rotate(-20,316,318)"/>
+    <ellipse cx="466" cy="338" rx="3" ry="1.5" fill="#8B5E3C" transform="rotate(-20,466,338)"/>
+    <ellipse cx="386" cy="418" rx="3" ry="1.5" fill="#8B5E3C" transform="rotate(-20,386,418)"/>
+    <ellipse cx="456" cy="438" rx="4" ry="2" fill="#8B5E3C" transform="rotate(-20,456,438)"/>
+  </g>
+
+  <!-- Specular highlight -->
+  <ellipse cx="350" cy="300" rx="50" ry="25" fill="rgba(200,160,130,0.06)" transform="rotate(-15,350,300)"/>
+  <ellipse cx="330" cy="285" rx="25" ry="10" fill="rgba(200,170,150,0.04)" transform="rotate(-20,330,285)"/>
+
+  <!-- Top edge subtle glow -->
+  <path d="M260,265 C295,245 340,232 390,235 C435,238 475,248 515,270"
+        fill="none" stroke="rgba(180,140,110,0.12)" stroke-width="3"/>
+</svg>

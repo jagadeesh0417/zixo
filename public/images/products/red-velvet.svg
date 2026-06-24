@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="rvBase" cx="48%" cy="42%" r="52%" fx="45%" fy="38%">
+      <stop offset="0%" stop-color="#B8453A"/>
+      <stop offset="20%" stop-color="#A0382E"/>
+      <stop offset="50%" stop-color="#8B2C22"/>
+      <stop offset="80%" stop-color="#6E2018"/>
+      <stop offset="100%" stop-color="#521610"/>
+    </radialGradient>
+    <radialGradient id="rvHighlight" cx="38%" cy="35%" r="45%">
+      <stop offset="0%" stop-color="rgba(220,150,140,0.25)"/>
+      <stop offset="40%" stop-color="rgba(200,120,110,0.1)"/>
+      <stop offset="100%" stop-color="rgba(160,80,70,0)"/>
+    </radialGradient>
+    <radialGradient id="rvWarm" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="rgba(180,80,70,0.15)"/>
+      <stop offset="100%" stop-color="rgba(100,30,20,0)"/>
+    </radialGradient>
+    <radialGradient id="creamCheese" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#FFF8EE"/>
+      <stop offset="50%" stop-color="#F5ECD8"/>
+      <stop offset="100%" stop-color="#E8DCC0"/>
+    </radialGradient>
+    <radialGradient id="whiteChip" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="40%" stop-color="#F8F4EC"/>
+      <stop offset="100%" stop-color="#E8E0D0"/>
+    </radialGradient>
+    <radialGradient id="bgRV" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2C1818"/>
+      <stop offset="100%" stop-color="#1A0E0E"/>
+    </radialGradient>
+    <filter id="shadowRV">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="chipShadowRV">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="drizzleShadow">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.2"/>
+    </filter>
+    <clipPath id="rvClip">
+      <path d="M195,415 C180,360 205,300 265,270 C300,250 345,238 395,240 C440,243 480,253 520,275 C570,303 605,343 617,400 C630,460 613,510 575,543 C543,570 497,580 450,583 C395,585 340,573 295,550 C243,523 210,480 195,415Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#bgRV)"/>
+  <ellipse cx="400" cy="590" rx="350" ry="55" fill="rgba(255,255,255,0.03)"/>
+  <ellipse cx="400" cy="585" rx="280" ry="48" fill="rgba(0,0,0,0.5)" filter="url(#shadowRV)"/>
+
+  <!-- Cookie body -->
+  <path d="M195,415 C180,360 205,300 265,270 C300,250 345,238 395,240 C440,243 480,253 520,275 C570,303 605,343 617,400 C630,460 613,510 575,543 C543,570 497,580 450,583 C395,585 340,573 295,550 C243,523 210,480 195,415Z"
+        fill="url(#rvBase)" filter="url(#shadowRV)"/>
+  <path d="M195,415 C180,360 205,300 265,270 C300,250 345,238 395,240 C440,243 480,253 520,275 C570,303 605,343 617,400 C630,460 613,510 575,543 C543,570 497,580 450,583 C395,585 340,573 295,550 C243,523 210,480 195,415Z"
+        fill="url(#rvHighlight)"/>
+  <path d="M195,415 C180,360 205,300 265,270 C300,250 345,238 395,240 C440,243 480,253 520,275 C570,303 605,343 617,400 C630,460 613,510 575,543 C543,570 497,580 450,583 C395,585 340,573 295,550 C243,523 210,480 195,415Z"
+        fill="url(#rvWarm)"/>
+
+  <!-- Texture cracks -->
+  <g stroke="#6E2018" stroke-width="1.5" fill="none" opacity="0.3" clip-path="url(#rvClip)">
+    <path d="M305,345 L330,370 L320,395"/>
+    <path d="M445,295 L470,330 L460,360"/>
+    <path d="M365,445 L395,460 L415,443"/>
+    <path d="M495,405 L520,430 L510,455"/>
+    <path d="M275,435 L300,450"/>
+    <path d="M435,505 L465,493 L485,515"/>
+    <path d="M345,305 L370,320"/>
+    <path d="M535,365 L560,380"/>
+  </g>
+
+  <!-- White chocolate chips / cream cheese chunks -->
+  <path d="M320,330 C328,318 342,322 338,338 C335,350 318,345 320,330Z" fill="url(#whiteChip)" filter="url(#chipShadowRV)"/>
+  <path d="M450,345 C460,331 476,335 472,353 C468,367 448,361 450,345Z" fill="url(#creamCheese)" filter="url(#chipShadowRV)"/>
+  <path d="M380,425 C390,411 406,415 402,433 C398,447 378,441 380,425Z" fill="url(#whiteChip)" filter="url(#chipShadowRV)"/>
+  <path d="M280,400 C288,388 300,391 297,405 C294,416 280,412 280,400Z" fill="url(#creamCheese)" filter="url(#chipShadowRV)"/>
+  <path d="M510,435 C520,421 536,425 532,443 C528,457 508,451 510,435Z" fill="url(#whiteChip)" filter="url(#chipShadowRV)"/>
+  <path d="M420,295 C428,283 440,286 437,300 C434,311 420,307 420,295Z" fill="url(#creamCheese)" filter="url(#chipShadowRV)"/>
+  <path d="M350,485 C358,473 370,476 367,490 C364,501 350,497 350,485Z" fill="url(#whiteChip)" filter="url(#chipShadowRV)"/>
+  <path d="M260,345 C268,333 280,336 277,350 C274,361 260,357 260,345Z" fill="url(#creamCheese)" filter="url(#chipShadowRV)"/>
+  <path d="M470,475 C478,463 490,466 487,480 C484,491 470,487 470,475Z" fill="url(#whiteChip)" filter="url(#chipShadowRV)"/>
+  <path d="M340,385 C348,373 360,376 357,390 C354,401 340,397 340,385Z" fill="url(#creamCheese)" filter="url(#chipShadowRV)"/>
+  <path d="M400,275 C408,263 420,266 417,280 C414,291 400,287 400,275Z" fill="url(#whiteChip)" filter="url(#chipShadowRV)"/>
+
+  <!-- Cream cheese drizzle on top -->
+  <path d="M290,310 C300,305 315,308 320,315 C325,322 335,330 340,325 C345,320 355,315 360,322"
+        fill="none" stroke="url(#creamCheese)" stroke-width="6" stroke-linecap="round" opacity="0.8" filter="url(#drizzleShadow)"/>
+  <path d="M400,290 C410,285 425,288 430,295 C435,302 445,310 450,305"
+        fill="none" stroke="url(#creamCheese)" stroke-width="5" stroke-linecap="round" opacity="0.7" filter="url(#drizzleShadow)"/>
+  <path d="M340,440 C350,435 365,438 370,445 C375,452 385,460 390,455"
+        fill="none" stroke="url(#creamCheese)" stroke-width="5" stroke-linecap="round" opacity="0.75" filter="url(#drizzleShadow)"/>
+
+  <!-- Specular highlights -->
+  <ellipse cx="355" cy="305" rx="55" ry="25" fill="rgba(220,150,140,0.08)" transform="rotate(-15,355,305)"/>
+  <ellipse cx="335" cy="290" rx="25" ry="10" fill="rgba(230,170,160,0.05)" transform="rotate(-20,335,290)"/>
+
+  <path d="M265,270 C300,250 345,238 395,240 C440,243 480,253 520,275"
+        fill="none" stroke="rgba(220,150,140,0.15)" stroke-width="3"/>
+</svg>

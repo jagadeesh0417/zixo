@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 800" width="1920" height="800">
+  <defs>
+    <radialGradient id="slide1Bg" cx="50%" cy="45%" r="55%" fx="40%" fy="40%">
+      <stop offset="0%" stop-color="#3A2218"/>
+      <stop offset="35%" stop-color="#281410"/>
+      <stop offset="70%" stop-color="#1A0E0A"/>
+      <stop offset="100%" stop-color="#0C0604"/>
+    </radialGradient>
+    <radialGradient id="slide1Glow" cx="30%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="rgba(230,180,100,0.12)"/>
+      <stop offset="50%" stop-color="rgba(200,150,70,0.04)"/>
+      <stop offset="100%" stop-color="rgba(180,130,50,0)"/>
+    </radialGradient>
+    <radialGradient id="s1Cookie" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="40%" stop-color="#D4A853"/>
+      <stop offset="70%" stop-color="#B8883A"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <linearGradient id="goldText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="50%" stop-color="#FFE080"/>
+      <stop offset="100%" stop-color="#DAA520"/>
+    </linearGradient>
+    <filter id="s1Shadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="15" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="s1TextGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="chipShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <radialGradient id="chipGrad" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3D1C02"/>
+      <stop offset="60%" stop-color="#2A1200"/>
+      <stop offset="100%" stop-color="#1A0A00"/>
+    </radialGradient>
+    <linearGradient id="decoLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="rgba(218,165,32,0.4)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="800" fill="url(#slide1Bg)"/>
+  <rect width="1920" height="800" fill="url(#slide1Glow)"/>
+
+  <!-- Cookie stack left -->
+  <ellipse cx="280" cy="480" rx="150" ry="55" fill="url(#s1Cookie)" filter="url(#s1Shadow)"/>
+  <ellipse cx="300" cy="430" rx="145" ry="52" fill="url(#s1Cookie)" filter="url(#s1Shadow)"/>
+  <ellipse cx="290" cy="380" rx="140" ry="50" fill="url(#s1Cookie)" filter="url(#s1Shadow)"/>
+  <ellipse cx="310" cy="330" rx="135" ry="48" fill="url(#s1Cookie)" filter="url(#s1Shadow)"/>
+
+  <!-- Chips -->
+  <g fill="url(#chipGrad)" filter="url(#chipShadow)">
+    <ellipse cx="240" cy="470" rx="12" ry="9" transform="rotate(-10,240,470)"/>
+    <ellipse cx="340" cy="460" rx="11" ry="8" transform="rotate(15,340,460)"/>
+    <ellipse cx="260" cy="420" rx="10" ry="7" transform="rotate(-20,260,420)"/>
+    <ellipse cx="350" cy="410" rx="12" ry="9" transform="rotate(5,350,410)"/>
+    <ellipse cx="250" cy="370" rx="11" ry="8" transform="rotate(-15,250,370)"/>
+    <ellipse cx="340" cy="360" rx="10" ry="7" transform="rotate(10,340,360)"/>
+    <ellipse cx="270" cy="320" rx="12" ry="9" transform="rotate(-5,270,320)"/>
+    <ellipse cx="350" cy="315" rx="11" ry="8" transform="rotate(20,350,315)"/>
+  </g>
+
+  <!-- Right side cookies -->
+  <ellipse cx="1500" cy="450" rx="170" ry="60" fill="url(#s1Cookie)" filter="url(#s1Shadow)"/>
+  <ellipse cx="1480" cy="400" rx="160" ry="57" fill="url(#s1Cookie)" filter="url(#s1Shadow)"/>
+
+  <!-- Chips right -->
+  <g fill="url(#chipGrad)" filter="url(#chipShadow)">
+    <ellipse cx="1440" cy="440" rx="13" ry="9" transform="rotate(-10,1440,440)"/>
+    <ellipse cx="1560" cy="430" rx="12" ry="8" transform="rotate(15,1560,430)"/>
+    <ellipse cx="1420" cy="390" rx="11" ry="8" transform="rotate(-20,1420,390)"/>
+    <ellipse cx="1540" cy="385" rx="13" ry="9" transform="rotate(5,1540,385)"/>
+  </g>
+
+  <!-- Text -->
+  <text x="960" y="320" font-family="Georgia, serif" font-size="64" fill="#FFF8E0" text-anchor="middle" font-weight="bold" filter="url(#s1TextGlow)" letter-spacing="2">Freshly Baked</text>
+  <text x="960" y="395" font-family="Georgia, serif" font-size="56" fill="url(#goldText)" text-anchor="middle" font-weight="bold" filter="url(#s1TextGlow)" letter-spacing="4">HAPPINESS</text>
+
+  <rect x="830" y="415" width="260" height="1.5" fill="url(#decoLine)"/>
+
+  <text x="960" y="455" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,235,210,0.4)" text-anchor="middle" letter-spacing="6">EVERY BATCH MADE WITH LOVE</text>
+
+  <!-- Bottom fade -->
+  <rect x="0" y="700" width="1920" height="100" fill="url(#slide1Bg)" opacity="0.7"/>
+</svg>

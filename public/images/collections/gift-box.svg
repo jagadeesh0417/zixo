@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <radialGradient id="gbBg" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#2C1A12"/>
+      <stop offset="50%" stop-color="#1A0E08"/>
+      <stop offset="100%" stop-color="#0C0604"/>
+    </radialGradient>
+    <linearGradient id="gbBox" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5C3A22"/>
+      <stop offset="50%" stop-color="#3A1E10"/>
+      <stop offset="100%" stop-color="#241208"/>
+    </linearGradient>
+    <linearGradient id="gbRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DAA520"/>
+      <stop offset="30%" stop-color="#FFD700"/>
+      <stop offset="70%" stop-color="#DAA520"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <radialGradient id="gbCookie" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="40%" stop-color="#D4A853"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <radialGradient id="gbCookie2" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#4A2A18"/>
+      <stop offset="40%" stop-color="#2A1208"/>
+      <stop offset="100%" stop-color="#120804"/>
+    </radialGradient>
+    <linearGradient id="gbGold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="rgba(218,165,32,0.3)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <filter id="gbShadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="15" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="gbCookieShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <filter id="gbTextGlow">
+      <feGaussianBlur stdDeviation="1.5"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#gbBg)"/>
+  <ellipse cx="400" cy="520" rx="350" ry="60" fill="rgba(255,255,255,0.02)"/>
+
+  <!-- Gift box -->
+  <rect x="240" y="300" width="320" height="200" rx="6" fill="url(#gbBox)" filter="url(#gbShadow)"/>
+  <!-- Ribbon -->
+  <rect x="240" y="340" width="320" height="5" fill="url(#gbRibbon)"/>
+  <rect x="240" y="450" width="320" height="5" fill="url(#gbRibbon)"/>
+  <rect x="395" y="300" width="10" height="200" fill="url(#gbRibbon)"/>
+  <!-- Bow -->
+  <path d="M400,300 C385,280 365,290 375,310 C385,330 400,320 400,300Z" fill="url(#gbRibbon)"/>
+  <path d="M400,300 C415,280 435,290 425,310 C415,330 400,320 400,300Z" fill="url(#gbRibbon)"/>
+  <ellipse cx="400" cy="300" rx="6" ry="8" fill="#B8860B"/>
+
+  <!-- Cookies peeking -->
+  <ellipse cx="320" cy="305" rx="40" ry="14" fill="url(#gbCookie)" filter="url(#gbCookieShadow)"/>
+  <ellipse cx="390" cy="308" rx="38" ry="13" fill="url(#gbCookie2)" filter="url(#gbCookieShadow)"/>
+  <ellipse cx="470" cy="305" rx="40" ry="14" fill="url(#gbCookie)" filter="url(#gbCookieShadow)"/>
+
+  <!-- Text -->
+  <text x="400" y="160" font-family="Georgia, serif" font-size="36" fill="#FFF8E0" text-anchor="middle" font-weight="bold" filter="url(#gbTextGlow)" letter-spacing="3">Gift Box</text>
+  <rect x="300" y="175" width="200" height="1" fill="url(#gbGold)"/>
+  <text x="400" y="200" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,235,210,0.4)" text-anchor="middle" letter-spacing="4">ELEGANTLY PACKAGED</text>
+
+  <rect x="0" y="500" width="800" height="100" fill="url(#gbBg)" opacity="0.6"/>
+</svg>

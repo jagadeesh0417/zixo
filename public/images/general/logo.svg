@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 100" width="280" height="100">
+  <defs>
+    <linearGradient id="logoText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D4AF37"/>
+      <stop offset="50%" stop-color="#F5E6A3"/>
+      <stop offset="100%" stop-color="#D4AF37"/>
+    </linearGradient>
+    <radialGradient id="cookieBase" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#C4956A"/>
+      <stop offset="60%" stop-color="#B8845A"/>
+      <stop offset="100%" stop-color="#8B6914"/>
+    </radialGradient>
+    <radialGradient id="cookieShine" cx="35%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#E8C89A" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#C4956A" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#D4AF37" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <!-- Cookie Icon -->
+  <g filter="url(#shadow)">
+    <!-- Cookie body -->
+    <circle cx="45" cy="50" r="38" fill="url(#cookieBase)"/>
+    <circle cx="45" cy="50" r="38" fill="url(#cookieShine)"/>
+    
+    <!-- Cookie edge texture -->
+    <circle cx="45" cy="50" r="38" fill="none" stroke="#7A5C2E" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="45" cy="50" r="35" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.2"/>
+    
+    <!-- Chocolate chips -->
+    <ellipse cx="30" cy="38" rx="5" ry="4" fill="#3C1F0A" transform="rotate(-15 30 38)"/>
+    <ellipse cx="55" cy="35" rx="4.5" ry="3.5" fill="#3C1F0A" transform="rotate(20 55 35)"/>
+    <ellipse cx="38" cy="60" rx="5" ry="3.5" fill="#3C1F0A" transform="rotate(-10 38 60)"/>
+    <ellipse cx="58" cy="58" rx="4" ry="3" fill="#3C1F0A" transform="rotate(30 58 58)"/>
+    <ellipse cx="45" cy="45" rx="3.5" ry="2.5" fill="#3C1F0A" transform="rotate(5 45 45)"/>
+    <ellipse cx="32" cy="50" rx="3" ry="2.5" fill="#2A1505" transform="rotate(-25 32 50)"/>
+    
+    <!-- Chip highlights -->
+    <ellipse cx="29" cy="36" rx="1.5" ry="1" fill="#5C3A1A" opacity="0.5" transform="rotate(-15 29 36)"/>
+    <ellipse cx="54" cy="33" rx="1.5" ry="1" fill="#5C3A1A" opacity="0.5" transform="rotate(20 54 33)"/>
+    
+    <!-- Gold rim -->
+    <circle cx="45" cy="50" r="38" fill="none" stroke="#D4AF37" stroke-width="0.8" opacity="0.3"/>
+  </g>
+
+  <!-- Text: ZIXO -->
+  <text x="95" y="48" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="bold" fill="url(#logoText)" letter-spacing="4">ZIXO</text>
+  
+  <!-- Text: COOKIES -->
+  <text x="95" y="78" font-family="Georgia, 'Times New Roman', serif" font-size="18" fill="#F8F4EE" letter-spacing="6" opacity="0.85">COOKIES</text>
+</svg>

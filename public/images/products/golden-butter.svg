@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="gbBase" cx="48%" cy="42%" r="52%" fx="45%" fy="38%">
+      <stop offset="0%" stop-color="#F5D98E"/>
+      <stop offset="25%" stop-color="#E8C86A"/>
+      <stop offset="50%" stop-color="#D9B34A"/>
+      <stop offset="75%" stop-color="#C49A35"/>
+      <stop offset="100%" stop-color="#A88028"/>
+    </radialGradient>
+    <radialGradient id="gbHighlight" cx="40%" cy="35%" r="42%">
+      <stop offset="0%" stop-color="rgba(255,245,210,0.5)"/>
+      <stop offset="30%" stop-color="rgba(255,240,200,0.2)"/>
+      <stop offset="100%" stop-color="rgba(255,235,190,0)"/>
+    </radialGradient>
+    <radialGradient id="gbWarm" cx="52%" cy="48%" r="50%">
+      <stop offset="0%" stop-color="rgba(200,160,80,0.1)"/>
+      <stop offset="100%" stop-color="rgba(150,110,50,0)"/>
+    </radialGradient>
+    <radialGradient id="gbBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2C2418"/>
+      <stop offset="100%" stop-color="#1A1410"/>
+    </radialGradient>
+    <filter id="shadowGB">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <filter id="innerGlowGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+      <feOffset dx="0" dy="0"/>
+      <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1"/>
+      <feFlood flood-color="#FFEBB0" flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite operator="over" in2="SourceGraphic"/>
+    </filter>
+    <clipPath id="gbClip">
+      <path d="M205,420 C190,365 215,305 275,275 C310,255 355,243 405,245 C450,248 490,258 530,280 C580,308 615,348 627,405 C640,465 623,515 585,548 C553,575 507,585 460,588 C405,590 350,578 305,555 C253,528 220,485 205,420Z"/>
+    </clipPath>
+  </defs>
+
+  <rect width="800" height="800" fill="url(#gbBg)"/>
+  <ellipse cx="400" cy="590" rx="340" ry="55" fill="rgba(255,255,255,0.03)"/>
+  <ellipse cx="400" cy="585" rx="280" ry="48" fill="rgba(0,0,0,0.45)" filter="url(#shadowGB)"/>
+
+  <!-- Cookie body -->
+  <path d="M205,420 C190,365 215,305 275,275 C310,255 355,243 405,245 C450,248 490,258 530,280 C580,308 615,348 627,405 C640,465 623,515 585,548 C553,575 507,585 460,588 C405,590 350,578 305,555 C253,528 220,485 205,420Z"
+        fill="url(#gbBase)" filter="url(#shadowGB)"/>
+  <path d="M205,420 C190,365 215,305 275,275 C310,255 355,243 405,245 C450,248 490,258 530,280 C580,308 615,348 627,405 C640,465 623,515 585,548 C553,575 507,585 460,588 C405,590 350,578 305,555 C253,528 220,485 205,420Z"
+        fill="url(#gbHighlight)"/>
+  <path d="M205,420 C190,365 215,305 275,275 C310,255 355,243 405,245 C450,248 490,258 530,280 C580,308 615,348 627,405 C640,465 623,515 585,548 C553,575 507,585 460,588 C405,590 350,578 305,555 C253,528 220,485 205,420Z"
+        fill="url(#gbWarm)"/>
+
+  <!-- Smooth surface cracks -->
+  <g stroke="#C49A35" stroke-width="1.2" fill="none" opacity="0.25" clip-path="url(#gbClip)">
+    <path d="M310,350 L335,375 L325,400"/>
+    <path d="M455,300 L480,335 L470,365"/>
+    <path d="M370,450 L400,465 L420,448"/>
+    <path d="M500,410 L525,435 L515,460"/>
+    <path d="M280,440 L305,455"/>
+    <path d="M440,510 L470,498 L490,520"/>
+    <path d="M350,310 L375,325"/>
+    <path d="M540,370 L565,385"/>
+    <path d="M260,385 L280,400"/>
+    <path d="M415,545 L445,535"/>
+    <path d="M390,290 L410,305"/>
+    <path d="M480,470 L505,485"/>
+  </g>
+
+  <!-- Gentle crack lines -->
+  <g stroke="#B89828" stroke-width="0.8" fill="none" opacity="0.15" clip-path="url(#gbClip)">
+    <path d="M320,380 L340,370 L360,385"/>
+    <path d="M450,420 L470,410 L490,425"/>
+    <path d="M350,500 L370,490 L390,505"/>
+  </g>
+
+  <!-- Butter sheen -->
+  <ellipse cx="360" cy="310" rx="70" ry="35" fill="rgba(255,245,210,0.08)" transform="rotate(-15,360,310)"/>
+  <ellipse cx="340" cy="295" rx="35" ry="15" fill="rgba(255,248,220,0.05)" transform="rotate(-20,340,295)"/>
+
+  <!-- Top edge golden glow -->
+  <path d="M275,275 C310,255 355,243 405,245 C450,248 490,258 530,280"
+        fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="4" filter="url(#innerGlowGB)"/>
+
+  <!-- Bottom warm reflection -->
+  <ellipse cx="440" cy="520" rx="80" ry="20" fill="rgba(200,160,80,0.04)" transform="rotate(5,440,520)"/>
+</svg>

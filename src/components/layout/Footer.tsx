@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import {
-  FaCookieBite,
   FaInstagram,
   FaYoutube,
   FaPhone,
@@ -59,14 +59,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           {/* Brand */}
           <motion.div variants={itemVariants} className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4 group">
-              <FaCookieBite className="text-[#D4AF37] text-2xl group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]" />
-              <span className="font-playfair text-xl font-bold tracking-wide">
-                <span className="bg-gradient-to-r from-[#D4AF37] via-[#F5E6A3] to-[#D4AF37] bg-clip-text text-transparent">
-                  ZIXO
-                </span>
-                <span className="text-[#F8F4EE]/60 ml-1">COOKIES</span>
-              </span>
+            <Link href="/" className="flex items-center mb-4 group">
+              <Image
+                src="/images/general/logo.svg"
+                alt="Zixo Cookies"
+                width={140}
+                height={50}
+                className="h-10 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
+              />
             </Link>
             <p className="text-[#F8F4EE]/50 text-sm leading-relaxed max-w-xs">
               Freshly baked happiness delivered to your door. Premium handcrafted

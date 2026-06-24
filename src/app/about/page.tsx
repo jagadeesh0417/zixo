@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Image from "next/image";
 import {
   FaCookieBite, FaHeart, FaLeaf, FaTruck, FaStar, FaCheck,
 } from "react-icons/fa";
@@ -127,24 +128,8 @@ export default function AboutPage() {
               transition={{ duration: 0.7 }}
               className="w-full lg:w-1/2"
             >
-              <div className="img-placeholder w-full h-72 md:h-[400px] rounded-2xl border border-gold/20 flex items-center justify-center shadow-lg relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-dark/50 to-transparent" />
-                <div className="flex flex-col items-center gap-3 relative z-10">
-                  <FaCookieBite size={100} className="text-gold/30" />
-                  <span className="text-5xl font-bold text-gold/20">
-                    Zixo
-                  </span>
-                </div>
-                <motion.div
-                  className="absolute"
-                  animate={{
-                    scale: [1, 1.15, 1],
-                    opacity: [0.2, 0.5, 0.2],
-                  }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <FaHeart className="text-gold/20" size={80} />
-                </motion.div>
+              <div className="relative w-full h-72 md:h-[400px] rounded-2xl border border-gold/20 overflow-hidden shadow-lg">
+                <Image src="/images/general/about-story.svg" alt="Zixo Cookies bakery story" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
             </motion.div>
 
@@ -271,17 +256,8 @@ export default function AboutPage() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="w-full lg:w-1/2"
             >
-              <div className="img-placeholder w-full h-72 md:h-[400px] rounded-2xl border border-gold/20 flex items-center justify-center shadow-lg relative overflow-hidden">
-                <div className="absolute inset-0 opacity-30">
-                  <div className="absolute top-5 right-5 text-gold/30 text-8xl">✦</div>
-                  <div className="absolute bottom-5 left-5 text-gold/30 text-6xl">✦</div>
-                </div>
-                <div className="relative z-10 text-center">
-                  <FaStar className="text-gold/60 mx-auto mb-3" size={60} />
-                  <p className="text-gold/80 text-xl italic">
-                    &ldquo;Baked with love, shared with joy&rdquo;
-                  </p>
-                </div>
+              <div className="relative w-full h-72 md:h-[400px] rounded-2xl border border-gold/20 overflow-hidden shadow-lg">
+                <Image src="/images/products/mixed-box.svg" alt="Zixo Cookies assortment" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
             </motion.div>
           </div>

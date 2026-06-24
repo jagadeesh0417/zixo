@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FaStar, FaShoppingCart, FaEye, FaHeart, FaCookieBite } from "react-icons/fa";
+import { FaStar, FaShoppingCart, FaEye, FaHeart } from "react-icons/fa";
 import { useCartStore } from "@/store/cart";
 import { toast } from "react-hot-toast";
 import { formatPrice, getDiscountPercentage } from "@/lib/utils";
@@ -13,21 +14,6 @@ import { ProductType } from "@/types";
 interface ProductCardProps {
   product: ProductType;
 }
-
-const gradients = [
-  "from-amber-200 to-orange-300",
-  "from-purple-200 to-pink-300",
-  "from-red-200 to-rose-300",
-  "from-yellow-200 to-amber-300",
-  "from-emerald-200 to-teal-300",
-  "from-pink-200 to-purple-300",
-  "from-blue-200 to-indigo-300",
-  "from-orange-200 to-red-300",
-  "from-lime-200 to-green-300",
-  "from-cyan-200 to-blue-300",
-  "from-rose-200 to-pink-300",
-  "from-amber-200 to-yellow-300",
-];
 
 export default function ProductCard({ product }: ProductCardProps) {
   const router = useRouter();
@@ -40,7 +26,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     ? getDiscountPercentage(product.price, product.discountPrice)
     : 0;
 
-  const gradientIdx = parseInt(product.id.replace(/\D/g, ""), 10) % gradients.length || 0;
+  const imageSrc = product.images?.[0] || `/images/products/${product.slug}.svg`;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -77,21 +63,15 @@ export default function ProductCard({ product }: ProductCardProps) {
       onClick={handleCardClick}
     >
       <div className="relative overflow-hidden">
-        {product.images && product.images[0] ? (
-          <div
-            className="w-full h-72 bg-cover bg-center img-placeholder"
-            style={{ backgroundImage: `url(${product.images[0]})` }}
+        <div className="relative w-full h-48 md:h-56 lg:h-64">
+          <Image
+            src={imageSrc}
+            alt={product.name}
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-500"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
-        ) : (
-          <div
-            className={`w-full h-72 bg-gradient-to-br ${gradients[gradientIdx]} flex items-center justify-center`}
-          >
-            <FaCookieBite
-              size={80}
-              className="text-white/60 group-hover:scale-110 transition-transform duration-300"
-            />
-          </div>
-        )}
+        </div>
 
         {discountPct > 0 && (
           <span className="absolute top-3 left-3 bg-gold text-dark text-xs font-bold px-2.5 py-1 rounded-full">
@@ -128,7 +108,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
 
-      <div className="p-5">
+      <div className="p-3 md:p-5">
         <p className="text-xs text-gold/80 font-medium uppercase tracking-wider mb-1">
           {product.category.name}
         </p>

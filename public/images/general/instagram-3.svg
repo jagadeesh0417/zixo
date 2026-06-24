@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <radialGradient id="i3Bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2C2418"/>
+      <stop offset="100%" stop-color="#141008"/>
+    </radialGradient>
+    <radialGradient id="i3Cookie" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#F5D98E"/>
+      <stop offset="45%" stop-color="#D9B34A"/>
+      <stop offset="100%" stop-color="#A88028"/>
+    </radialGradient>
+    <radialGradient id="chipGrad" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3D1C02"/>
+      <stop offset="60%" stop-color="#2A1200"/>
+      <stop offset="100%" stop-color="#1A0A00"/>
+    </radialGradient>
+    <filter id="i3Shadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <filter id="chipShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#i3Bg)"/>
+  <ellipse cx="300" cy="480" rx="240" ry="35" fill="rgba(0,0,0,0.4)"/>
+
+  <!-- Stacked cookies -->
+  <ellipse cx="300" cy="380" rx="140" ry="50" fill="url(#i3Cookie)" filter="url(#i3Shadow)"/>
+  <ellipse cx="290" cy="340" rx="135" ry="48" fill="url(#i3Cookie)" filter="url(#i3Shadow)"/>
+  <ellipse cx="305" cy="300" rx="130" ry="46" fill="url(#i3Cookie)" filter="url(#i3Shadow)"/>
+
+  <!-- Chips -->
+  <g fill="url(#chipGrad)" filter="url(#chipShadow)">
+    <ellipse cx="260" cy="370" rx="8" ry="6" transform="rotate(-10,260,370)"/>
+    <ellipse cx="350" cy="360" rx="7" ry="5" transform="rotate(15,350,360)"/>
+    <ellipse cx="250" cy="330" rx="8" ry="6" transform="rotate(-20,250,330)"/>
+    <ellipse cx="340" cy="325" rx="7" ry="5" transform="rotate(5,340,325)"/>
+    <ellipse cx="270" cy="290" rx="8" ry="6" transform="rotate(-15,270,290)"/>
+    <ellipse cx="345" cy="288" rx="7" ry="5" transform="rotate(10,345,288)"/>
+  </g>
+
+  <!-- Steam -->
+  <g fill="none" stroke="rgba(255,235,210,0.06)" stroke-width="1.5" stroke-linecap="round">
+    <path d="M280,280 C278,265 282,250 280,235"/>
+    <path d="M320,275 C318,260 322,245 320,230"/>
+    <path d="M300,270 C298,255 302,240 300,225"/>
+  </g>
+
+  <!-- Highlight -->
+  <ellipse cx="270" cy="280" rx="35" ry="15" fill="rgba(255,245,210,0.06)" transform="rotate(-15,270,280)"/>
+</svg>

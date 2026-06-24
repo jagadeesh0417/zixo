@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { FaCookieBite, FaHeart } from "react-icons/fa";
+import Image from "next/image";
 
 export default function AboutSection() {
   const ref = useRef(null);
@@ -18,24 +18,8 @@ export default function AboutSection() {
             transition={{ duration: 0.7 }}
             className="w-full md:w-1/2"
           >
-            <div className="w-full h-72 md:h-96 rounded-2xl bg-gradient-to-br from-gold/20 to-gold/5 flex items-center justify-center shadow-lg relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-t from-dark/20 to-transparent" />
-              <div className="flex flex-col items-center gap-3">
-                <FaCookieBite size={80} className="text-gold/50" />
-                <span className="text-4xl font-playfair font-bold text-gold/30">
-                  Zixo
-                </span>
-              </div>
-              <motion.div
-                className="absolute"
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                <FaHeart className="text-gold/30" size={60} />
-              </motion.div>
+            <div className="relative h-full min-h-[400px]">
+              <Image src="/images/general/about-story.svg" alt="Our bakery story" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
           </motion.div>
 

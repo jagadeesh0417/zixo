@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <radialGradient id="asBg" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#3A2418"/>
+      <stop offset="40%" stop-color="#28140C"/>
+      <stop offset="100%" stop-color="#140A06"/>
+    </radialGradient>
+    <radialGradient id="warmLight" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="rgba(255,200,120,0.1)"/>
+      <stop offset="50%" stop-color="rgba(220,170,100,0.04)"/>
+      <stop offset="100%" stop-color="rgba(200,150,80,0)"/>
+    </radialGradient>
+    <radialGradient id="asCookie" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="40%" stop-color="#D4A853"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <radialGradient id="asChip" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3D1C02"/>
+      <stop offset="60%" stop-color="#2A1200"/>
+      <stop offset="100%" stop-color="#1A0A00"/>
+    </radialGradient>
+    <linearGradient id="asGold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="rgba(218,165,32,0.25)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+    <filter id="asShadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="chipShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="asTextGlow">
+      <feGaussianBlur stdDeviation="1.5"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#asBg)"/>
+  <rect width="800" height="600" fill="url(#warmLight)"/>
+
+  <!-- Bake counter surface -->
+  <rect x="0" y="420" width="800" height="180" fill="#2C1A10" opacity="0.6"/>
+
+  <!-- Flour dust on surface -->
+  <g fill="rgba(255,235,210,0.05)">
+    <circle cx="100" cy="440" r="2"/>
+    <circle cx="250" cy="450" r="1.5"/>
+    <circle cx="500" cy="445" r="2"/>
+    <circle cx="650" cy="455" r="1.8"/>
+    <circle cx="350" cy="460" r="1.5"/>
+    <circle cx="180" cy="465" r="1"/>
+    <circle cx="600" cy="440" r="1.5"/>
+  </g>
+
+  <!-- Rolling pin -->
+  <rect x="150" y="430" width="200" height="20" rx="10" fill="#6B4226" filter="url(#asShadow)" transform="rotate(-5,250,440)"/>
+  <rect x="130" y="432" width="25" height="16" rx="4" fill="#8B5A30" transform="rotate(-5,142,440)"/>
+  <rect x="345" y="432" width="25" height="16" rx="4" fill="#8B5A30" transform="rotate(-5,357,440)"/>
+
+  <!-- Dough -->
+  <ellipse cx="500" cy="440" rx="80" ry="25" fill="#E8C07A" filter="url(#asShadow)"/>
+  <ellipse cx="500" cy="438" rx="78" ry="22" fill="#F0D090"/>
+
+  <!-- Baked cookies on cooling rack -->
+  <ellipse cx="180" cy="370" rx="55" ry="20" fill="url(#asCookie)" filter="url(#asShadow)"/>
+  <ellipse cx="300" cy="365" rx="55" ry="20" fill="url(#asCookie)" filter="url(#asShadow)"/>
+  <ellipse cx="420" cy="370" rx="55" ry="20" fill="url(#asCookie)" filter="url(#asShadow)"/>
+
+  <!-- Chips -->
+  <g fill="url(#asChip)" filter="url(#chipShadow)">
+    <ellipse cx="165" cy="368" rx="5" ry="4" transform="rotate(-10,165,368)"/>
+    <ellipse cx="195" cy="365" rx="4" ry="3" transform="rotate(15,195,365)"/>
+    <ellipse cx="285" cy="362" rx="5" ry="4" transform="rotate(-20,285,362)"/>
+    <ellipse cx="315" cy="360" rx="4" ry="3" transform="rotate(5,315,360)"/>
+    <ellipse cx="405" cy="368" rx="5" ry="4" transform="rotate(-15,405,368)"/>
+    <ellipse cx="435" cy="365" rx="4" ry="3" transform="rotate(10,435,365)"/>
+  </g>
+
+  <!-- Steam -->
+  <g fill="none" stroke="rgba(255,235,210,0.08)" stroke-width="1.5" stroke-linecap="round">
+    <path d="M170,350 C168,335 172,320 170,305"/>
+    <path d="M290,345 C288,330 292,315 290,300"/>
+    <path d="M410,350 C408,335 412,320 410,305"/>
+  </g>
+
+  <!-- Text -->
+  <text x="400" y="100" font-family="Georgia, serif" font-size="32" fill="#FFF8E0" text-anchor="middle" font-weight="bold" filter="url(#asTextGlow)" letter-spacing="2">Our Story</text>
+  <rect x="310" y="115" width="180" height="1" fill="url(#asGold)"/>
+  <text x="400" y="145" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,235,210,0.4)" text-anchor="middle" letter-spacing="3">BAKED WITH PASSION SINCE DAY ONE</text>
+
+  <!-- Mixing bowl -->
+  <ellipse cx="650" cy="440" rx="45" ry="10" fill="#8B7355" opacity="0.3"/>
+  <path d="M605,440 C605,440 610,380 650,370 C690,380 695,440 695,440Z" fill="#8B7355" opacity="0.2" filter="url(#asShadow)"/>
+
+  <!-- Warm overlay -->
+  <ellipse cx="400" cy="200" rx="350" ry="200" fill="rgba(255,200,120,0.03)"/>
+</svg>

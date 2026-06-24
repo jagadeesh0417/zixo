@@ -3,15 +3,16 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { FaInstagram, FaHeart } from "react-icons/fa";
 
 const posts = [
-  { emoji: "🍪", likes: "2,847", gradient: "from-amber-200 to-orange-300" },
-  { emoji: "🍫", likes: "3,124", gradient: "from-amber-800 to-brown-900" },
-  { emoji: "❤️", likes: "1,956", gradient: "from-red-200 to-rose-300" },
-  { emoji: "🍪", likes: "4,231", gradient: "from-yellow-200 to-amber-300" },
-  { emoji: "⭐", likes: "2,563", gradient: "from-purple-200 to-pink-300" },
-  { emoji: "🎁", likes: "3,789", gradient: "from-green-200 to-emerald-300" },
+  { image: "/images/general/instagram-1.svg", likes: "2,847" },
+  { image: "/images/general/instagram-2.svg", likes: "3,124" },
+  { image: "/images/general/instagram-3.svg", likes: "1,956" },
+  { image: "/images/general/instagram-4.svg", likes: "4,231" },
+  { image: "/images/general/instagram-5.svg", likes: "2,563" },
+  { image: "/images/general/instagram-6.svg", likes: "3,789" },
 ];
 
 const containerVariants = {
@@ -69,14 +70,8 @@ export default function InstagramFeed() {
                 idx === 0 ? "row-span-2 col-span-2" : ""
               } ${idx === 3 ? "col-span-2" : ""}`}
             >
-              <div
-                className={`w-full ${
-                  idx === 0 ? "h-80 md:h-96" : "h-48 md:h-56"
-                } bg-gradient-to-br ${post.gradient} flex items-center justify-center`}
-              >
-                <span className="text-5xl md:text-6xl opacity-60 select-none group-hover:scale-110 transition-transform duration-300">
-                  {post.emoji}
-                </span>
+              <div className={`relative w-full ${idx === 0 ? "h-80 md:h-96" : "h-48 md:h-56"}`}>
+                <Image src={post.image} alt="Cookie Instagram post" fill className="object-cover group-hover:scale-110 transition-transform duration-500" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
 
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">

@@ -3,25 +3,26 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { FaYoutube, FaPlay } from "react-icons/fa";
 
 const videos = [
   {
     title: "A Day in the Life at Zixo Cookies",
     description: "Watch how we bake our signature cookies from scratch",
-    gradient: "from-amber-600 to-orange-700",
+    image: "/images/products/classic-chocolate-chip.svg",
     duration: "12:34",
   },
   {
     title: "The Secret to Perfect Chocolate Chip Cookies",
     description: "Our master baker reveals the tips and tricks",
-    gradient: "from-amber-700 to-brown-800",
+    image: "/images/products/double-chocolate.svg",
     duration: "8:21",
   },
   {
     title: "Unboxing Our Signature Gift Boxes",
     description: "See what goes into our premium cookie hampers",
-    gradient: "from-orange-600 to-red-700",
+    image: "/images/products/oreo-delight.svg",
     duration: "6:45",
   },
 ];
@@ -71,20 +72,19 @@ export default function YouTubeSection() {
               whileHover={{ y: -6 }}
               className="group glass-card border-gold/10 overflow-hidden cursor-pointer"
             >
-              <div className="relative overflow-hidden">
-                <div
-                  className={`w-full h-52 bg-gradient-to-br ${video.gradient} flex items-center justify-center`}
+              <div className="relative w-full h-52 overflow-hidden">
+                <Image src={video.image} alt={video.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  className="absolute inset-0 flex items-center justify-center"
                 >
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    className="w-16 h-16 bg-gold/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-gold/50 group-hover:bg-gold/30 transition-colors"
-                  >
+                  <div className="w-16 h-16 bg-gold/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-gold/50 group-hover:bg-gold/30 transition-colors">
                     <FaPlay className="text-gold ml-1" size={24} />
-                  </motion.div>
-                  <span className="absolute bottom-3 right-3 bg-black/60 text-cream text-xs px-2 py-1 rounded">
-                    {video.duration}
-                  </span>
-                </div>
+                  </div>
+                </motion.div>
+                <span className="absolute bottom-3 right-3 bg-black/60 text-cream text-xs px-2 py-1 rounded">
+                  {video.duration}
+                </span>
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-2 mb-2">

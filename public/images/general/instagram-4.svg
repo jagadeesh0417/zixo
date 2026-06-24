@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <radialGradient id="i4Bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1A100A"/>
+      <stop offset="100%" stop-color="#0A0604"/>
+    </radialGradient>
+    <radialGradient id="i4Cookie" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#3A2010"/>
+      <stop offset="45%" stop-color="#1E0C04"/>
+      <stop offset="100%" stop-color="#080402"/>
+    </radialGradient>
+    <radialGradient id="nutellaCenter" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#3C2010"/>
+      <stop offset="50%" stop-color="#1F0E04"/>
+      <stop offset="100%" stop-color="#140902"/>
+    </radialGradient>
+    <radialGradient id="nutellaGloss" cx="45%" cy="38%" r="40%">
+      <stop offset="0%" stop-color="rgba(180,140,100,0.25)"/>
+      <stop offset="100%" stop-color="rgba(100,70,50,0)"/>
+    </radialGradient>
+    <filter id="i4Shadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="oozingShadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#i4Bg)"/>
+  <ellipse cx="300" cy="480" rx="240" ry="35" fill="rgba(0,0,0,0.4)"/>
+
+  <!-- Cookie -->
+  <ellipse cx="300" cy="350" rx="160" ry="58" fill="url(#i4Cookie)" filter="url(#i4Shadow)"/>
+
+  <!-- Nutella center -->
+  <ellipse cx="300" cy="370" rx="55" ry="30" fill="url(#nutellaCenter)" filter="url(#oozingShadow)"/>
+  <ellipse cx="295" cy="362" rx="35" ry="18" fill="url(#nutellaGloss)"/>
+
+  <!-- Oozing drips -->
+  <path d="M270,380 C265,400 270,415 280,420 C290,425 285,410 280,395Z" fill="url(#nutellaCenter)" filter="url(#oozingShadow)"/>
+  <path d="M330,375 C335,395 340,405 335,415 C330,425 325,410 328,395Z" fill="url(#nutellaCenter)" filter="url(#oozingShadow)"/>
+
+  <!-- Glossy highlights -->
+  <ellipse cx="285" cy="355" rx="20" ry="8" fill="rgba(200,160,120,0.12)"/>
+  <ellipse cx="280" cy="352" rx="10" ry="4" fill="rgba(220,180,140,0.08)"/>
+</svg>

@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <linearGradient id="boxBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2C1A10"/>
+      <stop offset="100%" stop-color="#1A0E08"/>
+    </linearGradient>
+    <linearGradient id="boxFront" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4A2C1A"/>
+      <stop offset="50%" stop-color="#3A1E10"/>
+      <stop offset="100%" stop-color="#2A1408"/>
+    </linearGradient>
+    <linearGradient id="boxLid" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5C3A22"/>
+      <stop offset="100%" stop-color="#3A1E10"/>
+    </linearGradient>
+    <linearGradient id="goldRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DAA520"/>
+      <stop offset="30%" stop-color="#FFD700"/>
+      <stop offset="70%" stop-color="#DAA520"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <radialGradient id="cookie1" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="50%" stop-color="#D4A853"/>
+      <stop offset="80%" stop-color="#A0702A"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <radialGradient id="cookie2" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#4A2A18"/>
+      <stop offset="50%" stop-color="#2A1208"/>
+      <stop offset="100%" stop-color="#120804"/>
+    </radialGradient>
+    <radialGradient id="cookie3" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#B8453A"/>
+      <stop offset="50%" stop-color="#8B2C22"/>
+      <stop offset="100%" stop-color="#521610"/>
+    </radialGradient>
+    <radialGradient id="cookie4" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#F5D98E"/>
+      <stop offset="50%" stop-color="#D9B34A"/>
+      <stop offset="100%" stop-color="#A88028"/>
+    </radialGradient>
+    <filter id="boxShadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="15" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="cookieShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="innerBoxShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#boxBg)"/>
+  <!-- Table surface -->
+  <ellipse cx="400" cy="700" rx="400" ry="100" fill="rgba(255,255,255,0.02)"/>
+
+  <!-- Shadow under box -->
+  <ellipse cx="400" cy="620" rx="290" ry="60" fill="rgba(0,0,0,0.5)" filter="url(#boxShadow)"/>
+
+  <!-- Box back wall -->
+  <rect x="140" y="300" width="520" height="280" rx="8" fill="url(#boxFront)" filter="url(#boxShadow)"/>
+
+  <!-- Box interior -->
+  <rect x="155" y="220" width="490" height="90" rx="4" fill="#2A1408"/>
+  <rect x="155" y="220" width="490" height="80" rx="4" fill="#1A0E06" opacity="0.5"/>
+
+  <!-- Box lid (open, tilted back) -->
+  <path d="M140,300 L140,240 C140,220 160,210 400,210 C640,210 660,220 660,240 L660,300 Z"
+        fill="url(#boxLid)" filter="url(#boxShadow)"/>
+  <!-- Lid inner -->
+  <path d="M155,240 L155,295 C155,295 400,225 645,295 L645,240 C645,225 400,218 155,240Z"
+        fill="#4A2C1A" opacity="0.6"/>
+
+  <!-- Cookies inside box -->
+  <!-- Row 1: Cookies -->
+  <ellipse cx="220" cy="300" rx="38" ry="16" fill="url(#cookie1)" filter="url(#cookieShadow)"/>
+  <ellipse cx="300" cy="295" rx="38" ry="16" fill="url(#cookie2)" filter="url(#cookieShadow)"/>
+  <ellipse cx="380" cy="300" rx="38" ry="16" fill="url(#cookie3)" filter="url(#cookieShadow)"/>
+  <ellipse cx="460" cy="295" rx="38" ry="16" fill="url(#cookie4)" filter="url(#cookieShadow)"/>
+  <ellipse cx="540" cy="300" rx="38" ry="16" fill="url(#cookie1)" filter="url(#cookieShadow)"/>
+
+  <!-- Row 2: Cookies -->
+  <ellipse cx="260" cy="330" rx="38" ry="16" fill="url(#cookie4)" filter="url(#cookieShadow)"/>
+  <ellipse cx="340" cy="335" rx="38" ry="16" fill="url(#cookie1)" filter="url(#cookieShadow)"/>
+  <ellipse cx="420" cy="330" rx="38" ry="16" fill="url(#cookie2)" filter="url(#cookieShadow)"/>
+  <ellipse cx="500" cy="335" rx="38" ry="16" fill="url(#cookie3)" filter="url(#cookieShadow)"/>
+
+  <!-- Gold ribbon -->
+  <rect x="140" y="370" width="520" height="6" fill="url(#goldRibbon)"/>
+  <rect x="140" y="500" width="520" height="6" fill="url(#goldRibbon)"/>
+
+  <!-- Vertical ribbon -->
+  <rect x="395" y="300" width="10" height="280" fill="url(#goldRibbon)"/>
+
+  <!-- Ribbon bow -->
+  <path d="M400,300 C380,280 360,290 370,310 C380,330 400,320 400,300Z" fill="url(#goldRibbon)"/>
+  <path d="M400,300 C420,280 440,290 430,310 C420,330 400,320 400,300Z" fill="url(#goldRibbon)"/>
+  <ellipse cx="400" cy="300" rx="6" ry="8" fill="#B8860B"/>
+
+  <!-- Cookie crumb details on box -->
+  <g fill="#D4A853" opacity="0.3">
+    <circle cx="250" cy="420" r="2"/>
+    <circle cx="320" cy="450" r="1.5"/>
+    <circle cx="480" cy="430" r="2.5"/>
+    <circle cx="550" cy="460" r="1.8"/>
+    <circle cx="200" cy="480" r="1.5"/>
+  </g>
+
+  <!-- Subtle texture on box -->
+  <g stroke="rgba(255,255,255,0.03)" stroke-width="0.5" opacity="0.3">
+    <line x1="140" y1="400" x2="660" y2="400"/>
+    <line x1="140" y1="440" x2="660" y2="440"/>
+    <line x1="140" y1="480" x2="660" y2="480"/>
+    <line x1="140" y1="520" x2="660" y2="520"/>
+  </g>
+
+  <!-- Warm ambient glow -->
+  <ellipse cx="400" cy="350" rx="300" ry="200" fill="rgba(255,200,100,0.03)"/>
+</svg>

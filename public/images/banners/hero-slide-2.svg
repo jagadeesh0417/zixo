@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 800" width="1920" height="800">
+  <defs>
+    <radialGradient id="slide2Bg" cx="50%" cy="40%" r="55%" fx="60%" fy="40%">
+      <stop offset="0%" stop-color="#2C1A12"/>
+      <stop offset="35%" stop-color="#1E1008"/>
+      <stop offset="70%" stop-color="#140A06"/>
+      <stop offset="100%" stop-color="#0A0502"/>
+    </radialGradient>
+    <radialGradient id="slide2Glow" cx="70%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="rgba(200,160,100,0.1)"/>
+      <stop offset="50%" stop-color="rgba(180,140,80,0.04)"/>
+      <stop offset="100%" stop-color="rgba(160,120,60,0)"/>
+    </radialGradient>
+    <radialGradient id="s2Cookie1" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#4A2A18"/>
+      <stop offset="40%" stop-color="#2A1208"/>
+      <stop offset="100%" stop-color="#120804"/>
+    </radialGradient>
+    <radialGradient id="s2Cookie2" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#B8453A"/>
+      <stop offset="40%" stop-color="#8B2C22"/>
+      <stop offset="100%" stop-color="#521610"/>
+    </radialGradient>
+    <radialGradient id="s2Cookie3" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="40%" stop-color="#D4A853"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <linearGradient id="goldAccent2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#DAA520"/>
+      <stop offset="50%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <filter id="s2Shadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="15" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="s2TextGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <linearGradient id="decoLine2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="rgba(218,165,32,0.35)"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="800" fill="url(#slide2Bg)"/>
+  <rect width="1920" height="800" fill="url(#slide2Glow)"/>
+
+  <!-- Left side cookies spread -->
+  <ellipse cx="250" cy="480" rx="140" ry="50" fill="url(#s2Cookie1)" filter="url(#s2Shadow)"/>
+  <ellipse cx="400" cy="460" rx="145" ry="52" fill="url(#s2Cookie2)" filter="url(#s2Shadow)"/>
+  <ellipse cx="320" cy="410" rx="135" ry="48" fill="url(#s2Cookie3)" filter="url(#s2Shadow)"/>
+  <ellipse cx="250" cy="380" rx="130" ry="46" fill="url(#s2Cookie1)" filter="url(#s2Shadow)"/>
+
+  <!-- Right side -->
+  <ellipse cx="1600" cy="440" rx="155" ry="55" fill="url(#s2Cookie3)" filter="url(#s2Shadow)"/>
+  <ellipse cx="1550" cy="390" rx="145" ry="52" fill="url(#s2Cookie2)" filter="url(#s2Shadow)"/>
+  <ellipse cx="1620" cy="500" rx="140" ry="50" fill="url(#s2Cookie1)" filter="url(#s2Shadow)"/>
+
+  <!-- Text centered -->
+  <text x="960" y="310" font-family="Georgia, serif" font-size="58" fill="#FFF8E0" text-anchor="middle" font-weight="bold" filter="url(#s2TextGlow)" letter-spacing="3">Signature</text>
+  <text x="960" y="385" font-family="Georgia, serif" font-size="54" fill="url(#goldAccent2)" text-anchor="middle" font-weight="bold" filter="url(#s2TextGlow)" letter-spacing="5">COLLECTION</text>
+
+  <rect x="830" y="405" width="260" height="1.5" fill="url(#decoLine2)"/>
+
+  <text x="960" y="445" font-family="Arial, sans-serif" font-size="15" fill="rgba(255,235,210,0.4)" text-anchor="middle" letter-spacing="5">DISCOVER OUR PREMIUM VARIETIES</text>
+
+  <rect x="0" y="700" width="1920" height="100" fill="url(#slide2Bg)" opacity="0.7"/>
+</svg>

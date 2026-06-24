@@ -2,6 +2,7 @@
 
 import { useState, useRef, FormEvent } from "react";
 import { motion, useInView } from "framer-motion";
+import Image from "next/image";
 import {
   FaPhone, FaWhatsapp, FaInstagram, FaYoutube, FaEnvelope,
   FaMapMarkerAlt, FaClock, FaPaperPlane, FaCheck, FaCookieBite,
@@ -382,14 +383,11 @@ export default function ContactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="img-placeholder relative w-full h-72 md:h-96 rounded-2xl overflow-hidden shadow-lg border border-gold/20 flex items-center justify-center"
+            className="relative w-full h-72 md:h-96 rounded-2xl overflow-hidden shadow-lg border border-gold/20"
           >
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-5 left-5 text-gold/20 text-7xl">📍</div>
-              <div className="absolute bottom-5 right-5 text-gold/20 text-7xl">🍪</div>
-              <div className="absolute top-1/2 left-1/3 text-gold/20 text-5xl">★</div>
-            </div>
-            <div className="relative z-10 text-center px-6">
+            <Image src="/images/general/about-story.svg" alt="Zixo Cookies bakery location" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+            <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 z-10 text-center px-6 pb-8">
               <FaMapMarkerAlt className="text-gold mx-auto mb-4" size={40} />
               <h3 className="text-2xl md:text-3xl font-bold text-cream mb-2">
                 Zixo Cookies Location

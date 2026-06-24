@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="t2Bg" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#B8453A"/>
+      <stop offset="60%" stop-color="#8B2C22"/>
+      <stop offset="100%" stop-color="#521610"/>
+    </radialGradient>
+    <radialGradient id="t2Glow" cx="40%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,200,180,0.2)"/>
+      <stop offset="100%" stop-color="rgba(255,200,180,0)"/>
+    </radialGradient>
+    <filter id="t2Shadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <circle cx="100" cy="100" r="90" fill="url(#t2Bg)" filter="url(#t2Shadow)"/>
+  <circle cx="100" cy="100" r="90" fill="url(#t2Glow)"/>
+  <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,215,0,0.15)" stroke-width="1.5"/>
+  <text x="100" y="118" font-family="Georgia, serif" font-size="48" fill="#FFF8E0" text-anchor="middle" font-weight="bold">M</text>
+  <circle cx="100" cy="100" r="85" fill="none" stroke="rgba(255,235,210,0.1)" stroke-width="0.5"/>
+</svg>

@@ -3,7 +3,8 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { FaStar, FaShoppingCart, FaEye, FaHeart, FaCookieBite } from "react-icons/fa";
+import Image from "next/image";
+import { FaStar, FaShoppingCart, FaEye, FaHeart } from "react-icons/fa";
 import { useCartStore } from "@/store/cart";
 import { toast } from "react-hot-toast";
 import { formatPrice } from "@/lib/utils";
@@ -12,6 +13,7 @@ const products = [
   {
     id: "cc-001",
     name: "Classic Chocolate Chip Cookie",
+    image: "/images/products/classic-chocolate-chip.svg",
     price: 199,
     discountPrice: null,
     rating: 4.8,
@@ -21,6 +23,7 @@ const products = [
   {
     id: "od-002",
     name: "Oreo Delight Cookie",
+    image: "/images/products/oreo-delight.svg",
     price: 249,
     discountPrice: 199,
     rating: 4.9,
@@ -30,6 +33,7 @@ const products = [
   {
     id: "rv-003",
     name: "Red Velvet Cookie",
+    image: "/images/products/red-velvet.svg",
     price: 229,
     discountPrice: null,
     rating: 4.7,
@@ -39,6 +43,7 @@ const products = [
   {
     id: "gb-004",
     name: "Golden Butter Cookie",
+    image: "/images/products/golden-butter.svg",
     price: 179,
     discountPrice: null,
     rating: 4.6,
@@ -48,6 +53,7 @@ const products = [
   {
     id: "dc-005",
     name: "Double Chocolate Fudge Cookie",
+    image: "/images/products/double-chocolate.svg",
     price: 259,
     discountPrice: null,
     rating: 4.9,
@@ -57,6 +63,7 @@ const products = [
   {
     id: "mb-006",
     name: "Signature Mixed Box",
+    image: "/images/products/mixed-box.svg",
     price: 599,
     discountPrice: 549,
     rating: 4.8,
@@ -149,15 +156,6 @@ export default function BestSellers() {
     }
   };
 
-  const gradients = [
-    "from-amber-200 to-orange-300",
-    "from-purple-200 to-pink-300",
-    "from-red-200 to-rose-300",
-    "from-yellow-200 to-amber-300",
-    "from-brown-200 to-amber-300",
-    "from-pink-200 to-purple-300",
-  ];
-
   return (
     <section id="best-sellers" className="py-16 md:py-24 bg-dark">
       <div className="max-w-7xl mx-auto px-4">
@@ -179,9 +177,9 @@ export default function BestSellers() {
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"
         >
-          {products.map((product, idx) => {
+          {products.map((product) => {
             const discountPct = product.discountPrice
               ? Math.round(
                   ((product.price - product.discountPrice) / product.price) * 100
@@ -200,12 +198,13 @@ export default function BestSellers() {
                 className="group glass-card rounded-2xl overflow-hidden"
               >
                 <div className="relative overflow-hidden">
-                  <div
-                    className={`w-full h-72 bg-gradient-to-br ${gradients[idx]} flex items-center justify-center`}
-                  >
-                    <FaCookieBite
-                      size={80}
-                      className="text-white/60 group-hover:scale-110 transition-transform duration-300"
+                  <div className="relative w-full h-48 md:h-72 overflow-hidden">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   </div>
 
@@ -250,7 +249,7 @@ export default function BestSellers() {
                   </div>
                 </div>
 
-                <div className="p-5">
+                <div className="p-4 md:p-5">
                   <Link href={`/shop`}>
                     <h3 className="font-playfair text-lg font-semibold text-cream mb-2 hover:text-gold transition-colors">
                       {product.name}

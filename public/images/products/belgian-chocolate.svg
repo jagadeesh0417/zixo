@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="bcBase" cx="48%" cy="42%" r="52%" fx="45%" fy="38%">
+      <stop offset="0%" stop-color="#3A2010"/>
+      <stop offset="20%" stop-color="#2E1508"/>
+      <stop offset="50%" stop-color="#1E0C04"/>
+      <stop offset="80%" stop-color="#120803"/>
+      <stop offset="100%" stop-color="#080402"/>
+    </radialGradient>
+    <radialGradient id="bcHighlight" cx="38%" cy="35%" r="45%">
+      <stop offset="0%" stop-color="rgba(100,70,50,0.2)"/>
+      <stop offset="40%" stop-color="rgba(80,55,40,0.08)"/>
+      <stop offset="100%" stop-color="rgba(50,35,25,0)"/>
+    </radialGradient>
+    <radialGradient id="bcGloss" cx="35%" cy="32%" r="35%">
+      <stop offset="0%" stop-color="rgba(180,150,130,0.1)"/>
+      <stop offset="100%" stop-color="rgba(180,150,130,0)"/>
+    </radialGradient>
+    <linearGradient id="goldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="30%" stop-color="#FFC107"/>
+      <stop offset="60%" stop-color="#DAA520"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <linearGradient id="goldDrizzle" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,215,0,0.8)"/>
+      <stop offset="50%" stop-color="rgba(218,165,32,0.6)"/>
+      <stop offset="100%" stop-color="rgba(184,134,11,0.4)"/>
+    </linearGradient>
+    <radialGradient id="bcBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1A100A"/>
+      <stop offset="100%" stop-color="#0A0604"/>
+    </radialGradient>
+    <filter id="shadowBC">
+      <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="goldGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="goldShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <clipPath id="bcClip">
+      <path d="M195,415 C180,360 205,300 265,270 C300,250 345,238 395,240 C440,243 480,253 520,275 C570,303 605,343 617,400 C630,460 613,510 575,543 C543,570 497,580 450,583 C395,585 340,573 295,550 C243,523 210,480 195,415Z"/>
+    </clipPath>
+  </defs>
+
+  <rect width="800" height="800" fill="url(#bcBg)"/>
+  <ellipse cx="400" cy="590" rx="340" ry="50" fill="rgba(255,255,255,0.02)"/>
+  <ellipse cx="400" cy="585" rx="280" ry="48" fill="rgba(0,0,0,0.6)" filter="url(#shadowBC)"/>
+
+  <!-- Cookie body -->
+  <path d="M195,415 C180,360 205,300 265,270 C300,250 345,238 395,240 C440,243 480,253 520,275 C570,303 605,343 617,400 C630,460 613,510 575,543 C543,570 497,580 450,583 C395,585 340,573 295,550 C243,523 210,480 195,415Z"
+        fill="url(#bcBase)" filter="url(#shadowBC)"/>
+  <path d="M195,415 C180,360 205,300 265,270 C300,250 345,238 395,240 C440,243 480,253 520,275 C570,303 605,343 617,400 C630,460 613,510 575,543 C543,570 497,580 450,583 C395,585 340,573 295,550 C243,523 210,480 195,415Z"
+        fill="url(#bcHighlight)"/>
+  <path d="M195,415 C180,360 205,300 265,270 C300,250 345,238 395,240 C440,243 480,253 520,275 C570,303 605,343 617,400 C630,460 613,510 575,543 C543,570 497,580 450,583 C395,585 340,573 295,550 C243,523 210,480 195,415Z"
+        fill="url(#bcGloss)"/>
+
+  <!-- Texture cracks -->
+  <g stroke="#2E1508" stroke-width="1.5" fill="none" opacity="0.2" clip-path="url(#bcClip)">
+    <path d="M305,350 L330,375 L320,400"/>
+    <path d="M445,300 L470,335 L460,365"/>
+    <path d="M365,450 L395,465 L415,448"/>
+    <path d="M495,410 L520,435 L510,455"/>
+    <path d="M275,440 L300,455"/>
+    <path d="M535,370 L560,385"/>
+  </g>
+
+  <!-- Dark chocolate chunks -->
+  <path d="M310,320 C318,308 332,312 328,328 C325,340 308,335 310,320Z" fill="#0D0603" filter="url(#goldShadow)"/>
+  <path d="M460,340 C470,326 486,330 482,348 C478,362 458,356 460,340Z" fill="#0D0603" filter="url(#goldShadow)"/>
+  <path d="M380,420 C390,406 406,410 402,428 C398,442 378,436 380,420Z" fill="#0D0603" filter="url(#goldShadow)"/>
+  <path d="M510,430 C520,416 536,420 532,438 C528,452 508,446 510,430Z" fill="#0D0603" filter="url(#goldShadow)"/>
+  <path d="M420,290 C428,278 440,281 437,295 C434,306 420,302 420,290Z" fill="#0D0603" filter="url(#goldShadow)"/>
+  <path d="M530,370 C538,358 550,361 547,375 C544,386 530,382 530,370Z" fill="#0D0603" filter="url(#goldShadow)"/>
+  <path d="M450,440 C460,424 478,428 474,448 C470,464 448,456 450,440Z" fill="#0D0603" filter="url(#goldShadow)"/>
+
+  <!-- Gold leaf accents -->
+  <g filter="url(#goldGlow)">
+    <!-- Gold drizzle lines -->
+    <path d="M280,310 C300,305 310,320 330,315 C350,310 360,325 380,320"
+          fill="none" stroke="url(#goldDrizzle)" stroke-width="2.5" stroke-linecap="round" filter="url(#goldShadow)"/>
+    <path d="M350,450 C370,445 380,460 400,455 C420,450 430,465 450,460"
+          fill="none" stroke="url(#goldDrizzle)" stroke-width="2" stroke-linecap="round" filter="url(#goldShadow)"/>
+    <path d="M420,290 C440,285 450,300 470,295"
+          fill="none" stroke="url(#goldDrizzle)" stroke-width="2" stroke-linecap="round" filter="url(#goldShadow)"/>
+    <path d="M300,420 C310,415 320,425 330,418"
+          fill="none" stroke="url(#goldDrizzle)" stroke-width="1.5" stroke-linecap="round" filter="url(#goldShadow)"/>
+  </g>
+
+  <!-- Gold leaf specks -->
+  <g fill="url(#goldAccent)" opacity="0.7" filter="url(#goldShadow)">
+    <circle cx="290" cy="350" r="2"/>
+    <circle cx="480" cy="380" r="2.5"/>
+    <circle cx="350" cy="340" r="1.5"/>
+    <circle cx="510" cy="350" r="1.8"/>
+    <circle cx="380" cy="480" r="2"/>
+    <circle cx="440" cy="500" r="1.5"/>
+    <circle cx="320" cy="440" r="1.8"/>
+    <circle cx="540" cy="420" r="2"/>
+  </g>
+
+  <!-- Specular highlight -->
+  <ellipse cx="350" cy="300" rx="50" ry="25" fill="rgba(180,150,130,0.05)" transform="rotate(-15,350,300)"/>
+  <ellipse cx="330" cy="285" rx="25" ry="10" fill="rgba(200,170,150,0.03)" transform="rotate(-20,330,285)"/>
+
+  <path d="M265,270 C300,250 345,238 395,240 C440,243 480,253 520,275"
+        fill="none" stroke="rgba(180,150,130,0.08)" stroke-width="3"/>
+</svg>

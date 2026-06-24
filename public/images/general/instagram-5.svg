@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <radialGradient id="i5Bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2C1A12"/>
+      <stop offset="100%" stop-color="#140A06"/>
+    </radialGradient>
+    <radialGradient id="i5Cookie" cx="45%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#E8C07A"/>
+      <stop offset="40%" stop-color="#D4A853"/>
+      <stop offset="100%" stop-color="#7A5220"/>
+    </radialGradient>
+    <linearGradient id="goldDrizzle" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,215,0,0.8)"/>
+      <stop offset="50%" stop-color="rgba(218,165,32,0.6)"/>
+      <stop offset="100%" stop-color="rgba(184,134,11,0.4)"/>
+    </linearGradient>
+    <radialGradient id="chipGrad" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#3D1C02"/>
+      <stop offset="60%" stop-color="#2A1200"/>
+      <stop offset="100%" stop-color="#1A0A00"/>
+    </radialGradient>
+    <filter id="i5Shadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <filter id="chipShadow">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="goldGlow">
+      <feGaussianBlur stdDeviation="1.5"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#i5Bg)"/>
+  <ellipse cx="300" cy="480" rx="240" ry="35" fill="rgba(0,0,0,0.4)"/>
+
+  <!-- Cookie -->
+  <ellipse cx="300" cy="350" rx="170" ry="60" fill="url(#i5Cookie)" filter="url(#i5Shadow)"/>
+
+  <!-- Highlight -->
+  <ellipse cx="270" cy="320" rx="70" ry="25" fill="rgba(255,235,190,0.06)" transform="rotate(-10,270,320)"/>
+
+  <!-- Chips -->
+  <g fill="url(#chipGrad)" filter="url(#chipShadow)">
+    <ellipse cx="240" cy="330" rx="12" ry="9" transform="rotate(-15,240,330)"/>
+    <ellipse cx="360" cy="320" rx="13" ry="9" transform="rotate(10,360,320)"/>
+    <ellipse cx="300" cy="380" rx="11" ry="8" transform="rotate(-20,300,380)"/>
+    <ellipse cx="210" cy="360" rx="10" ry="7" transform="rotate(5,210,360)"/>
+    <ellipse cx="390" cy="360" rx="12" ry="8" transform="rotate(-10,390,360)"/>
+    <ellipse cx="270" cy="300" rx="10" ry="7" transform="rotate(20,270,300)"/>
+    <ellipse cx="340" cy="395" rx="11" ry="8" transform="rotate(-5,340,395)"/>
+    <ellipse cx="330" cy="340" rx="12" ry="9" transform="rotate(-25,330,340)"/>
+  </g>
+
+  <!-- Gold drizzle -->
+  <g filter="url(#goldGlow)">
+    <path d="M200,320 C220,315 230,330 250,325 C270,320 280,335 300,330 C320,325 330,340 350,335 C370,330 380,345 400,340"
+          fill="none" stroke="url(#goldDrizzle)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M220,370 C240,365 250,380 270,375 C290,370 300,385 320,380"
+          fill="none" stroke="url(#goldDrizzle)" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Gold flecks -->
+  <g fill="#FFD700" opacity="0.5">
+    <circle cx="250" cy="340" r="1.5"/>
+    <circle cx="350" cy="350" r="2"/>
+    <circle cx="310" cy="370" r="1.5"/>
+    <circle cx="380" cy="340" r="1"/>
+    <circle cx="230" cy="360" r="1.5"/>
+  </g>
+</svg>

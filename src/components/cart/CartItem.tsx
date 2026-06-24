@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaTrash, FaMinus, FaPlus, FaCookieBite, FaRupeeSign } from "react-icons/fa";
+import Image from "next/image";
+import { FaTrash, FaMinus, FaPlus, FaRupeeSign } from "react-icons/fa";
 import { formatPrice } from "@/lib/utils";
 import { CartItemType } from "@/types";
 
@@ -24,8 +25,12 @@ export default function CartItem({ item, onUpdateQuantity, onRemove }: CartItemP
       transition={{ duration: 0.3, ease: "easeInOut" as const }}
       className="glass-card flex items-center gap-4 p-4 border-gold/20"
     >
-      <div className="img-placeholder w-20 h-20 flex-shrink-0 rounded-lg flex items-center justify-center overflow-hidden">
-        <FaCookieBite size={36} className="text-gold/40" />
+      <div className="relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden">
+        {item.product.images?.[0] ? (
+          <Image src={item.product.images[0]} alt={item.product.name} fill className="object-cover" sizes="80px" />
+        ) : (
+          <Image src={`/images/products/${item.product.slug}.svg`} alt={item.product.name} fill className="object-cover" sizes="80px" />
+        )}
       </div>
 
       <div className="flex-1 min-w-0">

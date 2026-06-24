@@ -16,33 +16,29 @@ import {
 interface Slide {
   heading: [string, string];
   description: string;
-  gradient: string;
+  image: string;
 }
 
 const slides: Slide[] = [
   {
     heading: ["Freshly Baked Happiness", "Delivered to Your Door"],
     description: "Handcrafted gourmet cookies made with premium ingredients",
-    gradient:
-      "linear-gradient(135deg, #1A0A05 0%, #3D1C0A 25%, #6B3A1F 50%, #D4873A 75%, #F5D68A 100%)",
+    image: "/images/banners/hero-slide-1.svg",
   },
   {
     heading: ["Indulge in Our", "Signature Collection"],
     description: "Belgian chocolate, European butter, pure love in every bite",
-    gradient:
-      "linear-gradient(135deg, #0D0805 0%, #2A1508 25%, #5C2D10 50%, #A6682F 75%, #E8C47A 100%)",
+    image: "/images/banners/hero-slide-2.svg",
   },
   {
     heading: ["Perfect Gifts For", "Every Occasion"],
     description: "Beautifully packed gift boxes that spread joy",
-    gradient:
-      "linear-gradient(135deg, #1A0D05 0%, #3D1F0A 25%, #8B4A20 50%, #C89040 75%, #F0DBA0 100%)",
+    image: "/images/banners/hero-slide-3.svg",
   },
   {
     heading: ["Taste The", "Zixo Difference"],
     description: "Where tradition meets innovation in every cookie",
-    gradient:
-      "linear-gradient(135deg, #0D0503 0%, #2A1005 25%, #5C2A0E 50%, #B87830 75%, #F0C870 100%)",
+    image: "/images/banners/hero-slide-4.svg",
   },
 ];
 
@@ -185,7 +181,7 @@ export default function HeroSection() {
           exit="exit"
           className="absolute inset-0"
         >
-          <div className="absolute inset-0" style={{ background: slide.gradient }} />
+          <div className="absolute inset-0" style={{ backgroundImage: `url(${slide.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
 
           <motion.div
