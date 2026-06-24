@@ -61,10 +61,10 @@ export default function Footer() {
           <motion.div variants={itemVariants} className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center mb-4 group">
               <Image
-                src="/images/general/logo.svg"
+                src="/images/logo.png"
                 alt="Zixo Cookies"
-                width={140}
-                height={50}
+                width={40}
+                height={40}
                 className="h-10 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
               />
             </Link>

@@ -81,10 +81,10 @@ export default function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center group">
               <Image
-                src="/images/general/logo.svg"
+                src="/images/logo.png"
                 alt="Zixo Cookies"
-                width={140}
-                height={50}
+                width={40}
+                height={40}
                 className="h-8 md:h-10 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
                 priority
               />
@@ -198,10 +198,10 @@ export default function Header() {
                   onClick={() => setMobileOpen(false)}
                 >
                   <Image
-                    src="/images/general/logo.svg"
+                    src="/images/logo.png"
                     alt="Zixo Cookies"
-                    width={100}
-                    height={36}
+                    width={32}
+                    height={32}
                     className="h-7 w-auto"
                   />
                 </Link>
