@@ -21,12 +21,13 @@ export default function ProductCard({ product }: ProductCardProps) {
   const toggleWishlist = useCartStore((s) => s.toggleWishlist);
   const isInWishlist = useCartStore((s) => s.isInWishlist);
   const [wishlistState, setWishlistState] = useState(isInWishlist(product.id));
+  const [imgError, setImgError] = useState(false);
 
   const discountPct = product.discountPrice
     ? getDiscountPercentage(product.price, product.discountPrice)
     : 0;
 
-  const imageSrc = product.images?.[0] || `/images/products/${product.slug}.svg`;
+  const imageSrc = product.images?.[0] && !imgError ? product.images[0] : `/images/products/${product.slug}.svg`;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -70,6 +71,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-500"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            onError={() => setImgError(true)}
           />
         </div>
 
