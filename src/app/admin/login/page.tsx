@@ -3,30 +3,26 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { FiLock, FiMail, FiShield, FiEye, FiEyeOff, FiBox } from "react-icons/fi";
+import { FiLock, FiUser, FiShield, FiEye, FiEyeOff, FiBox } from "react-icons/fi";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
 
   const validate = () => {
-    const newErrors: { email?: string; password?: string } = {};
-    if (!email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Invalid email format";
+    const newErrors: { username?: string; password?: string } = {};
+    if (!username.trim()) {
+      newErrors.username = "Username is required";
     }
     if (!password.trim()) {
       newErrors.password = "Password is required";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -42,7 +38,7 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
 
@@ -51,15 +47,15 @@ export default function AdminLoginPage() {
         toast.success("Welcome back, Admin!");
         router.push("/admin");
       } else {
-        toast.error(data.error || "Invalid email or password");
+        toast.error(data.error || "Invalid username or password");
       }
     } catch {
-      if (email === "admin@zixocookies.com" && password === "Admin@123") {
+      if (username === "zixocookies@gmail.com" && password === "123456") {
         localStorage.setItem("admin_token", "demo-token-zixo-admin");
         toast.success("Welcome back, Admin!");
         router.push("/admin");
       } else {
-        toast.error("Invalid email or password");
+        toast.error("Invalid username or password");
       }
     }
     setLoading(false);
@@ -95,29 +91,29 @@ export default function AdminLoginPage() {
             Admin Login
           </h2>
           <p className="text-[#D4AF37]/60 text-xs text-center mb-6">
-            Demo: <span className="text-[#D4AF37]">admin@zixocookies.com</span> / <span className="text-[#D4AF37]">Admin@123</span>
+            Demo: <span className="text-[#D4AF37]">zixocookies@gmail.com</span> / <span className="text-[#D4AF37]">123456</span>
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-[#F8F4EE]/80 text-sm font-medium mb-1.5">
-                Email Address
+                Username
               </label>
               <div className="relative">
-                <FiMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#F8F4EE]/40 text-lg" />
+                <FiUser className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#F8F4EE]/40 text-lg" />
                 <input
-                  type="email"
-                  value={email}
+                  type="text"
+                  value={username}
                   onChange={(e) => {
-                    setEmail(e.target.value);
-                    if (errors.email) setErrors((prev) => ({ ...prev, email: "" }));
+                    setUsername(e.target.value);
+                    if (errors.username) setErrors((prev) => ({ ...prev, username: "" }));
                   }}
-                  placeholder="admin@zixocookies.com"
+                  placeholder="zixocookies@gmail.com"
                   className="w-full pl-11 pr-4 py-3 bg-[#0A0503] border border-[#D4AF37]/20 rounded-xl text-[#F8F4EE] placeholder:text-[#F8F4EE]/30 focus:outline-none focus:border-[#D4AF37] focus:bg-[#120A07] transition-all"
                 />
               </div>
-              {errors.email && (
-                <p className="text-red-400 text-xs mt-1">{errors.email}</p>
+              {errors.username && (
+                <p className="text-red-400 text-xs mt-1">{errors.username}</p>
               )}
             </div>
 

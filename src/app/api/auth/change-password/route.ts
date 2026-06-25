@@ -17,7 +17,7 @@ export async function POST(request: Request) {
       return badRequest("New password must be at least 6 characters");
     }
 
-    if (currentPassword !== "Admin@123") {
+    if (currentPassword !== "123456") {
       return badRequest("Current password is incorrect");
     }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -19,7 +19,11 @@ import {
 } from "react-icons/fi";
 import toast from "react-hot-toast";
 
-const categories = ["Chocolate", "Oreo", "Red Velvet", "Butter", "Mixed Boxes"];
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -37,10 +41,11 @@ const itemVariants = {
 export default function NewProductPage() {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [form, setForm] = useState({
     name: "",
     sku: "",
-    category: "",
+    categoryId: "",
     description: "",
     price: "",
     discountPrice: "",
@@ -55,6 +60,14 @@ export default function NewProductPage() {
     images: [] as string[],
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) setCategories(data.categories);
+      });
+  }, []);
 
   const handleChange = (field: string, value: string | boolean) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -77,7 +90,7 @@ export default function NewProductPage() {
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!form.name.trim()) errs.name = "Product name is required";
-    if (!form.category) errs.category = "Category is required";
+    if (!form.categoryId) errs.categoryId = "Category is required";
     if (!form.price || Number(form.price) <= 0) errs.price = "Valid price is required";
     if (form.stockQuantity === "" || Number(form.stockQuantity) < 0) errs.stockQuantity = "Valid stock quantity is required";
     setErrors(errs);
@@ -101,7 +114,7 @@ export default function NewProductPage() {
           name: form.name,
           sku: form.sku,
           slug: form.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
-          category: form.category,
+          categoryId: form.categoryId,
           description: form.description,
           price: parseFloat(form.price),
           discountPrice: form.discountPrice ? parseFloat(form.discountPrice) : null,
@@ -117,14 +130,16 @@ export default function NewProductPage() {
         }),
       });
 
-      if (res.ok) {
+      const data = await res.json();
+
+      if (data.success) {
         toast.success(`Product "${form.name}" created successfully`);
         setSaving(false);
         if (addAnother) {
           setForm({
             name: "",
             sku: "",
-            category: "",
+            categoryId: "",
             description: "",
             price: "",
             discountPrice: "",
@@ -143,10 +158,10 @@ export default function NewProductPage() {
           router.push("/admin/products");
         }
       } else {
-        toast.error("Failed to create product");
+        toast.error(data.error || "Failed to create product");
         setSaving(false);
       }
-    } catch {
+    } catch (err) {
       toast.error("Failed to create product");
       setSaving(false);
     }
@@ -226,16 +241,16 @@ export default function NewProductPage() {
                   <div>
                     <label className={labelClass}>Category *</label>
                     <select
-                      value={form.category}
-                      onChange={(e) => handleChange("category", e.target.value)}
-                      className={inputClass("category")}
+                      value={form.categoryId}
+                      onChange={(e) => handleChange("categoryId", e.target.value)}
+                      className={inputClass("categoryId")}
                     >
                       <option value="">Select category</option>
                       {categories.map((cat) => (
-                        <option key={cat} value={cat}>{cat}</option>
+                        <option key={cat.id} value={cat.id}>{cat.name}</option>
                       ))}
                     </select>
-                    {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category}</p>}
+                    {errors.categoryId && <p className="text-red-500 text-xs mt-1">{errors.categoryId}</p>}
                   </div>
                 </div>
                 <div>

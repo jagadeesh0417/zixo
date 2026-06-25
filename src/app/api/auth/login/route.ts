@@ -2,28 +2,28 @@ import { NextResponse } from "next/server";
 import { generateToken, badRequest, unauthorized } from "@/lib/auth";
 
 const ADMIN_CREDENTIALS = {
-  email: "admin@zixocookies.com",
-  password: "Admin@123",
+  username: "zixocookies@gmail.com",
+  password: "123456",
 };
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, password } = body;
+    const { username, password } = body;
 
-    if (!email || !password) {
-      return badRequest("Email and password are required");
+    if (!username || !password) {
+      return badRequest("Username and password are required");
     }
 
-    if (email !== ADMIN_CREDENTIALS.email || password !== ADMIN_CREDENTIALS.password) {
+    if (username !== ADMIN_CREDENTIALS.username || password !== ADMIN_CREDENTIALS.password) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
 
-    const token = generateToken({ id: "1", email, role: "SUPER_ADMIN" });
+    const token = generateToken({ id: "1", username, role: "SUPER_ADMIN" });
 
     const response = NextResponse.json({
       success: true,
-      admin: { id: "1", name: "Admin", email, role: "SUPER_ADMIN", isFirstLogin: false },
+      admin: { id: "1", name: "Admin", username, role: "SUPER_ADMIN", isFirstLogin: false },
     });
 
     response.cookies.set("admin_token", token, {

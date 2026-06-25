@@ -136,7 +136,7 @@ export default function AdminHeader({ onToggleSidebar }: AdminHeaderProps) {
                   >
                     <div className="px-4 py-2 border-b border-[#D4AF37]/10">
                       <p className="text-sm font-medium text-[#F8F4EE]/80">Admin</p>
-                      <p className="text-xs text-[#F8F4EE]/40">admin@zixocookies.com</p>
+                      <p className="text-xs text-[#F8F4EE]/40">zixocookies@gmail.com</p>
                     </div>
                     <button
                       onClick={() => {

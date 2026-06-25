@@ -20,7 +20,7 @@ import {
 } from "react-icons/fi";
 import toast from "react-hot-toast";
 
-const categories = ["Chocolate", "Oreo", "Red Velvet", "Butter", "Mixed Boxes"];
+
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -35,17 +35,20 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
+interface Category { id: string; name: string; slug: string; }
+
 export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
 
   const [saving, setSaving] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [product, setProduct] = useState<{ id: string; name: string } | null>(null);
   const [form, setForm] = useState({
     name: "",
     sku: "",
-    category: "",
+    categoryId: "",
     description: "",
     price: "",
     discountPrice: "",
@@ -62,6 +65,14 @@ export default function EditProductPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
+    fetch("/api/categories")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) setCategories(data.categories);
+      });
+  }, []);
+
+  useEffect(() => {
     fetch(`/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -71,7 +82,7 @@ export default function EditProductPage() {
           setForm({
             name: p.name,
             sku: p.sku,
-            category: p.category.name,
+            categoryId: p.category?.id || "",
             description: p.description,
             price: String(p.price),
             discountPrice: p.discountPrice ? String(p.discountPrice) : "",
@@ -110,7 +121,7 @@ export default function EditProductPage() {
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!form.name.trim()) errs.name = "Product name is required";
-    if (!form.category) errs.category = "Category is required";
+    if (!form.categoryId) errs.categoryId = "Category is required";
     if (!form.price || Number(form.price) <= 0) errs.price = "Valid price is required";
     if (form.stockQuantity === "" || Number(form.stockQuantity) < 0) errs.stockQuantity = "Valid stock quantity is required";
     setErrors(errs);
@@ -134,7 +145,7 @@ export default function EditProductPage() {
           name: form.name,
           sku: form.sku,
           slug: form.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
-          category: form.category,
+          categoryId: form.categoryId,
           description: form.description,
           price: parseFloat(form.price),
           discountPrice: form.discountPrice ? parseFloat(form.discountPrice) : null,
@@ -242,16 +253,16 @@ export default function EditProductPage() {
                   <div>
                     <label className={labelClass}>Category *</label>
                     <select
-                      value={form.category}
-                      onChange={(e) => handleChange("category", e.target.value)}
-                      className={inputClass("category")}
+                      value={form.categoryId}
+                      onChange={(e) => handleChange("categoryId", e.target.value)}
+                      className={inputClass("categoryId")}
                     >
                       <option value="">Select category</option>
                       {categories.map((cat) => (
-                        <option key={cat} value={cat}>{cat}</option>
+                        <option key={cat.id} value={cat.id}>{cat.name}</option>
                       ))}
                     </select>
-                    {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category}</p>}
+                    {errors.categoryId && <p className="text-red-500 text-xs mt-1">{errors.categoryId}</p>}
                   </div>
                 </div>
                 <div>
