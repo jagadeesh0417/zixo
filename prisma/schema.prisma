@@ -19,11 +19,6 @@ enum OrderStatus {
 
 enum PaymentMethod {
   RAZORPAY
-  UPI
-  CREDIT_CARD
-  DEBIT_CARD
-  NET_BANKING
-  COD
 }
 
 enum PaymentStatus {

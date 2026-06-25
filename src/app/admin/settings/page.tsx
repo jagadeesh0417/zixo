@@ -115,9 +115,6 @@ export default function AdminSettingsPage() {
   const [payment, setPayment] = useState({
     razorpayKeyId: "rzp_live_T5ni2sDYcYohfP",
     razorpayKeySecret: "s7A1w401oscvUoDUtLRA8XnJ",
-    enableCOD: true,
-    enableUPI: true,
-    enableCard: true,
   });
 
   const [email, setEmail] = useState({
@@ -359,20 +356,6 @@ export default function AdminSettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <InputField label="Razorpay Key ID" value={payment.razorpayKeyId} onChange={(v) => setPayment((p) => ({ ...p, razorpayKeyId: v }))} mask={true} />
                   <InputField label="Razorpay Key Secret" value={payment.razorpayKeySecret} onChange={(v) => setPayment((p) => ({ ...p, razorpayKeySecret: v }))} mask={true} />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <span className="text-sm font-medium text-gray-700">Enable COD</span>
-                    <Toggle value={payment.enableCOD} onChange={(v) => setPayment((p) => ({ ...p, enableCOD: v }))} />
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <span className="text-sm font-medium text-gray-700">Enable UPI</span>
-                    <Toggle value={payment.enableUPI} onChange={(v) => setPayment((p) => ({ ...p, enableUPI: v }))} />
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <span className="text-sm font-medium text-gray-700">Enable Card Payments</span>
-                    <Toggle value={payment.enableCard} onChange={(v) => setPayment((p) => ({ ...p, enableCard: v }))} />
-                  </div>
                 </div>
               </div>
             )}

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  FaArrowLeft, FaArrowRight, FaCheck, FaCreditCard, FaUniversity, FaMobile, FaTruck, FaLock, FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCity, FaMapPin, FaCookieBite, FaHome, FaCcVisa, FaCcMastercard, FaGooglePay, FaRupeeSign, FaTimes, FaEdit,
+  FaArrowLeft, FaArrowRight, FaCheck, FaCreditCard, FaLock, FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCity, FaMapPin, FaCookieBite, FaHome, FaRupeeSign, FaTimes, FaEdit,
 } from "react-icons/fa";
 import { useCartStore } from "@/store/cart";
 import { formatPrice, generateOrderNumber } from "@/lib/utils";
@@ -40,11 +40,6 @@ const indianStates = [
 
 const paymentMethods = [
   { id: "razorpay", label: "Razorpay", icon: FaCreditCard },
-  { id: "upi", label: "UPI", icon: FaMobile },
-  { id: "credit-card", label: "Credit Card", icon: FaCcVisa },
-  { id: "debit-card", label: "Debit Card", icon: FaCcMastercard },
-  { id: "net-banking", label: "Net Banking", icon: FaUniversity },
-  { id: "cod", label: "Cash On Delivery", icon: FaTruck },
 ];
 
 export default function CheckoutPage() {
@@ -53,7 +48,7 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<"form" | "success">("form");
   const [loading, setLoading] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("razorpay");
   const [formData, setFormData] = useState<FormData>({
     fullName: "", mobile: "", email: "", address: "", city: "", state: "",
     pincode: "", upiId: "",
@@ -84,8 +79,6 @@ export default function CheckoutPage() {
       errs.pincode = "Enter a valid 6-digit pincode";
 
     if (!paymentMethod) errs.paymentMethod = "Please select a payment method";
-    if (paymentMethod === "upi" && !formData.upiId.trim())
-      errs.upiId = "UPI ID is required";
 
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -362,68 +355,13 @@ export default function CheckoutPage() {
                   Payment Method
                 </h2>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {paymentMethods.map((pm) => {
-                    const Icon = pm.icon;
-                    const isSelected = paymentMethod === pm.id;
-                    return (
-                      <button
-                        key={pm.id}
-                        type="button"
-                        onClick={() => {
-                          setPaymentMethod(pm.id);
-                          if (errors.paymentMethod) {
-                            setErrors((prev) => {
-                              const next = { ...prev };
-                              delete next.paymentMethod;
-                              return next;
-                            });
-                          }
-                        }}
-                        className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
-                          isSelected
-                            ? "border-gold bg-gold/10 text-cream"
-                            : "glass border-gold/20 text-cream/60 hover:border-gold/50"
-                        }`}
-                      >
-                        <Icon size={16} className={isSelected ? "text-gold" : "text-cream/40"} />
-                        {pm.label}
-                        {isSelected && <FaCheck size={12} className="text-gold ml-auto" />}
-                      </button>
-                    );
-                  })}
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-gold bg-gold/10 text-sm font-medium text-cream">
+                  <FaCreditCard size={16} className="text-gold" />
+                  Razorpay
+                  <FaCheck size={12} className="text-gold ml-auto" />
                 </div>
-                {errors.paymentMethod && (
-                  <p className="text-xs text-red-400 mt-2">{errors.paymentMethod}</p>
-                )}
 
-                <AnimatePresence>
-                  {paymentMethod === "upi" && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="mt-4 pt-4 border-t border-gold/10">
-                        <label className="block text-sm font-medium text-cream mb-1.5">
-                          UPI ID <span className="text-red-400">*</span>
-                        </label>
-                        <div className="relative">
-                          <FaMobile size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-cream/30" />
-                          <input
-                            type="text"
-                            value={formData.upiId}
-                            onChange={(e) => handleInputChange("upiId", e.target.value)}
-                            placeholder="example@upi"
-                            className={`input-field w-full pl-10 ${errors.upiId ? "border-red-400" : ""}`}
-                          />
-                        </div>
-                        {errors.upiId && <p className="text-xs text-red-400 mt-1">{errors.upiId}</p>}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+
               </motion.div>
             </div>
 
