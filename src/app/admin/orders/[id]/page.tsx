@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -28,6 +28,42 @@ import {
 import toast from "react-hot-toast";
 import { formatPrice, formatDateTime, getStatusColor } from "@/lib/utils";
 
+interface OrderItem {
+  id: string;
+  productId: string;
+  product: { id: string; name: string; images: string[] };
+  quantity: number;
+  price: number;
+  total: number;
+}
+
+interface Order {
+  id: string;
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  address: string;
+  city: string;
+  state: string;
+  pincode: string;
+  paymentMethod: string;
+  paymentStatus: string;
+  paymentId: string | null;
+  orderStatus: string;
+  trackingNumber: string | null;
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  tax: number;
+  total: number;
+  couponCode: string | null;
+  notes: string | null;
+  items: OrderItem[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 const orderStatusFlow = [
   "PENDING",
   "CONFIRMED",
@@ -49,58 +85,6 @@ const orderStatusLabels: Record<string, string> = {
   CANCELLED: "Cancelled",
 };
 
-const sampleOrder = {
-  id: "ord_001",
-  orderNumber: "ZIXO-A2F3-7K9M",
-  customerName: "Priya Sharma",
-  customerEmail: "priya.sharma@email.com",
-  customerPhone: "+91-9876543210",
-  address: "42, Sunshine Apartments, MG Road",
-  city: "Mumbai",
-  state: "Maharashtra",
-  pincode: "400001",
-  paymentMethod: "Razorpay",
-  paymentStatus: "COMPLETED",
-  paymentId: "pay_O9kLm3Nq5R",
-  orderStatus: "PROCESSING",
-  trackingNumber: "TRACK-IND-78942",
-  subtotal: 1040,
-  discount: 100,
-  shipping: 80,
-  tax: 130,
-  total: 1150,
-  couponCode: "ZIXO10",
-  notes: "Leave at the door. Ring doorbell twice.",
-  items: [
-    {
-      id: "item_1",
-      productId: "1",
-      product: { id: "1", name: "Classic Chocolate Chip", images: [] } as any,
-      quantity: 2,
-      price: 399,
-      total: 798,
-    },
-    {
-      id: "item_2",
-      productId: "2",
-      product: { id: "2", name: "Double Oreo Delight", images: [] } as any,
-      quantity: 1,
-      price: 599,
-      total: 599,
-    },
-    {
-      id: "item_3",
-      productId: "3",
-      product: { id: "3", name: "Butter Classic", images: [] } as any,
-      quantity: 3,
-      price: 399,
-      total: 1197,
-    },
-  ],
-  createdAt: "2026-06-22T10:30:00",
-  updatedAt: "2026-06-22T14:15:00",
-};
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -117,21 +101,80 @@ const itemVariants = {
 export default function OrderDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const [order, setOrder] = useState(sampleOrder);
-  const [selectedStatus, setSelectedStatus] = useState(order.orderStatus);
-  const [trackingInput, setTrackingInput] = useState(order.trackingNumber || "");
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [trackingInput, setTrackingInput] = useState("");
+
+  const fetchOrder = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/orders/${params.id}`);
+      const data = await res.json();
+      if (data.success && data.order) {
+        setOrder(data.order);
+        setSelectedStatus(data.order.orderStatus);
+        setTrackingInput(data.order.trackingNumber || "");
+      } else {
+        toast.error("Order not found");
+        router.push("/admin/orders");
+      }
+    } catch {
+      toast.error("Failed to load order");
+      router.push("/admin/orders");
+    } finally {
+      setLoading(false);
+    }
+  }, [params.id, router]);
+
+  useEffect(() => {
+    fetchOrder();
+  }, [fetchOrder]);
+
+  const handleUpdateStatus = async () => {
+    if (!order) return;
+    try {
+      const res = await fetch(`/api/orders/${order.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderStatus: selectedStatus,
+          trackingNumber: trackingInput || null,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setOrder(data.order);
+        toast.success("Order status updated");
+      } else {
+        toast.error("Failed to update order");
+      }
+    } catch {
+      toast.error("Failed to update order");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#F8F4EE]/50">Loading order...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!order) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <p className="text-[#F8F4EE]/50">Order not found</p>
+      </div>
+    );
+  }
 
   const currentStepIndex = orderStatusFlow.indexOf(order.orderStatus as typeof orderStatusFlow[number]);
   const isCancelled = order.orderStatus === "CANCELLED";
-
-  const handleUpdateStatus = () => {
-    setOrder((prev) => ({
-      ...prev,
-      orderStatus: selectedStatus,
-      trackingNumber: trackingInput || "",
-    }));
-    toast.success("Order status updated");
-  };
 
   const sortedItems = [...order.items].sort((a, b) => a.total - b.total);
 
