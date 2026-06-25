@@ -113,8 +113,8 @@ export default function AdminSettingsPage() {
   });
 
   const [payment, setPayment] = useState({
-    razorpayKeyId: "rzp_live_xxxxxxxxxxxx",
-    razorpayKeySecret: "xxxxxxxxxxxxxxxx",
+    razorpayKeyId: "rzp_live_T5ni2sDYcYohfP",
+    razorpayKeySecret: "s7A1w401oscvUoDUtLRA8XnJ",
     enableCOD: true,
     enableUPI: true,
     enableCard: true,
