@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import AdminSidebar from "@/components/admin/AdminSidebar";
@@ -15,30 +15,56 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [verified, setVerified] = useState(false);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (mounted) {
-      const token = localStorage.getItem("admin_token");
-      if (!token && pathname !== "/admin/login") {
+  const verifyAuth = useCallback(async () => {
+    try {
+      const res = await fetch("/api/auth/verify");
+      const data = await res.json();
+      if (data.success) {
+        setVerified(true);
+      } else {
+        localStorage.removeItem("admin_token");
+        if (pathname !== "/admin/login") {
+          router.push("/admin/login");
+        }
+      }
+    } catch {
+      localStorage.removeItem("admin_token");
+      if (pathname !== "/admin/login") {
         router.push("/admin/login");
       }
+    } finally {
+      setChecking(false);
     }
-  }, [mounted, pathname, router]);
+  }, [pathname, router]);
+
+  useEffect(() => {
+    if (mounted && pathname !== "/admin/login") {
+      verifyAuth();
+    } else if (pathname === "/admin/login") {
+      setChecking(false);
+    }
+  }, [mounted, pathname, verifyAuth]);
 
   if (pathname === "/admin/login") {
     return <>{children}</>;
   }
 
-  if (!mounted) {
-    return null;
+  if (!mounted || checking) {
+    return (
+      <div className="min-h-screen bg-[#0A0503] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
   }
 
-  const token = localStorage.getItem("admin_token");
-  if (!token) {
+  if (!verified) {
     return null;
   }
 

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { generateToken, badRequest, unauthorized } from "@/lib/auth";
+import { generateToken, badRequest } from "@/lib/auth";
 
 const ADMIN_CREDENTIALS = {
   username: "zixocookies@gmail.com",
@@ -23,6 +23,7 @@ export async function POST(request: Request) {
 
     const response = NextResponse.json({
       success: true,
+      token,
       admin: { id: "1", name: "Admin", username, role: "SUPER_ADMIN", isFirstLogin: false },
     });
 
@@ -35,6 +36,7 @@ export async function POST(request: Request) {
 
     return response;
   } catch (error) {
+    console.error("[AUTH] Login error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

@@ -42,21 +42,18 @@ export default function AdminLoginPage() {
       });
       const data = await res.json();
 
-      if (res.ok && data.success) {
-        localStorage.setItem("admin_token", "demo-token-zixo-admin");
+      if (data.success) {
+        if (data.token) {
+          localStorage.setItem("admin_token", data.token);
+        }
         toast.success("Welcome back, Admin!");
         router.push("/admin");
       } else {
         toast.error(data.error || "Invalid username or password");
       }
-    } catch {
-      if (username === "zixocookies@gmail.com" && password === "123456") {
-        localStorage.setItem("admin_token", "demo-token-zixo-admin");
-        toast.success("Welcome back, Admin!");
-        router.push("/admin");
-      } else {
-        toast.error("Invalid username or password");
-      }
+    } catch (err) {
+      console.error("[LOGIN] Network error:", err);
+      toast.error("Connection error. Please try again.");
     }
     setLoading(false);
   };

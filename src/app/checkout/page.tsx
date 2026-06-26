@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   FaArrowLeft, FaArrowRight, FaCheck, FaCreditCard, FaLock, FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCity, FaMapPin, FaCookieBite, FaHome, FaRupeeSign, FaTimes, FaEdit,
 } from "react-icons/fa";
 import { useCartStore } from "@/store/cart";
-import { formatPrice, generateOrderNumber } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import { toast } from "react-hot-toast";
 
 interface FormData {
@@ -24,6 +24,12 @@ interface FormData {
 
 interface FormErrors {
   [key: string]: string;
+}
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
 }
 
 const indianStates = [
@@ -54,6 +60,14 @@ export default function CheckoutPage() {
     pincode: "", upiId: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => { document.body.removeChild(script); };
+  }, []);
 
   const subtotal = getCartTotal();
   const shipping = 0;
@@ -101,18 +115,89 @@ export default function CheckoutPage() {
 
     setLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      const orderRes = await fetch("/api/payments/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: total,
+          currency: "INR",
+          receipt: `receipt_${Date.now()}`,
+        }),
+      });
 
-    const num = generateOrderNumber();
-    setOrderNumber(num);
-    setLoading(false);
-    setStep("success");
-    clearCart();
-    toast.success(`Order placed! Order #${num}`);
+      const orderData = await orderRes.json();
+      if (!orderData.success) {
+        toast.error(orderData.error || "Failed to initiate payment");
+        setLoading(false);
+        return;
+      }
 
-    setTimeout(() => {
-      router.push("/");
-    }, 3000);
+      const options = {
+        key: orderData.key_id || "rzp_live_T5ni2sDYcYohfP",
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: "Zixo Cookies",
+        description: "Handcrafted Gourmet Cookies",
+        order_id: orderData.id,
+        prefill: {
+          name: formData.fullName,
+          email: formData.email,
+          contact: formData.mobile,
+        },
+        theme: { color: "#D4AF37" },
+        handler: async function (response: any) {
+          const verifyRes = await fetch("/api/payments/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              customerInfo: formData,
+              items: items.map((item) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+                price: item.product.discountPrice || item.product.price,
+              })),
+              subtotal,
+              discount: 0,
+              shipping,
+              tax: 0,
+              total,
+            }),
+          });
+
+          const verifyData = await verifyRes.json();
+          if (verifyData.success) {
+            setOrderNumber(verifyData.order.orderNumber);
+            clearCart();
+            setStep("success");
+            toast.success(`Order placed! Order #${verifyData.order.orderNumber}`);
+          } else {
+            toast.error(verifyData.error || "Payment verification failed");
+          }
+          setLoading(false);
+        },
+        modal: {
+          ondismiss: function () {
+            setLoading(false);
+            toast.error("Payment cancelled");
+          },
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", function (response: any) {
+        toast.error(`Payment failed: ${response.error.description}`);
+        setLoading(false);
+      });
+      rzp.open();
+    } catch (err) {
+      console.error("CHECKOUT ERROR:", err);
+      toast.error("Something went wrong. Please try again.");
+      setLoading(false);
+    }
   };
 
   if (items.length === 0 && step !== "success") {
@@ -426,12 +511,12 @@ export default function CheckoutPage() {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                       </svg>
-                      Placing Order...
+                      Processing...
                     </>
                   ) : (
                     <>
                       <FaLock size={14} />
-                      Place Order - <FaRupeeSign size={13} className="inline" />{formatPrice(total)}
+                      Pay with Razorpay - <FaRupeeSign size={13} className="inline" />{formatPrice(total)}
                     </>
                   )}
                 </button>

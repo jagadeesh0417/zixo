@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -12,9 +13,8 @@ import {
   FiPlus,
   FiList,
   FiDownload,
-  FiTrendingUp,
-  FiPackage,
   FiEye,
+  FiTrendingUp,
 } from "react-icons/fi";
 import {
   BarChart,
@@ -30,130 +30,27 @@ import {
 import toast from "react-hot-toast";
 import { formatPrice, getStatusColor, getPaymentStatusColor, formatDate } from "@/lib/utils";
 
-const statsCards = [
-  {
-    label: "Total Orders",
-    value: "156",
-    icon: FiShoppingBag,
-    color: "bg-blue-500",
-    lightColor: "bg-blue-500/10",
-    textColor: "text-blue-400",
-    change: "+12.5%",
-    changeUp: true,
-  },
-  {
-    label: "Pending Orders",
-    value: "12",
-    icon: FiClock,
-    color: "bg-yellow-500",
-    lightColor: "bg-yellow-500/10",
-    textColor: "text-yellow-400",
-    change: "-3.2%",
-    changeUp: false,
-  },
-  {
-    label: "Delivered Orders",
-    value: "134",
-    icon: FiCheckCircle,
-    color: "bg-green-500",
-    lightColor: "bg-green-500/10",
-    textColor: "text-[#D4AF37]",
-    change: "+18.7%",
-    changeUp: true,
-  },
-  {
-    label: "Total Revenue",
-    value: "₹45,890",
-    icon: FiDollarSign,
-    color: "bg-[#D4AF37]",
-    lightColor: "bg-[#D4AF37]/10",
-    textColor: "text-[#D4AF37]",
-    change: "+22.3%",
-    changeUp: true,
-  },
-  {
-    label: "Total Customers",
-    value: "89",
-    icon: FiUsers,
-    color: "bg-purple-500",
-    lightColor: "bg-purple-500/10",
-    textColor: "text-purple-400",
-    change: "+8.1%",
-    changeUp: true,
-  },
-  {
-    label: "Low Stock Items",
-    value: "3",
-    icon: FiAlertCircle,
-    color: "bg-red-500",
-    lightColor: "bg-red-500/10",
-    textColor: "text-red-400",
-    change: "+1",
-    changeUp: false,
-  },
-];
-
-const dailySalesData = [
-  { day: "Mon", sales: 4200 },
-  { day: "Tue", sales: 3800 },
-  { day: "Wed", sales: 5100 },
-  { day: "Thu", sales: 4600 },
-  { day: "Fri", sales: 5900 },
-  { day: "Sat", sales: 7200 },
-  { day: "Sun", sales: 6800 },
-];
-
-const monthlyRevenueData = [
-  { month: "Jan", revenue: 28000 },
-  { month: "Feb", revenue: 32000 },
-  { month: "Mar", revenue: 29000 },
-  { month: "Apr", revenue: 35000 },
-  { month: "May", revenue: 41000 },
-  { month: "Jun", revenue: 45890 },
-];
-
-const recentOrders = [
-  {
-    id: "ZIXO-A2F3-7K9M",
-    customer: "Priya Sharma",
-    status: "DELIVERED",
-    payment: "COMPLETED",
-    total: 1250,
-    date: "2026-06-22",
-  },
-  {
-    id: "ZIXO-B4D1-3P8Q",
-    customer: "Rahul Verma",
-    status: "PROCESSING",
-    payment: "COMPLETED",
-    total: 2340,
-    date: "2026-06-22",
-  },
-  {
-    id: "ZIXO-C6E5-2R7S",
-    customer: "Ananya Gupta",
-    status: "PENDING",
-    payment: "PENDING",
-    total: 890,
-    date: "2026-06-21",
-  },
-  {
-    id: "ZIXO-D8G9-5T1U",
-    customer: "Vikram Singh",
-    status: "SHIPPED",
-    payment: "COMPLETED",
-    total: 3120,
-    date: "2026-06-21",
-  },
-  {
-    id: "ZIXO-E0H2-8V3W",
-    customer: "Neha Patel",
-    status: "DELIVERED",
-    payment: "COMPLETED",
-    total: 1780,
-    date: "2026-06-20",
-  },
-];
+interface DashboardData {
+  totalOrders: number;
+  totalRevenue: number;
+  totalCustomers: number;
+  totalProducts: number;
+  averageOrderValue: number;
+  recentOrders: Array<{
+    id: string;
+    orderNumber: string;
+    customerName: string;
+    total: number;
+    paymentStatus: string;
+    orderStatus: string;
+    createdAt: string;
+  }>;
+  lowStockItems: number;
+  dailySales: Array<{ date: string; sales: number }>;
+  monthlyRevenue: Array<{ month: string; revenue: number }>;
+  pendingOrders: number;
+  deliveredOrders: number;
+}
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -169,6 +66,85 @@ const itemVariants = {
 };
 
 export default function AdminDashboard() {
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchDashboard = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [ordersRes, analyticsRes, productsRes] = await Promise.all([
+        fetch("/api/orders"),
+        fetch("/api/analytics/overview"),
+        fetch("/api/products"),
+      ]);
+
+      const ordersData = await ordersRes.json();
+      const analyticsData = await analyticsRes.json();
+      const productsData = await productsRes.json();
+
+      const orders = ordersData.success ? ordersData.orders : [];
+      const analytics = analyticsData.success ? analyticsData.analytics : null;
+      const products = productsData.success ? productsData.products : [];
+
+      const totalOrders = orders.length;
+      const totalRevenue = orders.reduce((sum: number, o: any) => sum + o.total, 0);
+      const pendingOrders = orders.filter((o: any) => o.orderStatus === "PENDING").length;
+      const deliveredOrders = orders.filter((o: any) => o.orderStatus === "DELIVERED").length;
+      const totalCustomers = analytics?.totalCustomers || 0;
+      const lowStockItems = products.filter((p: any) => p.stockQuantity > 0 && p.stockQuantity <= 5).length;
+
+      setData({
+        totalOrders,
+        totalRevenue,
+        totalCustomers,
+        totalProducts: analytics?.totalProducts || 0,
+        averageOrderValue: analytics?.averageOrderValue || 0,
+        recentOrders: orders.slice(0, 5).map((o: any) => ({
+          id: o.orderNumber,
+          orderNumber: o.orderNumber,
+          customerName: o.customerName,
+          total: o.total,
+          paymentStatus: o.paymentStatus,
+          orderStatus: o.orderStatus,
+          createdAt: o.createdAt,
+        })),
+        lowStockItems,
+        dailySales: analytics?.dailySales || [],
+        monthlyRevenue: analytics?.monthlyRevenue || [],
+        pendingOrders,
+        deliveredOrders,
+      });
+    } catch (e) {
+      console.error("Dashboard fetch error:", e);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchDashboard();
+  }, [fetchDashboard]);
+
+  if (loading || !data) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#F8F4EE]/50">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const statCards = [
+    { label: "Total Orders", value: data.totalOrders.toString(), icon: FiShoppingBag, lightColor: "bg-blue-500/10", textColor: "text-blue-400", change: null, changeUp: true },
+    { label: "Pending Orders", value: data.pendingOrders.toString(), icon: FiClock, lightColor: "bg-yellow-500/10", textColor: "text-yellow-400", change: null, changeUp: false },
+    { label: "Delivered Orders", value: data.deliveredOrders.toString(), icon: FiCheckCircle, lightColor: "bg-green-500/10", textColor: "text-[#D4AF37]", change: null, changeUp: true },
+    { label: "Total Revenue", value: formatPrice(data.totalRevenue), icon: FiDollarSign, lightColor: "bg-[#D4AF37]/10", textColor: "text-[#D4AF37]", change: null, changeUp: true },
+    { label: "Total Customers", value: data.totalCustomers.toString(), icon: FiUsers, lightColor: "bg-purple-500/10", textColor: "text-purple-400", change: null, changeUp: true },
+    { label: "Low Stock Items", value: data.lowStockItems.toString(), icon: FiAlertCircle, lightColor: "bg-red-500/10", textColor: "text-red-400", change: null, changeUp: false },
+  ];
+
   return (
     <motion.div
       variants={containerVariants}
@@ -188,7 +164,7 @@ export default function AdminDashboard() {
         variants={itemVariants}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8"
       >
-        {statsCards.map((card, index) => (
+        {statCards.map((card) => (
           <motion.div
             key={card.label}
             variants={itemVariants}
@@ -199,15 +175,6 @@ export default function AdminDashboard() {
               <div className={`p-2.5 rounded-lg ${card.lightColor}`}>
                 <card.icon className={`text-lg ${card.textColor}`} />
               </div>
-              <span
-                className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                  card.changeUp
-                    ? "bg-green-500/10 text-[#D4AF37]"
-                    : "bg-red-500/10 text-red-400"
-                }`}
-              >
-                {card.change}
-              </span>
             </div>
             <p className="text-2xl font-bold text-[#F8F4EE]">{card.value}</p>
             <p className="text-sm text-[#F8F4EE]/50 mt-0.5">{card.label}</p>
@@ -223,18 +190,15 @@ export default function AdminDashboard() {
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dailySalesData}>
+              <BarChart data={data.dailySales.slice(-7).map((d, i) => ({
+                day: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"][i] || d.date,
+                sales: d.sales,
+              }))}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(212,175,55,0.1)" />
                 <XAxis dataKey="day" tick={{ fontSize: 12, fill: "#F8F4EE", fillOpacity: 0.6 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 12, fill: "#F8F4EE", fillOpacity: 0.6 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v / 1000}k`} />
                 <Tooltip
-                  contentStyle={{
-                    borderRadius: "8px",
-                    border: "1px solid rgba(212,175,55,0.2)",
-                    backgroundColor: "#120A07",
-                    color: "#F8F4EE",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                  }}
+                  contentStyle={{ borderRadius: "8px", border: "1px solid rgba(212,175,55,0.2)", backgroundColor: "#120A07", color: "#F8F4EE", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }}
                   formatter={(value: any) => [`₹${Number(value).toLocaleString()}`, "Sales"]}
                 />
                 <Bar dataKey="sales" fill="#D4AF37" radius={[6, 6, 0, 0]} barSize={32} />
@@ -250,28 +214,15 @@ export default function AdminDashboard() {
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={monthlyRevenueData}>
+              <LineChart data={data.monthlyRevenue}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(212,175,55,0.1)" />
                 <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#F8F4EE", fillOpacity: 0.6 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 12, fill: "#F8F4EE", fillOpacity: 0.6 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v / 1000}k`} />
                 <Tooltip
-                  contentStyle={{
-                    borderRadius: "8px",
-                    border: "1px solid rgba(212,175,55,0.2)",
-                    backgroundColor: "#120A07",
-                    color: "#F8F4EE",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                  }}
+                  contentStyle={{ borderRadius: "8px", border: "1px solid rgba(212,175,55,0.2)", backgroundColor: "#120A07", color: "#F8F4EE", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }}
                   formatter={(value: any) => [`₹${Number(value).toLocaleString()}`, "Revenue"]}
                 />
-                <Line
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#D4AF37"
-                  strokeWidth={3}
-                  dot={{ fill: "#D4AF37", strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6, fill: "#D4AF37" }}
-                />
+                <Line type="monotone" dataKey="revenue" stroke="#D4AF37" strokeWidth={3} dot={{ fill: "#D4AF37", strokeWidth: 2, r: 4 }} activeDot={{ r: 6, fill: "#D4AF37" }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -302,28 +253,32 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {recentOrders.map((order) => (
-                <tr
-                  key={order.id}
-                  className="border-b border-[#D4AF37]/5 hover:bg-white/5 transition-colors"
-                >
-                  <td className="py-3 px-2 font-mono text-xs text-[#F8F4EE]/80">{order.id}</td>
-                  <td className="py-3 px-2 text-[#F8F4EE]/80">{order.customer}</td>
+              {data.recentOrders.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-12 text-center text-[#F8F4EE]/40">
+                    <FiShoppingBag size={32} className="mx-auto mb-2 opacity-40" />
+                    <p>No orders found</p>
+                  </td>
+                </tr>
+              ) : data.recentOrders.map((order) => (
+                <tr key={order.id} className="border-b border-[#D4AF37]/5 hover:bg-white/5 transition-colors">
+                  <td className="py-3 px-2 font-mono text-xs text-[#F8F4EE]/80">{order.orderNumber}</td>
+                  <td className="py-3 px-2 text-[#F8F4EE]/80">{order.customerName}</td>
                   <td className="py-3 px-2">
-                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                      {order.status}
+                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.orderStatus)}`}>
+                      {order.orderStatus.replace(/_/g, " ")}
                     </span>
                   </td>
                   <td className="py-3 px-2">
-                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${getPaymentStatusColor(order.payment)}`}>
-                      {order.payment}
+                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${getPaymentStatusColor(order.paymentStatus)}`}>
+                      {order.paymentStatus}
                     </span>
                   </td>
                   <td className="py-3 px-2 text-right font-medium text-[#F8F4EE]/80">
                     {formatPrice(order.total)}
                   </td>
                   <td className="py-3 px-2 text-right text-[#F8F4EE]/50">
-                    {formatDate(order.date)}
+                    {formatDate(order.createdAt)}
                   </td>
                 </tr>
               ))}

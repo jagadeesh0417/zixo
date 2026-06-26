@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
@@ -10,110 +10,22 @@ import {
   FiTrash2,
   FiSearch,
   FiMessageSquare,
-  FiUser,
   FiEye,
 } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { formatDate, getInitials } from "@/lib/utils";
 
-const sampleReviews = [
-  {
-    id: "1",
-    name: "Priya Sharma",
-    email: "priya@example.com",
-    productId: "1",
-    productName: "Classic Chocolate Chip",
-    productSlug: "classic-chocolate-chip",
-    rating: 5,
-    comment: "Absolutely loved the cookies! The chocolate chips are generous and the cookie is perfectly baked. Will definitely order again.",
-    isApproved: true,
-    createdAt: "2026-06-20T10:30:00",
-  },
-  {
-    id: "2",
-    name: "Rahul Verma",
-    email: "rahul@example.com",
-    productId: "2",
-    productName: "Double Oreo Delight",
-    productSlug: "double-oreo-delight",
-    rating: 4,
-    comment: "Great cookies! Very fresh and tasty. The Oreo pieces add a nice crunch. Just wish they were a bit bigger.",
-    isApproved: true,
-    createdAt: "2026-06-19T14:15:00",
-  },
-  {
-    id: "3",
-    name: "Ananya Gupta",
-    email: "ananya@example.com",
-    productId: "3",
-    productName: "Red Velvet Bliss",
-    productSlug: "red-velvet-bliss",
-    rating: 5,
-    comment: "These are the best red velvet cookies I've had outside of a bakery. The cream cheese frosting is divine!",
-    isApproved: false,
-    createdAt: "2026-06-18T09:45:00",
-  },
-  {
-    id: "4",
-    name: "Vikram Singh",
-    email: "vikram@example.com",
-    productId: "5",
-    productName: "Chocolate Fudge Supreme",
-    productSlug: "chocolate-fudge-supreme",
-    rating: 3,
-    comment: "Good cookies but the fudge was a bit too sweet for my taste. Packaging was excellent though.",
-    isApproved: true,
-    createdAt: "2026-06-17T16:20:00",
-  },
-  {
-    id: "5",
-    name: "Neha Patel",
-    email: "neha@example.com",
-    productId: "1",
-    productName: "Classic Chocolate Chip",
-    productSlug: "classic-chocolate-chip",
-    rating: 5,
-    comment: "Ordered these for a party and they were a hit! Everyone asked where I got them from. Highly recommend!",
-    isApproved: false,
-    createdAt: "2026-06-16T11:00:00",
-  },
-  {
-    id: "6",
-    name: "Arjun Reddy",
-    email: "arjun@example.com",
-    productId: "9",
-    productName: "Assorted Gift Box (12 pcs)",
-    productSlug: "assorted-gift-box-12-pcs",
-    rating: 4,
-    comment: "Beautiful presentation and delicious variety. Made for a perfect gift. Would love more savoury options though.",
-    isApproved: true,
-    createdAt: "2026-06-15T08:30:00",
-  },
-  {
-    id: "7",
-    name: "Sneha Kulkarni",
-    email: "sneha@example.com",
-    productId: "4",
-    productName: "Butter Classic",
-    productSlug: "butter-classic",
-    rating: 2,
-    comment: "The cookies were a bit dry and crumbly. Not as good as the last time I ordered. Hope quality improves.",
-    isApproved: false,
-    createdAt: "2026-06-14T13:10:00",
-  },
-  {
-    id: "8",
-    name: "Rohit Deshmukh",
-    email: "rohit@example.com",
-    productId: "7",
-    productName: "Red Velvet Truffle",
-    productSlug: "red-velvet-truffle",
-    rating: 5,
-    comment: "Incredible! These truffle cookies are dangerously addictive. The perfect balance of chocolate and red velvet.",
-    isApproved: true,
-    createdAt: "2026-06-13T17:45:00",
-  },
-];
+interface Review {
+  id: string;
+  name: string;
+  email: string | null;
+  productId: string;
+  product: { id: string; name: string } | null;
+  rating: number;
+  comment: string;
+  isApproved: boolean;
+  createdAt: string;
+}
 
 const tabs = [
   { value: "all", label: "All" },
@@ -124,58 +36,64 @@ const tabs = [
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
 };
-
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 0, y: 0 },
+  visible: { opacity: 1, y: 0 },
 };
 
 function StarRating({ rating, size = 14 }: { rating: number; size?: number }) {
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
-        <FiStar
-          key={star}
-          size={size}
-          className={star <= rating ? "fill-caramel text-caramel" : "text-gray-300"}
-        />
+        <FiStar key={star} size={size} className={star <= rating ? "fill-caramel text-caramel" : "text-gray-300"} />
       ))}
     </div>
   );
 }
 
 export default function AdminReviewsPage() {
-  const [reviews, setReviews] = useState(sampleReviews);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
+  const fetchReviews = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (activeTab === "pending") params.set("status", "pending");
+      else if (activeTab === "approved") params.set("status", "approved");
+      const res = await fetch(`/api/reviews?${params}`);
+      const data = await res.json();
+      if (data.success) setReviews(data.reviews);
+    } catch (e) {
+      console.error("Reviews fetch error:", e);
+    } finally {
+      setLoading(false);
+    }
+  }, [activeTab]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
+
   const totalReviews = reviews.length;
   const approvedCount = reviews.filter((r) => r.isApproved).length;
-  const pendingCount = reviews.filter((r) => r.isApproved === false).length;
-  const rejectedCount = 0;
+  const pendingCount = reviews.filter((r) => !r.isApproved).length;
 
   const filteredReviews = useMemo(() => {
-    let result = [...reviews];
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        (r) =>
-          r.name.toLowerCase().includes(q) ||
-          r.productName.toLowerCase().includes(q) ||
-          r.comment.toLowerCase().includes(q)
-      );
-    }
-    if (activeTab === "approved") result = result.filter((r) => r.isApproved);
-    else if (activeTab === "pending") result = result.filter((r) => !r.isApproved);
-    else if (activeTab === "rejected") result = [];
-    return result;
-  }, [reviews, search, activeTab]);
+    if (!search.trim()) return reviews;
+    const q = search.toLowerCase();
+    return reviews.filter(
+      (r) =>
+        r.name.toLowerCase().includes(q) ||
+        (r.product?.name || "").toLowerCase().includes(q) ||
+        r.comment.toLowerCase().includes(q)
+    );
+  }, [reviews, search]);
 
   const someSelected = selectedIds.size > 0;
 
@@ -194,44 +112,93 @@ export default function AdminReviewsPage() {
     }
   };
 
-  const handleApprove = (id: string, name: string) => {
-    setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, isApproved: true } : r)));
-    toast.success(`Review by ${name} approved`);
+  const handleApprove = async (id: string, name: string) => {
+    try {
+      const res = await fetch(`/api/reviews/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isApproved: true }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, isApproved: true } : r)));
+        toast.success(`Review by ${name} approved`);
+      } else toast.error("Failed to approve review");
+    } catch { toast.error("Failed to approve review"); }
   };
 
-  const handleReject = (id: string, name: string) => {
-    setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, isApproved: false } : r)));
-    toast.success(`Review by ${name} rejected`);
+  const handleReject = async (id: string, name: string) => {
+    try {
+      const res = await fetch(`/api/reviews/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isApproved: false }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, isApproved: false } : r)));
+        toast.success(`Review by ${name} rejected`);
+      } else toast.error("Failed to reject review");
+    } catch { toast.error("Failed to reject review"); }
   };
 
-  const handleDelete = (id: string, name: string) => {
-    if (window.confirm(`Delete review by ${name}?`)) {
-      setReviews((prev) => prev.filter((r) => r.id !== id));
-      setSelectedIds((prev) => { const n = new Set(prev); n.delete(id); return n; });
-      toast.success(`Review by ${name} deleted`);
+  const handleDelete = async (id: string, name: string) => {
+    if (!window.confirm(`Delete review by ${name}?`)) return;
+    try {
+      const res = await fetch(`/api/reviews/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.success) {
+        setReviews((prev) => prev.filter((r) => r.id !== id));
+        setSelectedIds((prev) => { const n = new Set(prev); n.delete(id); return n; });
+        toast.success(`Review by ${name} deleted`);
+      } else toast.error("Failed to delete review");
+    } catch { toast.error("Failed to delete review"); }
+  };
+
+  const handleBulkApprove = async () => {
+    if (selectedIds.size === 0) return;
+    let success = 0;
+    for (const id of selectedIds) {
+      try {
+        const res = await fetch(`/api/reviews/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ isApproved: true }),
+        });
+        const data = await res.json();
+        if (data.success) success++;
+      } catch { /* skip */ }
+    }
+    if (success > 0) {
+      setReviews((prev) => prev.map((r) => selectedIds.has(r.id) ? { ...r, isApproved: true } : r));
+      toast.success(`${success} reviews approved`);
+      setSelectedIds(new Set());
     }
   };
 
-  const handleBulkApprove = () => {
+  const handleBulkReject = async () => {
     if (selectedIds.size === 0) return;
-    setReviews((prev) => prev.map((r) => selectedIds.has(r.id) ? { ...r, isApproved: true } : r));
-    toast.success(`${selectedIds.size} reviews approved`);
-    setSelectedIds(new Set());
-  };
-
-  const handleBulkReject = () => {
-    if (selectedIds.size === 0) return;
-    setReviews((prev) => prev.map((r) => selectedIds.has(r.id) ? { ...r, isApproved: false } : r));
-    toast.success(`${selectedIds.size} reviews rejected`);
-    setSelectedIds(new Set());
+    let success = 0;
+    for (const id of selectedIds) {
+      try {
+        const res = await fetch(`/api/reviews/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ isApproved: false }),
+        });
+        const data = await res.json();
+        if (data.success) success++;
+      } catch { /* skip */ }
+    }
+    if (success > 0) {
+      setReviews((prev) => prev.map((r) => selectedIds.has(r.id) ? { ...r, isApproved: false } : r));
+      toast.success(`${success} reviews rejected`);
+      setSelectedIds(new Set());
+    }
   };
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
+    <motion.div variants={containerVariants} initial="hidden" animate="visible">
       <motion.div variants={itemVariants} className="mb-6">
         <h1 className="text-2xl md:text-3xl font-bold text-chocolate">Reviews</h1>
         <p className="text-gray-500 mt-1">Manage customer product reviews</p>
@@ -242,12 +209,10 @@ export default function AdminReviewsPage() {
           { label: "Total Reviews", value: totalReviews, icon: FiMessageSquare, color: "text-blue-600 bg-blue-50" },
           { label: "Approved", value: approvedCount, icon: FiCheckCircle, color: "text-green-600 bg-green-50" },
           { label: "Pending Approval", value: pendingCount, icon: FiEye, color: "text-amber-600 bg-amber-50" },
-          { label: "Rejected", value: rejectedCount, icon: FiXCircle, color: "text-red-600 bg-red-50" },
+          { label: "Rejected", value: 0, icon: FiXCircle, color: "text-red-600 bg-red-50" },
         ].map((stat) => (
           <div key={stat.label} className="admin-card flex items-center gap-3">
-            <div className={`p-2.5 rounded-lg ${stat.color}`}>
-              <stat.icon size={18} />
-            </div>
+            <div className={`p-2.5 rounded-lg ${stat.color}`}><stat.icon size={18} /></div>
             <div>
               <p className="text-2xl font-bold text-chocolate">{stat.value}</p>
               <p className="text-xs text-gray-500">{stat.label}</p>
@@ -283,9 +248,7 @@ export default function AdminReviewsPage() {
             >
               {tab.label}
               {tab.value === "pending" && pendingCount > 0 && (
-                <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-700 rounded-full">
-                  {pendingCount}
-                </span>
+                <span className="ml-1.5 px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-700 rounded-full">{pendingCount}</span>
               )}
             </button>
           ))}
@@ -294,25 +257,24 @@ export default function AdminReviewsPage() {
         {someSelected && (
           <div className="flex items-center gap-2 mb-4 p-3 bg-gray-50 rounded-lg">
             <span className="text-sm text-gray-600 mr-2">{selectedIds.size} selected</span>
-            <button
-              onClick={handleBulkApprove}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-green-700 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
-            >
-              <FiCheckCircle size={14} />
-              Approve Selected
+            <button onClick={handleBulkApprove} className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-green-700 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+              <FiCheckCircle size={14} /> Approve Selected
             </button>
-            <button
-              onClick={handleBulkReject}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
-            >
-              <FiXCircle size={14} />
-              Reject Selected
+            <button onClick={handleBulkReject} className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+              <FiXCircle size={14} /> Reject Selected
             </button>
           </div>
         )}
 
         <div className={filteredReviews.length > 0 ? "space-y-3" : ""}>
-          {filteredReviews.length > 0 ? (
+          {loading ? (
+            <div className="py-12 text-center text-gray-400">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 border-2 border-caramel border-t-transparent rounded-full animate-spin" />
+                <p>Loading reviews...</p>
+              </div>
+            </div>
+          ) : filteredReviews.length > 0 ? (
             filteredReviews.map((review) => (
               <motion.div
                 key={review.id}
@@ -332,9 +294,7 @@ export default function AdminReviewsPage() {
                 </div>
 
                 <div className="flex-shrink-0 w-10 h-10 rounded-full bg-caramel/20 flex items-center justify-center">
-                  <span className="text-sm font-bold text-caramel">
-                    {getInitials(review.name)}
-                  </span>
+                  <span className="text-sm font-bold text-caramel">{getInitials(review.name)}</span>
                 </div>
 
                 <div className="flex-1 min-w-0">
@@ -345,12 +305,9 @@ export default function AdminReviewsPage() {
 
                   <div className="flex items-center gap-2 mb-1.5">
                     <StarRating rating={review.rating} />
-                    <Link
-                      href={`/products/${review.productSlug}`}
-                      className="text-xs text-caramel hover:underline font-medium"
-                    >
-                      {review.productName}
-                    </Link>
+                    <span className="text-xs text-caramel font-medium">
+                      {review.product?.name || "Unknown Product"}
+                    </span>
                   </div>
 
                   <p className="text-sm text-gray-600 leading-relaxed">{review.comment}</p>
@@ -358,45 +315,31 @@ export default function AdminReviewsPage() {
                   <div className="flex items-center gap-2 mt-3">
                     {!review.isApproved ? (
                       <>
-                        <button
-                          onClick={() => handleApprove(review.id, review.name)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-700 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
-                        >
-                          <FiCheckCircle size={13} />
-                          Approve
+                        <button onClick={() => handleApprove(review.id, review.name)}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-700 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                          <FiCheckCircle size={13} /> Approve
                         </button>
-                        <button
-                          onClick={() => handleReject(review.id, review.name)}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
-                        >
-                          <FiXCircle size={13} />
-                          Reject
+                        <button onClick={() => handleReject(review.id, review.name)}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                          <FiXCircle size={13} /> Reject
                         </button>
                       </>
                     ) : (
-                      <button
-                        onClick={() => handleReject(review.id, review.name)}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-600 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
-                      >
-                        <FiXCircle size={13} />
-                        Reject
+                      <button onClick={() => handleReject(review.id, review.name)}
+                        className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-600 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors">
+                        <FiXCircle size={13} /> Reject
                       </button>
                     )}
-                    <button
-                      onClick={() => handleDelete(review.id, review.name)}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-500 bg-transparent hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      <FiTrash2 size={13} />
-                      Delete
+                    <button onClick={() => handleDelete(review.id, review.name)}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-500 bg-transparent hover:bg-red-50 rounded-lg transition-colors">
+                      <FiTrash2 size={13} /> Delete
                     </button>
                   </div>
                 </div>
 
                 <div className="flex-shrink-0">
                   <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium ${
-                    review.isApproved
-                      ? "bg-green-50 text-green-700"
-                      : "bg-amber-50 text-amber-700"
+                    review.isApproved ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-700"
                   }`}>
                     {review.isApproved ? "Approved" : "Pending"}
                   </span>
