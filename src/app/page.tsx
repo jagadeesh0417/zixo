@@ -4,8 +4,6 @@ import WhyChoose from "@/components/home/WhyChoose";
 import SignatureCollections from "@/components/home/SignatureCollections";
 import AboutSection from "@/components/home/AboutSection";
 import Testimonials from "@/components/home/Testimonials";
-import InstagramFeed from "@/components/home/InstagramFeed";
-import YouTubeSection from "@/components/home/YouTubeSection";
 import NewsletterSection from "@/components/home/NewsletterSection";
 import FAQSection from "@/components/home/FAQSection";
 
@@ -29,12 +27,6 @@ export default function Home() {
       </section>
       <section id="testimonials">
         <Testimonials />
-      </section>
-      <section id="instagram">
-        <InstagramFeed />
-      </section>
-      <section id="youtube">
-        <YouTubeSection />
       </section>
       <section id="newsletter">
         <NewsletterSection />

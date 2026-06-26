@@ -63,7 +63,7 @@ export default function BestSellers() {
   const [products, setProducts] = useState<BestSellerProduct[]>([]);
 
   useEffect(() => {
-    fetch("/api/products?sort=rating&limit=6")
+    fetch("/api/products?sort=rating")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -129,10 +129,10 @@ export default function BestSellers() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="section-title">Our Best Sellers</h2>
+          <h2 className="section-title">Our Products</h2>
           <div className="gold-divider mx-auto mb-4" />
           <p className="section-subtitle">
-            Most loved cookies by our customers
+            Freshly baked cookies delivered to your doorstep
           </p>
         </motion.div>
 
