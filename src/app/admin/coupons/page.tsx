@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiPercent,
@@ -23,87 +23,6 @@ import {
 } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { formatDate, formatPrice } from "@/lib/utils";
-
-const sampleCoupons = [
-  {
-    id: "cp1",
-    code: "WELCOME20",
-    description: "Welcome discount for new customers",
-    type: "PERCENTAGE",
-    value: 20,
-    minOrder: 499,
-    maxDiscount: 200,
-    usageLimit: 100,
-    usedCount: 34,
-    isActive: true,
-    expiresAt: "2026-12-31",
-  },
-  {
-    id: "cp2",
-    code: "FREESHIP",
-    description: "Free shipping on all orders",
-    type: "FREE_SHIPPING",
-    value: 0,
-    minOrder: 299,
-    maxDiscount: null,
-    usageLimit: 200,
-    usedCount: 89,
-    isActive: true,
-    expiresAt: "2026-08-15",
-  },
-  {
-    id: "cp3",
-    code: "FLAT150",
-    description: "Flat \u20B9150 off on orders above \u20B9999",
-    type: "FIXED",
-    value: 150,
-    minOrder: 999,
-    maxDiscount: null,
-    usageLimit: 50,
-    usedCount: 12,
-    isActive: true,
-    expiresAt: "2026-07-01",
-  },
-  {
-    id: "cp4",
-    code: "SUMMER25",
-    description: "Summer special 25% off",
-    type: "PERCENTAGE",
-    value: 25,
-    minOrder: 799,
-    maxDiscount: 500,
-    usageLimit: 75,
-    usedCount: 45,
-    isActive: false,
-    expiresAt: "2026-06-15",
-  },
-  {
-    id: "cp5",
-    code: "COOKIE10",
-    description: "10% off on cookie boxes",
-    type: "PERCENTAGE",
-    value: 10,
-    minOrder: null,
-    maxDiscount: 100,
-    usageLimit: null,
-    usedCount: 156,
-    isActive: true,
-    expiresAt: "2026-09-30",
-  },
-  {
-    id: "cp6",
-    code: "FESTIVE50",
-    description: "Festive season \u20B950 off",
-    type: "FIXED",
-    value: 50,
-    minOrder: 299,
-    maxDiscount: null,
-    usageLimit: 500,
-    usedCount: 210,
-    isActive: true,
-    expiresAt: "2026-11-15",
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -161,12 +80,29 @@ function getTypeBadge(type: string): string {
 }
 
 export default function AdminCouponsPage() {
-  const [coupons, setCoupons] = useState(sampleCoupons);
+  const [coupons, setCoupons] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<CouponForm>(emptyForm);
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 5;
+
+  useEffect(() => {
+    fetchCoupons();
+  }, []);
+
+  async function fetchCoupons() {
+    try {
+      const res = await fetch("/api/coupons");
+      const data = await res.json();
+      if (data.success) setCoupons(data.coupons);
+    } catch (e) {
+      console.error("Failed to load coupons", e);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const filteredCoupons = useMemo(() => {
     return coupons;
@@ -183,18 +119,35 @@ export default function AdminCouponsPage() {
     toast.success(`Copied ${code}`);
   };
 
-  const handleDelete = (id: string, code: string) => {
-    if (window.confirm(`Are you sure you want to delete coupon "${code}"?`)) {
-      setCoupons((prev) => prev.filter((c) => c.id !== id));
-      toast.success(`Coupon "${code}" deleted`);
+  const handleDelete = async (id: string, code: string) => {
+    if (!window.confirm(`Are you sure you want to delete coupon "${code}"?`)) return;
+    try {
+      const res = await fetch(`/api/coupons/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.success) {
+        setCoupons((prev) => prev.filter((c) => c.id !== id));
+        toast.success(`Coupon "${code}" deleted`);
+      }
+    } catch {
+      toast.error("Failed to delete coupon");
     }
   };
 
-  const handleToggleActive = (id: string, code: string, current: boolean) => {
-    setCoupons((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, isActive: !current } : c))
-    );
-    toast.success(`"${code}" ${current ? "deactivated" : "activated"}`);
+  const handleToggleActive = async (id: string, code: string, current: boolean) => {
+    try {
+      const res = await fetch(`/api/coupons/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isActive: !current }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setCoupons((prev) => prev.map((c) => (c.id === id ? data.coupon : c)));
+        toast.success(`"${code}" ${current ? "deactivated" : "activated"}`);
+      }
+    } catch {
+      toast.error("Failed to toggle coupon");
+    }
   };
 
   const openCreateForm = () => {
@@ -203,7 +156,7 @@ export default function AdminCouponsPage() {
     setShowForm(true);
   };
 
-  const openEditForm = (coupon: typeof sampleCoupons[0]) => {
+  const openEditForm = (coupon: any) => {
     setForm({
       code: coupon.code,
       description: coupon.description || "",
@@ -212,25 +165,55 @@ export default function AdminCouponsPage() {
       minOrder: coupon.minOrder !== null ? String(coupon.minOrder) : "",
       maxDiscount: coupon.maxDiscount !== null ? String(coupon.maxDiscount) : "",
       usageLimit: coupon.usageLimit !== null ? String(coupon.usageLimit) : "",
-      expiresAt: coupon.expiresAt || "",
+      expiresAt: coupon.expiresAt ? coupon.expiresAt.split("T")[0] : "",
       isActive: coupon.isActive,
     });
     setEditingId(coupon.id);
     setShowForm(true);
   };
 
-  const handleCreateCoupon = () => {
-    toast.success("Coupon created!");
-    setShowForm(false);
-    setForm(emptyForm);
-    setEditingId(null);
+  const handleCreateCoupon = async () => {
+    try {
+      const res = await fetch("/api/coupons", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setCoupons((prev) => [data.coupon, ...prev]);
+        toast.success("Coupon created!");
+        setShowForm(false);
+        setForm(emptyForm);
+      } else {
+        toast.error(data.error || "Failed to create coupon");
+      }
+    } catch {
+      toast.error("Failed to create coupon");
+    }
   };
 
-  const handleUpdateCoupon = () => {
-    toast.success("Coupon updated!");
-    setShowForm(false);
-    setForm(emptyForm);
-    setEditingId(null);
+  const handleUpdateCoupon = async () => {
+    if (!editingId) return;
+    try {
+      const res = await fetch(`/api/coupons/${editingId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setCoupons((prev) => prev.map((c) => (c.id === editingId ? data.coupon : c)));
+        toast.success("Coupon updated!");
+        setShowForm(false);
+        setForm(emptyForm);
+        setEditingId(null);
+      } else {
+        toast.error(data.error || "Failed to update coupon");
+      }
+    } catch {
+      toast.error("Failed to update coupon");
+    }
   };
 
   const totalCoupons = coupons.length;

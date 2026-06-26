@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 import { badRequest } from "@/lib/auth";
 
 const defaultSettings = {
@@ -41,9 +42,23 @@ const defaultSettings = {
   },
 };
 
+async function getSettings(): Promise<Record<string, any>> {
+  const rows = await prisma.siteSetting.findMany();
+  const stored: Record<string, any> = {};
+  for (const row of rows) {
+    try {
+      stored[row.key] = JSON.parse(row.value);
+    } catch {
+      stored[row.key] = row.value;
+    }
+  }
+  return { ...defaultSettings, ...stored };
+}
+
 export async function GET() {
   try {
-    return NextResponse.json({ success: true, settings: defaultSettings });
+    const settings = await getSettings();
+    return NextResponse.json({ success: true, settings });
   } catch (error) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
@@ -57,15 +72,21 @@ export async function PUT(request: Request) {
       return badRequest("No settings provided to update");
     }
 
-    const updatedSettings = {
-      ...defaultSettings,
-      ...body,
-    };
+    for (const [key, value] of Object.entries(body)) {
+      const stringValue = typeof value === "object" ? JSON.stringify(value) : String(value);
+      await prisma.siteSetting.upsert({
+        where: { key },
+        update: { value: stringValue },
+        create: { key, value: stringValue },
+      });
+    }
+
+    const settings = await getSettings();
 
     return NextResponse.json({
       success: true,
       message: "Settings updated successfully",
-      settings: updatedSettings,
+      settings,
     });
   } catch (error) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

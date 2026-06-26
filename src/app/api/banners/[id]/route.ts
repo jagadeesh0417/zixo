@@ -1,11 +1,5 @@
 import { NextResponse } from "next/server";
-
-const placeholderBanners = [
-  { id: "ban-001", title: "Festive Special - Up to 20% Off", subtitle: "Celebrate with our handcrafted gourmet cookies", image: "/images/banners/festive.jpg", link: "/shop", position: "hero", isActive: true, order: 1 },
-  { id: "ban-002", title: "New: Red Velvet Cheesecake", subtitle: "The best of both worlds in every bite", image: "/images/banners/red-velvet.jpg", link: "/shop", position: "hero", isActive: true, order: 2 },
-  { id: "ban-003", title: "Corporate Gifting", subtitle: "Impress your clients with premium gift boxes", image: "/images/banners/gifting.jpg", link: "/shop?category=mixed-boxes", position: "sidebar", isActive: true, order: 1 },
-  { id: "ban-004", title: "Free Shipping on Orders ₹399+", subtitle: null, image: "/images/banners/free-shipping.jpg", link: null, position: "promo", isActive: false, order: 1 },
-];
+import { prisma } from "@/lib/prisma";
 
 export async function GET(
   request: Request,
@@ -13,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const banner = placeholderBanners.find((b) => b.id === id);
+    const banner = await prisma.banner.findUnique({ where: { id } });
     if (!banner) {
       return NextResponse.json({ error: "Banner not found" }, { status: 404 });
     }
@@ -29,18 +23,29 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
-    const index = placeholderBanners.findIndex((b) => b.id === id);
-    if (index === -1) {
+    const existing = await prisma.banner.findUnique({ where: { id } });
+    if (!existing) {
       return NextResponse.json({ error: "Banner not found" }, { status: 404 });
     }
 
     const body = await request.json();
-    const updatedBanner = { ...placeholderBanners[index], ...body, id };
+    const banner = await prisma.banner.update({
+      where: { id },
+      data: {
+        title: body.title,
+        subtitle: body.subtitle,
+        image: body.image,
+        link: body.link,
+        position: body.position,
+        isActive: body.isActive,
+        order: body.order,
+      },
+    });
 
     return NextResponse.json({
       success: true,
       message: "Banner updated successfully",
-      banner: updatedBanner,
+      banner,
     });
   } catch (error) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
@@ -53,10 +58,12 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const index = placeholderBanners.findIndex((b) => b.id === id);
-    if (index === -1) {
+    const existing = await prisma.banner.findUnique({ where: { id } });
+    if (!existing) {
       return NextResponse.json({ error: "Banner not found" }, { status: 404 });
     }
+
+    await prisma.banner.delete({ where: { id } });
 
     return NextResponse.json({
       success: true,

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 import { badRequest } from "@/lib/auth";
 
 export async function POST(request: Request) {
@@ -14,6 +15,16 @@ export async function POST(request: Request) {
     if (!emailRegex.test(email)) {
       return badRequest("Invalid email address");
     }
+
+    const existing = await prisma.newsletter.findUnique({ where: { email } });
+    if (existing) {
+      return NextResponse.json({
+        success: true,
+        message: "You are already subscribed!",
+      });
+    }
+
+    await prisma.newsletter.create({ data: { email } });
 
     return NextResponse.json({
       success: true,

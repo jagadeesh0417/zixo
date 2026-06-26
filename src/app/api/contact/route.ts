@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 import { badRequest } from "@/lib/auth";
 
 export async function POST(request: Request) {
@@ -9,6 +10,10 @@ export async function POST(request: Request) {
     if (!name || !email || !message) {
       return badRequest("Name, email, and message are required");
     }
+
+    await prisma.contactMessage.create({
+      data: { name, email, phone, subject, message },
+    });
 
     return NextResponse.json({
       success: true,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FiSave,
@@ -19,6 +19,7 @@ import {
   FiChevronDown,
   FiChevronUp,
   FiUpload,
+  FiLoader,
 } from "react-icons/fi";
 import toast from "react-hot-toast";
 
@@ -92,18 +93,19 @@ function InputField({
 
 export default function AdminSettingsPage() {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(sections.map((s) => s.id)));
+  const [loading, setLoading] = useState(true);
 
   const [general, setGeneral] = useState({
-    storeName: "Zixo Cookies",
-    tagline: "Every Bite, Pure Happiness.",
-    storeEmail: "hello@zixocookies.com",
-    phoneNumber: "+91 80966 97748",
-    whatsappNumber: "+91 80966 97748",
+    storeName: "",
+    tagline: "",
+    storeEmail: "",
+    phoneNumber: "",
+    whatsappNumber: "",
   });
 
   const [social, setSocial] = useState({
-    instagram: "https://www.instagram.com/zixo_cookies",
-    youtube: "https://youtube.com/@subhani-04",
+    instagram: "",
+    youtube: "",
   });
 
   const [shipping, setShipping] = useState({
@@ -113,26 +115,65 @@ export default function AdminSettingsPage() {
   });
 
   const [payment, setPayment] = useState({
-    razorpayKeyId: "rzp_live_T5ni2sDYcYohfP",
-    razorpayKeySecret: "s7A1w401oscvUoDUtLRA8XnJ",
+    razorpayKeyId: "",
+    razorpayKeySecret: "",
   });
 
   const [email, setEmail] = useState({
-    smtpHost: "smtp.gmail.com",
+    smtpHost: "",
     smtpPort: 587,
-    smtpUser: "hello@zixocookies.com",
-    smtpPassword: "********",
-    fromEmail: "hello@zixocookies.com",
+    smtpUser: "",
+    smtpPassword: "",
+    fromEmail: "",
   });
 
   const [security, setSecurity] = useState({
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
-    twoFactorEnabled: false,
   });
 
   const [passwordError, setPasswordError] = useState("");
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  async function fetchSettings() {
+    try {
+      const res = await fetch("/api/settings");
+      const data = await res.json();
+      if (data.success) {
+        const s = data.settings;
+        if (s.general) {
+          setGeneral({
+            storeName: s.general.siteName || "",
+            tagline: s.general.siteDescription || "",
+            storeEmail: s.general.supportEmail || "",
+            phoneNumber: s.general.supportPhone || "",
+            whatsappNumber: s.general.supportPhone || "",
+          });
+        }
+        if (s.social) {
+          setSocial({
+            instagram: s.social.instagram || "",
+            youtube: s.social.twitter || "",
+          });
+        }
+        if (s.shipping) {
+          setShipping({
+            freeShippingMin: s.shipping.freeShippingMin ?? 499,
+            standardShipping: s.shipping.standardRate ?? 49,
+            taxRate: s.shipping.taxRate ?? 5,
+          });
+        }
+      }
+    } catch (e) {
+      console.error("Failed to load settings", e);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const toggleSection = (id: string) => {
     setExpandedSections((prev) => {
@@ -147,7 +188,7 @@ export default function AdminSettingsPage() {
     toast.success("Logo upload coming soon");
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (security.newPassword || security.confirmPassword) {
       if (security.newPassword.length < 6) {
         setPasswordError("New password must be at least 6 characters");
@@ -163,8 +204,50 @@ export default function AdminSettingsPage() {
       }
     }
     setPasswordError("");
-    toast.success("Settings saved successfully!");
+
+    const settings = {
+      general: {
+        siteName: general.storeName,
+        siteDescription: general.tagline,
+        supportEmail: general.storeEmail,
+        supportPhone: general.phoneNumber,
+      },
+      social: {
+        instagram: social.instagram,
+        twitter: social.youtube,
+        facebook: "",
+      },
+      shipping: {
+        freeShippingMin: shipping.freeShippingMin,
+        standardRate: shipping.standardShipping,
+        taxRate: shipping.taxRate,
+      },
+    };
+
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Settings saved successfully!");
+      } else {
+        toast.error(data.error || "Failed to save settings");
+      }
+    } catch {
+      toast.error("Failed to save settings");
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <FiLoader className="animate-spin text-caramel" size={32} />
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -420,18 +503,6 @@ export default function AdminSettingsPage() {
                     {passwordError}
                   </p>
                 )}
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <span className="text-sm font-medium text-gray-700">Two-Factor Authentication</span>
-                    <p className="text-xs text-gray-400 mt-0.5">Add an extra layer of security to your account</p>
-                  </div>
-                  <button
-                    onClick={() => toast.success("Two-factor authentication coming soon")}
-                    className={`p-1 rounded-lg transition-colors ${security.twoFactorEnabled ? "text-green-500" : "text-gray-300"}`}
-                  >
-                    {security.twoFactorEnabled ? <FiToggleRight size={24} /> : <FiToggleLeft size={24} />}
-                  </button>
-                </div>
               </div>
             )}
           </motion.div>

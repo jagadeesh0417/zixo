@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -18,22 +18,6 @@ import {
 import toast from "react-hot-toast";
 import { formatDate } from "@/lib/utils";
 
-const sampleProducts = [
-  { id: "1", name: "Classic Chocolate Chip", sku: "ZIXO-CC-001", category: "Chocolate", stock: 45, lastRestocked: "2026-06-15" },
-  { id: "2", name: "Double Oreo Delight", sku: "ZIXO-OD-002", category: "Oreo", stock: 30, lastRestocked: "2026-06-12" },
-  { id: "3", name: "Red Velvet Bliss", sku: "ZIXO-RV-003", category: "Red Velvet", stock: 3, lastRestocked: "2026-05-28" },
-  { id: "4", name: "Butter Classic", sku: "ZIXO-BC-004", category: "Butter", stock: 60, lastRestocked: "2026-06-20" },
-  { id: "5", name: "Chocolate Fudge Supreme", sku: "ZIXO-CF-005", category: "Chocolate", stock: 12, lastRestocked: "2026-06-08" },
-  { id: "6", name: "Oreo Cheesecake", sku: "ZIXO-OC-006", category: "Oreo", stock: 0, lastRestocked: "2026-05-10" },
-  { id: "7", name: "Red Velvet Truffle", sku: "ZIXO-RT-007", category: "Red Velvet", stock: 18, lastRestocked: "2026-06-05" },
-  { id: "8", name: "Butter Pecan Crunch", sku: "ZIXO-BP-008", category: "Butter", stock: 8, lastRestocked: "2026-06-01" },
-  { id: "9", name: "Assorted Gift Box (12 pcs)", sku: "ZIXO-MB-009", category: "Mixed Boxes", stock: 25, lastRestocked: "2026-06-18" },
-  { id: "10", name: "Chocolate Walnut Brownie", sku: "ZIXO-CW-010", category: "Chocolate", stock: 2, lastRestocked: "2026-05-22" },
-  { id: "11", name: "Oreo Chocolate Drizzle", sku: "ZIXO-OD-011", category: "Oreo", stock: 55, lastRestocked: "2026-06-22" },
-  { id: "12", name: "Butter Toffee Crunch", sku: "ZIXO-BT-012", category: "Butter", stock: 0, lastRestocked: "2026-04-15" },
-];
-
-const categories = ["All", "Chocolate", "Oreo", "Red Velvet", "Butter", "Mixed Boxes"];
 const stockFilters = ["All", "In Stock", "Low Stock", "Out of Stock"];
 const perPage = 10;
 
@@ -48,13 +32,47 @@ const itemVariants = {
 };
 
 export default function AdminInventoryPage() {
-  const [products, setProducts] = useState(sampleProducts);
+  const [products, setProducts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [stockFilter, setStockFilter] = useState("All");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [editingStock, setEditingStock] = useState<string | null>(null);
   const [stockInput, setStockInput] = useState<number>(0);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  async function fetchProducts() {
+    try {
+      const [prodRes, catRes] = await Promise.all([
+        fetch("/api/products"),
+        fetch("/api/categories"),
+      ]);
+      const prodData = await prodRes.json();
+      const catData = await catRes.json();
+      const mapped = (prodData.products || []).map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        sku: p.sku,
+        category: p.category?.name || "Uncategorized",
+        stock: p.stockQuantity || 0,
+        lastRestocked: p.updatedAt ? p.updatedAt.split("T")[0] : "-",
+      }));
+      setProducts(mapped);
+      const catSet = new Set<string>();
+      mapped.forEach((p: any) => { if (p.category) catSet.add(p.category); });
+      const cats = ["All", ...Array.from(catSet)];
+      setCategories(cats);
+    } catch (e) {
+      console.error("Failed to fetch products", e);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
@@ -101,16 +119,31 @@ export default function AdminInventoryPage() {
     return Math.min(Math.round((qty / max) * 100), 100);
   };
 
-  const handleUpdateStock = (id: string) => {
-    setProducts((prev) =>
-      prev.map((p) =>
-        p.id === id
-          ? { ...p, stock: stockInput, lastRestocked: new Date().toISOString().split("T")[0] }
-          : p
-      )
-    );
-    setEditingStock(null);
-    toast.success("Stock updated successfully!");
+  async function updateStockApi(id: string, newStock: number) {
+    const res = await fetch(`/api/products/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stockQuantity: newStock }),
+    });
+    if (!res.ok) throw new Error("Failed to update stock");
+    return res.json();
+  }
+
+  const handleUpdateStock = async (id: string) => {
+    try {
+      await updateStockApi(id, stockInput);
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === id
+            ? { ...p, stock: stockInput, lastRestocked: new Date().toISOString().split("T")[0] }
+            : p
+        )
+      );
+      setEditingStock(null);
+      toast.success("Stock updated successfully!");
+    } catch {
+      toast.error("Failed to update stock");
+    }
   };
 
   const startEditing = (id: string, currentStock: number) => {
@@ -118,16 +151,21 @@ export default function AdminInventoryPage() {
     setStockInput(currentStock);
   };
 
-  const handleAddStock = (id: string) => {
+  const handleAddStock = async (id: string) => {
     const product = products.find((p) => p.id === id);
     if (product) {
       const newStock = product.stock + 50;
-      setProducts((prev) =>
-        prev.map((p) =>
-          p.id === id ? { ...p, stock: newStock, lastRestocked: new Date().toISOString().split("T")[0] } : p
-        )
-      );
-      toast.success(`Added 50 units to "${product.name}"`);
+      try {
+        await updateStockApi(id, newStock);
+        setProducts((prev) =>
+          prev.map((p) =>
+            p.id === id ? { ...p, stock: newStock, lastRestocked: new Date().toISOString().split("T")[0] } : p
+          )
+        );
+        toast.success(`Added 50 units to "${product.name}"`);
+      } catch {
+        toast.error("Failed to add stock");
+      }
     }
   };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -18,49 +18,6 @@ import {
   FiChevronUp,
 } from "react-icons/fi";
 import toast from "react-hot-toast";
-
-const sampleBanners = [
-  {
-    id: "1",
-    title: "New Arrivals: Chocolate Collection",
-    subtitle: "Indulge in our premium chocolate cookies",
-    image: "",
-    link: "/products/chocolate-collection",
-    position: "hero",
-    order: 1,
-    isActive: true,
-  },
-  {
-    id: "2",
-    title: "Summer Special - 20% Off",
-    subtitle: "Beat the heat with our refreshing cookie boxes",
-    image: "",
-    link: "/products/summer-special",
-    position: "promo",
-    order: 2,
-    isActive: true,
-  },
-  {
-    id: "3",
-    title: "Gift Boxes Galore",
-    subtitle: "Perfect presents for every occasion",
-    image: "",
-    link: "/products/gift-boxes",
-    position: "featured",
-    order: 3,
-    isActive: false,
-  },
-  {
-    id: "4",
-    title: "Festive Delights",
-    subtitle: "Celebrate with our limited edition cookies",
-    image: "",
-    link: "/products/festive-delights",
-    position: "hero",
-    order: 4,
-    isActive: true,
-  },
-];
 
 const positions = [
   { value: "hero", label: "Hero" },
@@ -99,12 +56,29 @@ function EmptyBannerPreview() {
 }
 
 export default function AdminBannersPage() {
-  const [banners, setBanners] = useState(sampleBanners);
+  const [banners, setBanners] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [editingBanner, setEditingBanner] = useState<typeof sampleBanners[0] | null>(null);
+  const [editingBanner, setEditingBanner] = useState<any | null>(null);
   const [showPreview, setShowPreview] = useState(false);
 
-  const bannerImageUrl = (banner: typeof sampleBanners[0]) =>
+  useEffect(() => {
+    fetchBanners();
+  }, []);
+
+  async function fetchBanners() {
+    try {
+      const res = await fetch("/api/banners");
+      const data = await res.json();
+      if (data.success) setBanners(data.banners);
+    } catch (e) {
+      console.error("Failed to load banners", e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const bannerImageUrl = (banner: any) =>
     banner.image || "/images/banner.png";
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -122,11 +96,11 @@ export default function AdminBannersPage() {
   const openAddForm = () => {
     setEditingBanner(null);
     setBannerImage("");
-    setFormData({ title: "", subtitle: "", link: "", position: "hero", order: banners.length + 1, isActive: true });
+    setFormData({ title: "", subtitle: "", link: "", position: "hero", order: 1, isActive: true });
     setShowForm(true);
   };
 
-  const openEditForm = (banner: typeof sampleBanners[0]) => {
+  const openEditForm = (banner: any) => {
     setEditingBanner(banner);
     setBannerImage(banner.image || "");
     setFormData({
@@ -140,53 +114,84 @@ export default function AdminBannersPage() {
     setShowForm(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!formData.title.trim()) {
       toast.error("Banner title is required");
       return;
     }
-    if (editingBanner) {
-      setBanners((prev) =>
-        prev.map((b) =>
-          b.id === editingBanner.id ? { ...b, ...formData, image: bannerImage } : b
-        )
-      );
-    } else {
-      const newBanner = {
-        id: String(Date.now()),
-        title: formData.title,
-        subtitle: formData.subtitle,
-        image: bannerImage,
-        link: formData.link,
-        position: formData.position,
-        order: formData.order,
-        isActive: formData.isActive,
-      };
-      setBanners((prev) => [...prev, newBanner]);
+    const body = { ...formData, image: bannerImage };
+    try {
+      if (editingBanner) {
+        const res = await fetch(`/api/banners/${editingBanner.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (data.success) {
+          setBanners((prev) => prev.map((b) => (b.id === editingBanner.id ? data.banner : b)));
+        }
+      } else {
+        const res = await fetch("/api/banners", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (data.success) {
+          setBanners((prev) => [...prev, data.banner]);
+        }
+      }
+      toast.success("Banner saved!");
+      setShowForm(false);
+      setEditingBanner(null);
+    } catch {
+      toast.error("Failed to save banner");
     }
-    toast.success("Banner saved!");
-    setShowForm(false);
-    setEditingBanner(null);
   };
 
-  const handleDelete = (id: string, title: string) => {
-    if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
-      setBanners((prev) => prev.filter((b) => b.id !== id));
-      toast.success(`"${title}" deleted`);
+  const handleDelete = async (id: string, title: string) => {
+    if (!window.confirm(`Are you sure you want to delete "${title}"?`)) return;
+    try {
+      const res = await fetch(`/api/banners/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.success) {
+        setBanners((prev) => prev.filter((b) => b.id !== id));
+        toast.success(`"${title}" deleted`);
+      }
+    } catch {
+      toast.error("Failed to delete banner");
     }
   };
 
-  const handleToggleActive = (id: string, title: string, current: boolean) => {
-    setBanners((prev) =>
-      prev.map((b) => (b.id === id ? { ...b, isActive: !current } : b))
-    );
-    toast.success(`"${title}" ${current ? "disabled" : "enabled"}`);
+  const handleToggleActive = async (id: string, title: string, current: boolean) => {
+    try {
+      const res = await fetch(`/api/banners/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isActive: !current }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setBanners((prev) => prev.map((b) => (b.id === id ? data.banner : b)));
+        toast.success(`"${title}" ${current ? "disabled" : "enabled"}`);
+      }
+    } catch {
+      toast.error("Failed to toggle banner");
+    }
   };
 
-  const handleOrderChange = (id: string, newOrder: number) => {
-    setBanners((prev) =>
-      prev.map((b) => (b.id === id ? { ...b, order: newOrder } : b))
-    );
+  const handleOrderChange = async (id: string, newOrder: number) => {
+    try {
+      await fetch(`/api/banners/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ order: newOrder }),
+      });
+      setBanners((prev) => prev.map((b) => (b.id === id ? { ...b, order: newOrder } : b)));
+    } catch {
+      toast.error("Failed to update order");
+    }
   };
 
   const handleImageUpload = async (file: File) => {
