@@ -9,15 +9,15 @@ export default function HeroSection() {
         alt="Zixo Cookies"
         fill
         priority
-        className="object-cover object-[center_30%] md:object-center"
+        className="object-cover object-center md:object-center"
         sizes="100vw"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60" />
 
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-[70vh] md:min-h-screen text-center px-4 sm:px-6">
+      <div className="relative z-20 flex flex-col items-center justify-center min-h-[70vh] md:min-h-screen text-center px-6 sm:px-8">
         <Link
           href="/shop"
-          className="btn-primary text-sm md:text-base px-6 py-3 md:px-8 md:py-4 inline-flex items-center gap-2"
+          className="btn-primary text-sm md:text-base px-8 py-3.5 md:px-10 md:py-4 inline-flex items-center gap-2 shadow-lg shadow-gold/25"
         >
           Shop Now
         </Link>
