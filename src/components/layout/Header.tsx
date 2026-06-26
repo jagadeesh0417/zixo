@@ -68,14 +68,14 @@ export default function Header() {
         )}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14 md:h-20">
+          <div className="flex items-center justify-between h-16 md:h-20">
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-1.5 -ml-1.5 text-[#F8F4EE] hover:text-[#D4AF37] transition-colors"
+              className="lg:hidden p-2 -ml-2 text-[#F8F4EE] hover:text-[#D4AF37] transition-colors"
               aria-label="Open menu"
             >
-              <FaBars size={20} />
+              <FaBars size={22} />
             </button>
 
             {/* Logo */}
@@ -83,9 +83,9 @@ export default function Header() {
               <Image
                 src="/images/logo.png"
                 alt="Zixo Cookies"
-                width={36}
-                height={36}
-                className="h-7 md:h-10 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
+                width={48}
+                height={48}
+                className="h-11 md:h-12 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
                 priority
               />
             </Link>
@@ -307,7 +307,7 @@ export default function Header() {
       </AnimatePresence>
 
       {/* Spacer for fixed header */}
-      <div className="h-14 md:h-20" />
+      <div className="h-16 md:h-20" />
     </>
   );
 }
