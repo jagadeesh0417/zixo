@@ -22,28 +22,28 @@ export default function NewsletterSection() {
 
   return (
     <section className="py-16 md:py-24 bg-dark-card">
-      <div className="max-w-2xl mx-auto px-4">
+      <div className="max-w-2xl mx-auto px-3 sm:px-4">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="glass-card border-gold/20 rounded-3xl p-8 md:p-12 text-center"
+          className="glass-card border-gold/20 rounded-2xl md:rounded-3xl p-6 md:p-12 text-center"
         >
           <motion.div
             animate={{ rotate: [0, 10, -10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-16 h-16 mx-auto mb-6 rounded-full bg-gold/20 flex items-center justify-center"
+            className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 rounded-full bg-gold/20 flex items-center justify-center"
           >
-            <FaCookieBite className="text-gold" size={28} />
+            <FaCookieBite className="text-gold" size={22} />
           </motion.div>
 
-          <div className="gold-divider mb-6" />
+          <div className="gold-divider mb-4 md:mb-6" />
 
-          <h2 className="font-playfair text-3xl md:text-4xl font-bold text-cream mb-3">
+          <h2 className="font-playfair text-2xl md:text-4xl font-bold text-cream mb-2 md:mb-3">
             Join The Zixo Cookie Club
           </h2>
-          <p className="text-cream/60 mb-8 max-w-md mx-auto">
+          <p className="text-cream/60 mb-6 md:mb-8 max-w-md mx-auto text-sm md:text-base">
             Subscribe for exclusive offers, new flavours, and baking updates
           </p>
 
@@ -53,18 +53,18 @@ export default function NewsletterSection() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="input-field flex-1"
+              className="input-field flex-1 text-sm md:text-base"
             />
             <button
               type="submit"
               className="btn-primary whitespace-nowrap justify-center"
             >
-              <FaPaperPlane size={14} />
+              <FaPaperPlane size={12} />
               Subscribe
             </button>
           </form>
 
-          <p className="text-xs text-cream/40 mt-4">
+          <p className="text-[10px] md:text-xs text-cream/40 mt-3 md:mt-4">
             No spam. Unsubscribe anytime.
           </p>
         </motion.div>

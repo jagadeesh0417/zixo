@@ -43,7 +43,7 @@ export default function FAQSection() {
 
   return (
     <section className="py-16 md:py-24 bg-dark">
-      <div className="max-w-3xl mx-auto px-4">
+      <div className="max-w-3xl mx-auto px-3 sm:px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

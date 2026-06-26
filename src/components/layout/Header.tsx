@@ -67,15 +67,15 @@ export default function Header() {
             : "border-transparent"
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 md:h-20">
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 -ml-2 text-[#F8F4EE] hover:text-[#D4AF37] transition-colors"
+              className="lg:hidden p-1.5 -ml-1.5 text-[#F8F4EE] hover:text-[#D4AF37] transition-colors"
               aria-label="Open menu"
             >
-              <FaBars size={22} />
+              <FaBars size={20} />
             </button>
 
             {/* Logo */}
@@ -83,9 +83,9 @@ export default function Header() {
               <Image
                 src="/images/logo.png"
                 alt="Zixo Cookies"
-                width={40}
-                height={40}
-                className="h-8 md:h-10 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
+                width={36}
+                height={36}
+                className="h-7 md:h-10 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
                 priority
               />
             </Link>
@@ -105,51 +105,51 @@ export default function Header() {
             </nav>
 
             {/* Icons */}
-            <div className="flex items-center gap-2 md:gap-3">
+            <div className="flex items-center gap-1 md:gap-3">
               <button
                 onClick={() => setSearchOpen(true)}
-                className="p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
+                className="p-1.5 md:p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
                 aria-label="Search"
               >
-                <FaSearch size={18} />
+                <FaSearch size={16} />
               </button>
 
               <Link
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:flex p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
+                className="hidden sm:flex p-1.5 md:p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
                 aria-label="Instagram"
               >
-                <FaInstagram size={18} />
+                <FaInstagram size={16} />
               </Link>
 
               <Link
                 href={YOUTUBE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:flex p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
+                className="hidden sm:flex p-1.5 md:p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
                 aria-label="YouTube"
               >
-                <FaYoutube size={18} />
+                <FaYoutube size={16} />
               </Link>
 
               <Link
                 href="/account"
-                className="hidden sm:flex p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
+                className="hidden sm:flex p-1.5 md:p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
                 aria-label="Account"
               >
-                <FaUser size={18} />
+                <FaUser size={16} />
               </Link>
 
               <Link
                 href="/wishlist"
-                className="relative p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
+                className="relative p-1.5 md:p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
                 aria-label="Wishlist"
               >
-                <FaHeart size={18} />
+                <FaHeart size={16} />
                 {wishlist.length > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-[#D4AF37] text-[#0A0503] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-[0_0_6px_rgba(212,175,55,0.5)]">
+                  <span className="absolute -top-0.5 -right-0.5 bg-[#D4AF37] text-[#0A0503] text-[10px] font-bold w-3.5 h-3.5 md:w-4 md:h-4 rounded-full flex items-center justify-center shadow-[0_0_6px_rgba(212,175,55,0.5)]">
                     {wishlist.length > 9 ? "9+" : wishlist.length}
                   </span>
                 )}
@@ -157,12 +157,12 @@ export default function Header() {
 
               <Link
                 href="/cart"
-                className="relative p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
+                className="relative p-1.5 md:p-2 text-[#F8F4EE]/70 hover:text-[#D4AF37] transition-colors"
                 aria-label="Cart"
               >
-                <FaShoppingBag size={18} />
+                <FaShoppingBag size={16} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-[#D4AF37] text-[#0A0503] text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-[0_0_6px_rgba(212,175,55,0.5)]">
+                  <span className="absolute -top-0.5 -right-0.5 bg-[#D4AF37] text-[#0A0503] text-[10px] font-bold w-3.5 h-3.5 md:w-4 md:h-4 rounded-full flex items-center justify-center shadow-[0_0_6px_rgba(212,175,55,0.5)]">
                     {cartCount > 9 ? "9+" : cartCount}
                   </span>
                 )}
@@ -189,7 +189,7 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 bottom-0 w-72 bg-[#0A0503]/95 backdrop-blur-xl z-50 border-r border-[#D4AF37]/20 shadow-2xl shadow-[#D4AF37]/5"
+              className="fixed top-0 left-0 bottom-0 w-[280px] max-w-[85vw] bg-[#0A0503]/95 backdrop-blur-xl z-50 border-r border-[#D4AF37]/20 shadow-2xl shadow-[#D4AF37]/5"
             >
               <div className="flex items-center justify-between p-4 border-b border-[#D4AF37]/10">
                 <Link
@@ -232,22 +232,22 @@ export default function Header() {
                 ))}
               </nav>
               <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-[#D4AF37]/10">
-                <div className="flex items-center justify-center gap-4">
+                <div                 className="flex items-center justify-center gap-3">
                   <Link
                     href={INSTAGRAM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 text-[#F8F4EE]/50 hover:text-[#D4AF37] transition-colors"
+                    className="p-2 text-[#F8F4EE]/50 hover:text-[#D4AF37] transition-colors"
                   >
-                    <FaInstagram size={20} />
+                    <FaInstagram size={18} />
                   </Link>
                   <Link
                     href={YOUTUBE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 text-[#F8F4EE]/50 hover:text-[#D4AF37] transition-colors"
+                    className="p-2 text-[#F8F4EE]/50 hover:text-[#D4AF37] transition-colors"
                   >
-                    <FaYoutube size={20} />
+                    <FaYoutube size={18} />
                   </Link>
                 </div>
                 <p className="text-center text-xs text-[#F8F4EE]/40 mt-2">
@@ -307,7 +307,7 @@ export default function Header() {
       </AnimatePresence>
 
       {/* Spacer for fixed header */}
-      <div className="h-16 md:h-20" />
+      <div className="h-14 md:h-20" />
     </>
   );
 }

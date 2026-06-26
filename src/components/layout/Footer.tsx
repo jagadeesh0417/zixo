@@ -56,23 +56,23 @@ export default function Footer() {
         viewport={{ once: true, margin: "-50px" }}
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-8">
           {/* Brand */}
           <motion.div variants={itemVariants} className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="flex items-center mb-4 group">
+            <Link href="/" className="flex items-center mb-3 md:mb-4 group">
               <Image
                 src="/images/logo.png"
                 alt="Zixo Cookies"
-                width={40}
-                height={40}
-                className="h-10 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
+                width={36}
+                height={36}
+                className="h-8 md:h-10 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
               />
             </Link>
-            <p className="text-[#F8F4EE]/50 text-sm leading-relaxed max-w-xs">
+            <p className="text-[#F8F4EE]/50 text-xs md:text-sm leading-relaxed max-w-xs">
               Freshly baked happiness delivered to your door. Premium handcrafted
               cookies made with love and the finest ingredients.
             </p>
-            <div className="flex items-center gap-3 mt-5">
+            <div className="flex items-center gap-3 mt-4 md:mt-5">
               <Link
                 href={INSTAGRAM_URL}
                 target="_blank"
@@ -96,7 +96,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <motion.div variants={itemVariants}>
-            <h3 className="font-playfair text-[#F8F4EE] font-semibold text-lg mb-4">
+            <h3 className="font-playfair text-[#F8F4EE] font-semibold text-base md:text-lg mb-3 md:mb-4">
               Quick Links
             </h3>
             <ul className="space-y-3">
@@ -116,7 +116,7 @@ export default function Footer() {
 
           {/* Policies */}
           <motion.div variants={itemVariants}>
-            <h3 className="font-playfair text-[#F8F4EE] font-semibold text-lg mb-4">
+            <h3 className="font-playfair text-[#F8F4EE] font-semibold text-base md:text-lg mb-3 md:mb-4">
               Policies
             </h3>
             <ul className="space-y-3">
@@ -136,7 +136,7 @@ export default function Footer() {
 
           {/* Contact */}
           <motion.div variants={itemVariants}>
-            <h3 className="font-playfair text-[#F8F4EE] font-semibold text-lg mb-4">
+            <h3 className="font-playfair text-[#F8F4EE] font-semibold text-base md:text-lg mb-3 md:mb-4">
               Get in Touch
             </h3>
             <ul className="space-y-4">

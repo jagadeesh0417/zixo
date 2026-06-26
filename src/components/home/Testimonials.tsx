@@ -79,7 +79,7 @@ export default function Testimonials() {
 
   return (
     <section className="py-16 md:py-24 bg-dark overflow-hidden">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -98,9 +98,9 @@ export default function Testimonials() {
           <div className="flex items-center gap-4 md:gap-8">
             <button
               onClick={prev}
-              className="hidden md:flex w-12 h-12 rounded-full border border-gold/30 text-gold items-center justify-center hover:bg-gold hover:text-dark transition-all shrink-0"
+              className="flex w-8 h-8 md:w-12 md:h-12 rounded-full border border-gold/30 text-gold items-center justify-center hover:bg-gold hover:text-dark transition-all shrink-0"
             >
-              <FaChevronLeft size={18} />
+              <FaChevronLeft size={14} />
             </button>
 
             <div className="flex-1 min-h-[280px] relative">
@@ -113,40 +113,40 @@ export default function Testimonials() {
                   animate="center"
                   exit="exit"
                   transition={{ duration: 0.4, ease: "easeInOut" as const }}
-                  className="glass-card rounded-2xl p-8 md:p-10 shadow-lg text-center"
+                  className="glass-card rounded-2xl p-5 md:p-10 shadow-lg text-center"
                 >
                   <FaQuoteLeft
-                    className="text-gold/30 mx-auto mb-4"
-                    size={36}
+                    className="text-gold/30 mx-auto mb-3 md:mb-4"
+                    size={24}
                   />
 
-                  <div className="relative w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden ring-2 ring-[#D4AF37]/30">
+                  <div className="relative w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full overflow-hidden ring-2 ring-[#D4AF37]/30">
                     <Image src={t.avatar} alt={t.name} fill className="object-cover" />
                   </div>
 
-                  <div className="flex justify-center gap-1 mb-4">
+                  <div className="flex justify-center gap-1 mb-3 md:mb-4">
                     {[...Array(t.rating)].map((_, i) => (
-                      <FaStar key={i} className="text-gold" size={18} />
+                      <FaStar key={i} className="text-gold" size={14} />
                     ))}
                   </div>
 
-                  <p className="text-cream/70 text-lg leading-relaxed mb-4 italic">
+                  <p className="text-cream/70 text-sm md:text-lg leading-relaxed mb-3 md:mb-4 italic">
                     &ldquo;{t.text}&rdquo;
                   </p>
 
-                  <h4 className="font-playfair text-lg font-semibold text-cream">
+                  <h4 className="font-playfair text-base md:text-lg font-semibold text-cream">
                     {t.name}
                   </h4>
-                  <p className="text-gold text-sm">Verified Customer</p>
+                  <p className="text-gold text-xs md:text-sm">Verified Customer</p>
                 </motion.div>
               </AnimatePresence>
             </div>
 
             <button
               onClick={next}
-              className="hidden md:flex w-12 h-12 rounded-full border border-gold/30 text-gold items-center justify-center hover:bg-gold hover:text-dark transition-all shrink-0"
+              className="flex w-8 h-8 md:w-12 md:h-12 rounded-full border border-gold/30 text-gold items-center justify-center hover:bg-gold hover:text-dark transition-all shrink-0"
             >
-              <FaChevronRight size={18} />
+              <FaChevronRight size={14} />
             </button>
           </div>
 

@@ -39,7 +39,7 @@ export default function SignatureCollections() {
 
   return (
     <section className="py-16 md:py-24 bg-dark">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -53,7 +53,7 @@ export default function SignatureCollections() {
           </p>
         </motion.div>
 
-        <div ref={ref} className="space-y-16 md:space-y-24">
+        <div ref={ref} className="space-y-10 md:space-y-24">
           {collections.map((collection, idx) => {
             const isLeft = collection.align === "left";
 
@@ -65,37 +65,39 @@ export default function SignatureCollections() {
                 transition={{ duration: 0.7, delay: idx * 0.2 }}
                 className={`flex flex-col ${
                   isLeft ? "md:flex-row" : "md:flex-row-reverse"
-                } gap-8 md:gap-12 items-center`}
+                } gap-6 md:gap-12 items-center`}
               >
                 <div className="w-full md:w-1/2">
-                  <div className="relative h-96 overflow-hidden">
+                  <div className="relative h-56 md:h-96 overflow-hidden rounded-xl md:rounded-none">
                     <Image
                       src={collection.image}
                       alt={collection.title}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    loading="lazy"
+                  />
                   </div>
                 </div>
 
-                <div className="w-full md:w-1/2 space-y-4">
-                  <span className="text-gold text-sm font-semibold uppercase tracking-widest">
+                <div className="w-full md:w-1/2 space-y-3 md:space-y-4 px-1 md:px-0">
+                  <span className="text-gold text-[10px] md:text-sm font-semibold uppercase tracking-widest">
                     Collection {idx + 1}
                   </span>
-                  <h3 className="font-playfair text-3xl md:text-4xl font-bold text-cream leading-tight">
+                  <h3 className="font-playfair text-xl sm:text-2xl md:text-4xl font-bold text-cream leading-tight">
                     {collection.title}
                   </h3>
-                  <p className="text-lg text-gold font-medium italic">
+                  <p className="text-sm sm:text-base md:text-lg text-gold font-medium italic">
                     {collection.subtitle}
                   </p>
-                  <p className="text-cream/70 leading-relaxed">
+                  <p className="text-cream/70 leading-relaxed text-sm md:text-base">
                     {collection.description}
                   </p>
                   <Link
                     href="/shop"
-                    className="btn-outline inline-flex items-center gap-2 mt-2"
+                    className="btn-outline inline-flex items-center gap-2 mt-1 md:mt-2 text-sm md:text-base"
                   >
-                    Shop Collection <FaArrowRight size={14} />
+                    Shop Collection <FaArrowRight size={12} />
                   </Link>
                 </div>
               </motion.div>

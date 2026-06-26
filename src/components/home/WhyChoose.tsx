@@ -44,7 +44,7 @@ export default function WhyChoose() {
 
   return (
     <section className="py-16 md:py-24 bg-dark-card">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -70,15 +70,15 @@ export default function WhyChoose() {
                 key={idx}
                 variants={cardVariants}
                 whileHover={{ y: -8 }}
-                className="glass-card rounded-2xl p-8 text-center"
+                className="glass-card rounded-2xl p-6 md:p-8 text-center"
               >
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-gold/20 to-gold/5 flex items-center justify-center">
-                  <Icon size={36} className="text-gold" />
+                <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 md:mb-6 rounded-full bg-gradient-to-br from-gold/20 to-gold/5 flex items-center justify-center">
+                  <Icon size={28} className="text-gold" />
                 </div>
-                <h3 className="font-playfair text-xl font-semibold text-cream mb-3">
+                <h3 className="font-playfair text-lg md:text-xl font-semibold text-cream mb-2 md:mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-cream/70 leading-relaxed">
+                <p className="text-cream/70 leading-relaxed text-sm md:text-base">
                   {feature.description}
                 </p>
               </motion.div>
