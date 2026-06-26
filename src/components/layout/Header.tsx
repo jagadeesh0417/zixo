@@ -83,9 +83,9 @@ export default function Header() {
               <Image
                 src="/images/logo.png"
                 alt="Zixo Cookies"
-                width={48}
-                height={48}
-                className="h-11 md:h-12 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
+                width={56}
+                height={56}
+                className="h-12 md:h-14 w-auto group-hover:scale-105 transition-transform drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]"
                 priority
               />
             </Link>
