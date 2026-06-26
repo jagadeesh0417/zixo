@@ -85,7 +85,7 @@ export default function ShopPage() {
 
   return (
     <div className="min-h-screen bg-dark">
-      <div className="relative bg-dark py-16 md:py-24">
+      <div className="relative bg-dark py-12 md:py-24">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-10 left-10 text-gold/5 text-8xl">🍪</div>
           <div className="absolute bottom-10 right-10 text-gold/5 text-8xl">✨</div>
@@ -105,20 +105,20 @@ export default function ShopPage() {
           >
             <FaCookieBite size={14} /> Premium Selection
           </motion.div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-cream mb-3">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-cream mb-2 md:mb-3 px-2">
             Our Cookie Collection
           </h1>
-          <p className="text-cream/70 text-lg max-w-xl mx-auto">
+          <p className="text-cream/70 text-sm sm:text-base md:text-lg max-w-xl mx-auto px-4">
             Explore our range of handcrafted gourmet cookies
           </p>
         </motion.div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 md:py-12">
         <ProductFilters onChange={setFilters} />
 
-        <div className="flex items-center justify-between mb-6">
-          <p className="text-sm text-cream/60">
+        <div className="flex items-center justify-between mb-4 md:mb-6">
+          <p className="text-xs md:text-sm text-cream/60">
             {loading
               ? "Loading products..."
               : filteredProducts.length === 0

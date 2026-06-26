@@ -60,11 +60,11 @@ export default function ProductCard({ product }: ProductCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -6 }}
-      className="group glass-card overflow-hidden cursor-pointer"
+      className="group glass-card overflow-hidden cursor-pointer flex flex-col"
       onClick={handleCardClick}
     >
       <div className="relative overflow-hidden">
-        <div className="relative w-full h-48 md:h-56 lg:h-64">
+        <div className="relative w-full aspect-[4/3]">
           <Image
             src={imageSrc}
             alt={product.name}
@@ -72,6 +72,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             className="object-cover group-hover:scale-110 transition-transform duration-500"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             onError={() => setImgError(true)}
+            loading="lazy"
           />
         </div>
 
@@ -81,46 +82,46 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
         )}
 
-        <div className="absolute inset-0 bg-dark/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
+        <div className="absolute inset-0 bg-dark/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 md:gap-3">
           <button
             onClick={handleAddToCart}
-            className="btn-primary p-3 rounded-full"
+            className="btn-primary p-2 md:p-3 rounded-full"
             title="Add to Cart"
           >
-            <FaShoppingCart size={18} />
+            <FaShoppingCart size={14} />
           </button>
           <button
             onClick={handleQuickView}
-            className="glass border border-gold/30 text-gold p-3 rounded-full hover:border-gold/60 transition-all"
+            className="glass border border-gold/30 text-gold p-2 md:p-3 rounded-full hover:border-gold/60 transition-all"
             title="Quick View"
           >
-            <FaEye size={18} />
+            <FaEye size={14} />
           </button>
           <button
             onClick={handleToggleWishlist}
-            className={`p-3 rounded-full transition-all ${
+            className={`p-2 md:p-3 rounded-full transition-all ${
               wishlistState
                 ? "bg-red-500/20 text-red-400 border border-red-500/30 backdrop-blur-sm"
                 : "glass border border-gold/20 text-cream/70 hover:border-gold/50 hover:text-cream"
             }`}
             title="Wishlist"
           >
-            <FaHeart size={18} />
+            <FaHeart size={14} />
           </button>
         </div>
       </div>
 
-      <div className="p-3 md:p-5">
-        <p className="text-xs text-gold/80 font-medium uppercase tracking-wider mb-1">
+      <div className="p-3 md:p-5 flex flex-col flex-1">
+        <p className="text-[10px] md:text-xs text-gold/80 font-medium uppercase tracking-wider mb-1">
           {product.category.name}
         </p>
         <Link href={`/product/${product.id}`}>
-          <h3 className="font-playfair text-lg font-semibold text-cream mb-2 hover:text-gold transition-colors">
+          <h3 className="font-playfair text-sm md:text-lg font-semibold text-cream mb-1 md:mb-2 hover:text-gold transition-colors leading-tight">
             {product.name}
           </h3>
         </Link>
 
-        <div className="flex items-center gap-1 mb-2">
+        <div className="flex items-center gap-1 mb-1 md:mb-2">
           {[...Array(5)].map((_, i) => (
             <FaStar
               key={i}
@@ -133,12 +134,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 mt-3 mb-4">
-          <span className="text-xl font-bold text-gold">
+        <div className="flex items-center gap-2 mt-2 md:mt-3 mb-2 md:mb-4">
+          <span className="text-base md:text-xl font-bold text-gold">
             {formatPrice(product.discountPrice || product.price)}
           </span>
           {product.discountPrice && (
-            <span className="text-sm text-cream/50 line-through">
+            <span className="text-[11px] md:text-sm text-cream/50 line-through">
               {formatPrice(product.price)}
             </span>
           )}
@@ -146,10 +147,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         <button
           onClick={handleAddToCart}
-          className="w-full btn-primary"
+          className="w-full btn-primary mt-auto justify-center text-xs md:text-sm py-2 md:py-2.5"
         >
-          <FaShoppingCart size={14} />
-          Add to Cart
+          <FaShoppingCart size={12} />
+          <span className="hidden xs:inline">Add to Cart</span>
+          <span className="xs:hidden">Add</span>
         </button>
       </div>
     </motion.div>

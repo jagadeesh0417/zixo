@@ -96,18 +96,18 @@ export default function AboutPage() {
           >
             <FaCookieBite size={14} /> Our Story
           </motion.div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-cream mb-3 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-cream mb-2 md:mb-3 leading-tight px-2">
             Crafted With Passion,{" "}
             <span className="text-gold">Shared With Love</span>
           </h1>
-          <p className="text-cream/60 text-lg max-w-2xl mx-auto">
+          <p className="text-cream/60 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4">
             The Story of Zixo Cookies
           </p>
         </motion.div>
       </div>
 
-      <section ref={storyRef} className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4">
+      <section ref={storyRef} className="py-12 md:py-24">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={storyInView ? { opacity: 1, y: 0 } : {}}
@@ -170,8 +170,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-16 md:py-20 bg-dark-card">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-12 md:py-20 bg-dark-card">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -213,8 +213,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section ref={missionRef} className="py-16 md:py-24 bg-dark-card">
-        <div className="max-w-7xl mx-auto px-4">
+      <section ref={missionRef} className="py-12 md:py-24 bg-dark-card">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={missionInView ? { opacity: 1, y: 0 } : {}}
@@ -294,24 +294,24 @@ export default function AboutPage() {
           <div className="absolute top-10 left-10 text-gold/20 text-8xl">✦</div>
           <div className="absolute bottom-10 right-10 text-gold/20 text-8xl">✦</div>
         </div>
-        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={promiseInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
           >
-            <FaCookieBite className="text-gold/30 mx-auto mb-4" size={48} />
-            <h2 className="text-3xl md:text-4xl font-bold text-cream mb-4">
+                  <FaCookieBite className="text-gold/30 mx-auto mb-3 md:mb-4" size={36} />
+            <h2 className="text-2xl md:text-4xl font-bold text-cream mb-3 md:mb-4">
               The Zixo Promise
             </h2>
-            <div className="w-16 h-1 bg-gold/30 mx-auto rounded-full mb-6" />
-            <p className="text-cream/70 text-lg leading-relaxed max-w-2xl mx-auto mb-8">
+            <div className="w-12 md:w-16 h-1 bg-gold/30 mx-auto rounded-full mb-4 md:mb-6" />
+            <p className="text-cream/70 text-sm md:text-lg leading-relaxed max-w-2xl mx-auto mb-6 md:mb-8">
               We promise to deliver nothing less than perfection. From our
               kitchen to your table, every cookie is crafted with premium
               ingredients, baked fresh, and packed with love. If you&apos;re not
               completely satisfied, we&apos;ll make it right — no questions asked.
             </p>
-            <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex flex-wrap justify-center gap-3 md:gap-6">
               {[
                 "Premium Ingredients",
                 "Fresh Baked Daily",
@@ -331,8 +331,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-16 md:py-20">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-12 md:py-20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -374,7 +374,7 @@ export default function AboutPage() {
                 className="glass-card rounded-2xl overflow-hidden border border-gold/20"
               >
                 <div
-                  className={`w-full h-56 bg-gradient-to-br ${member.bg} flex items-center justify-center relative`}
+                   className={`w-full h-48 md:h-56 bg-gradient-to-br ${member.bg} flex items-center justify-center relative`}
                 >
                   <FaCookieBite
                     size={60}
@@ -399,8 +399,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-dark-card py-16">
-        <div className="max-w-3xl mx-auto px-4 text-center">
+      <section className="bg-dark-card py-12 md:py-16">
+        <div className="max-w-3xl mx-auto px-3 sm:px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

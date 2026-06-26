@@ -71,7 +71,7 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen bg-dark">
-      <div className="relative py-12 md:py-16">
+      <div className="relative py-10 md:py-16">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-10 left-10 text-gold/5 text-8xl">🍪</div>
           <div className="absolute bottom-10 right-10 text-gold/5 text-8xl">✨</div>
@@ -88,10 +88,10 @@ export default function CartPage() {
         </motion.div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
-        <div className="flex flex-col lg:flex-row gap-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 md:py-12">
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
           <div className="flex-1 lg:w-[60%]">
-            <div className="glass-card p-6 border-gold/10">
+            <div className="glass-card p-4 md:p-6 border-gold/10">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-playfair text-xl font-semibold text-cream">
                   Cart Items ({items.length})
@@ -122,23 +122,23 @@ export default function CartPage() {
               </AnimatePresence>
             </div>
 
-            <Link
-              href="/shop"
-              className="inline-flex items-center gap-2 text-sm text-gold/70 hover:text-gold transition-colors mt-6"
-            >
-              <FaArrowLeft size={12} />
-              Continue Shopping
-            </Link>
+        <Link
+          href="/shop"
+          className="inline-flex items-center gap-2 text-xs md:text-sm text-gold/70 hover:text-gold transition-colors mt-4 md:mt-6"
+        >
+          <FaArrowLeft size={12} />
+          Continue Shopping
+        </Link>
           </div>
 
-          <div className="lg:w-[40%]">
+            <div className="lg:w-[40%]">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="glass-card p-6 border-gold/10 sticky top-24"
+              className="glass-card p-4 md:p-6 border-gold/10 lg:sticky lg:top-24"
             >
-              <h2 className="font-playfair text-xl font-semibold text-cream mb-6">
+              <h2 className="font-playfair text-lg md:text-xl font-semibold text-cream mb-4 md:mb-6">
                 Order Summary
               </h2>
 

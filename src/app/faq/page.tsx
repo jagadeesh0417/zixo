@@ -102,7 +102,7 @@ export default function FAQPage() {
           >
             <FaCookieBite size={14} /> Got Questions?
           </motion.div>
-          <h1 className="section-title text-4xl md:text-5xl lg:text-6xl font-bold mb-3">
+          <h1 className="section-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-3">
             Frequently Asked Questions
           </h1>
           <p className="text-cream/60 text-lg max-w-xl mx-auto">
@@ -111,7 +111,7 @@ export default function FAQPage() {
         </motion.div>
       </div>
 
-      <div ref={ref} className="max-w-3xl mx-auto px-4 py-12 md:py-20">
+      <div ref={ref} className="max-w-3xl mx-auto px-3 sm:px-4 py-8 md:py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -233,12 +233,12 @@ export default function FAQPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mt-16 text-center glass-card rounded-2xl p-8 md:p-12 border border-gold/20"
+          className="mt-12 md:mt-16 text-center glass-card rounded-xl md:rounded-2xl p-6 md:p-12 border border-gold/20"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-cream mb-3">
+          <h2 className="text-xl md:text-3xl font-bold text-cream mb-2 md:mb-3">
             Still have questions?
           </h2>
-          <p className="text-cream/60 mb-6 max-w-md mx-auto">
+          <p className="text-cream/60 mb-4 md:mb-6 max-w-md mx-auto text-sm md:text-base">
             We&apos;re here to help you. Reach out to us and we&apos;ll get back
             to you as soon as possible.
           </p>

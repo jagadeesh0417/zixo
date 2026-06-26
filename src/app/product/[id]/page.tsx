@@ -47,9 +47,9 @@ function AccordionSection({
     <div className="border-b border-gold/10 last:border-b-0">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-4 text-left"
-      >
-        <span className="font-playfair text-lg font-semibold text-cream">{title}</span>
+                  className="w-full flex items-center justify-between py-3 md:py-4 text-left"
+                >
+                  <span className="font-playfair text-base md:text-lg font-semibold text-cream">{title}</span>
         <FaChevronDown
           className={`text-gold transition-transform duration-300 ${open ? "rotate-180" : ""}`}
           size={14}
@@ -183,7 +183,7 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-dark">
-      <div className="max-w-7xl mx-auto px-4 py-6 md:py-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 md:py-10">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -205,7 +205,7 @@ export default function ProductDetailPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <div
-              className="relative w-full h-80 md:h-96 lg:h-[500px] rounded-2xl overflow-hidden cursor-crosshair mb-4"
+              className="relative w-full aspect-square md:aspect-[4/3] lg:h-[500px] rounded-xl md:rounded-2xl overflow-hidden cursor-crosshair mb-3 md:mb-4"
               onMouseEnter={() => setIsZoomed(true)}
               onMouseLeave={() => setIsZoomed(false)}
               onMouseMove={handleMouseMove}
@@ -227,17 +227,18 @@ export default function ProductDetailPage() {
                     priority
                   />
                 </div>
-              ) : (
-                <div className="w-full h-full bg-amber-900/30 flex items-center justify-center">
-                  <Image
-                    src="/images/products/classic-chocolate-chip.svg"
-                    alt={product.name}
-                    fill
-                    className="object-cover opacity-50"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
-              )}
+        ) : (
+                  <div className="w-full h-full bg-amber-900/30 flex items-center justify-center">
+                    <Image
+                      src="/images/products/classic-chocolate-chip.svg"
+                      alt={product.name}
+                      fill
+                      className="object-cover opacity-50"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
               {discountPct > 0 && (
                 <span className="absolute top-4 left-4 bg-gold text-dark text-sm font-bold px-3 py-1.5 rounded-full">
                   -{discountPct}%
@@ -245,12 +246,12 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-2 md:gap-3 overflow-x-auto pb-1">
               {thumbnails.map((img: string, idx: number) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(idx)}
-                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 ${
+                  className={`w-14 h-14 md:w-20 md:h-20 rounded-lg md:rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 ${
                     selectedImage === idx
                       ? "border-gold ring-2 ring-gold/30"
                       : "border-gold/10 hover:border-gold/50"
@@ -281,7 +282,7 @@ export default function ProductDetailPage() {
               {product.category.name}
             </div>
 
-            <h1 className="font-playfair text-3xl md:text-4xl lg:text-5xl font-bold text-cream leading-tight mb-3">
+            <h1 className="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-cream leading-tight mb-2 md:mb-3">
               {product.name}
             </h1>
 
@@ -293,7 +294,7 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="flex items-end gap-3 mb-4">
-              <span className="text-3xl md:text-4xl font-bold text-cream">
+              <span className="text-2xl md:text-4xl font-bold text-cream">
                 {formatPrice(product.discountPrice || product.price)}
               </span>
               {product.discountPrice && (
@@ -308,7 +309,7 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            <div className="flex items-center gap-4 mb-6 text-sm text-cream/60">
+            <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-4 md:mb-6 text-xs md:text-sm text-cream/60">
               <span className="flex items-center gap-1.5">
                 <FaCheck size={12} className="text-gold" />
                 {product.stockQuantity > 0 ? "In Stock" : "Out of Stock"}
@@ -351,7 +352,7 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            <div className="flex flex-col sm:flex-row gap-2 md:gap-3 mb-4 md:mb-6">
               <button
                 onClick={handleAddToCart}
                 className="btn-primary flex-1"
@@ -367,7 +368,7 @@ export default function ProductDetailPage() {
               </button>
             </div>
 
-            <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
               <button
                 onClick={handleToggleWishlist}
                 className={`flex items-center gap-2 text-sm font-medium transition-colors ${
@@ -388,7 +389,7 @@ export default function ProductDetailPage() {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 glass rounded-xl border border-gold/10">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 p-3 md:p-4 glass rounded-xl border border-gold/10">
               {[
                 { icon: FaTruck, label: "Free delivery", sub: "On orders above ₹499" },
                 { icon: FaShieldAlt, label: "Secure payment", sub: "100% secure" },
@@ -409,7 +410,7 @@ export default function ProductDetailPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-12 md:mt-16 bg-dark-card rounded-2xl border border-gold/10 p-6 md:p-8"
+          className="mt-8 md:mt-16 bg-dark-card rounded-xl md:rounded-2xl border border-gold/10 p-4 md:p-8"
         >
           <AccordionSection title="Description" defaultOpen>
             <p className="text-cream/70 leading-relaxed whitespace-pre-line">
@@ -468,12 +469,12 @@ export default function ProductDetailPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="mt-12 md:mt-16"
+            className="mt-8 md:mt-16"
           >
-            <h2 className="font-playfair text-2xl md:text-3xl font-bold text-cream mb-8 text-center">
+            <h2 className="font-playfair text-xl md:text-3xl font-bold text-cream mb-6 md:mb-8 text-center">
               You May Also Like
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
               {relatedProducts.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

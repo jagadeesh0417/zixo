@@ -109,7 +109,7 @@ export default function ContactPage() {
           >
             <FaCookieBite size={14} /> Let&apos;s Connect
           </motion.div>
-          <h1 className="section-title text-4xl md:text-5xl lg:text-6xl font-bold mb-3">
+          <h1 className="section-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-3">
             Get In Touch
           </h1>
           <p className="text-cream/60 text-lg max-w-xl mx-auto">
@@ -118,8 +118,8 @@ export default function ContactPage() {
         </motion.div>
       </div>
 
-      <div ref={ref} className="max-w-7xl mx-auto px-4 py-12 md:py-20">
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
+      <div ref={ref} className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 md:py-20">
+        <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -198,7 +198,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="w-full lg:w-[60%]"
           >
-            <div className="glass-card rounded-2xl border border-gold/20 p-6 md:p-8">
+            <div className="glass-card rounded-xl md:rounded-2xl border border-gold/20 p-5 md:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center text-gold">
                   <FaPaperPlane size={16} />
@@ -362,8 +362,8 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <section className="bg-dark-card py-16">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="bg-dark-card py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -383,7 +383,7 @@ export default function ContactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative w-full h-72 md:h-96 rounded-2xl overflow-hidden shadow-lg border border-gold/20"
+            className="relative w-full h-56 md:h-96 rounded-xl md:rounded-2xl overflow-hidden shadow-lg border border-gold/20"
           >
             <Image src="/images/general/about-story.svg" alt="Zixo Cookies bakery location" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />

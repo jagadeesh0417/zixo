@@ -274,7 +274,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-dark">
-      <div className="relative py-12 md:py-16">
+      <div className="relative py-10 md:py-16">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-10 left-10 text-gold/5 text-8xl">🍪</div>
           <div className="absolute bottom-10 right-10 text-gold/5 text-8xl">📦</div>
@@ -289,17 +289,17 @@ export default function CheckoutPage() {
         </motion.div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 md:py-12">
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col lg:flex-row gap-8">
-            <div className="flex-1 lg:w-[60%] space-y-8">
+          <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
+            <div className="flex-1 lg:w-[60%] space-y-6 md:space-y-8">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="glass-card p-6 border-gold/10"
+                className="glass-card p-4 md:p-6 border-gold/10"
               >
-                <h2 className="font-playfair text-xl font-semibold text-cream mb-6 flex items-center gap-2">
-                  <FaUser size={16} className="text-gold" />
+                <h2 className="font-playfair text-lg md:text-xl font-semibold text-cream mb-4 md:mb-6 flex items-center gap-2">
+                  <FaUser size={14} className="text-gold" />
                   Shipping Information
                 </h2>
 
@@ -433,10 +433,10 @@ export default function CheckoutPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="glass-card p-6 border-gold/10"
+                className="glass-card p-4 md:p-6 border-gold/10"
               >
-                <h2 className="font-playfair text-xl font-semibold text-cream mb-6 flex items-center gap-2">
-                  <FaCreditCard size={16} className="text-gold" />
+                <h2 className="font-playfair text-lg md:text-xl font-semibold text-cream mb-4 md:mb-6 flex items-center gap-2">
+                  <FaCreditCard size={14} className="text-gold" />
                   Payment Method
                 </h2>
 
@@ -455,9 +455,9 @@ export default function CheckoutPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="glass-card p-6 border-gold/10 sticky top-24"
+                className="glass-card p-4 md:p-6 border-gold/10 lg:sticky lg:top-24"
               >
-                <h2 className="font-playfair text-xl font-semibold text-cream mb-6">
+                <h2 className="font-playfair text-lg md:text-xl font-semibold text-cream mb-4 md:mb-6">
                   Order Summary
                 </h2>
 
@@ -478,7 +478,7 @@ export default function CheckoutPage() {
                   })}
                 </div>
 
-                <div className="border-t border-gold/10 mt-4 pt-4 space-y-2 text-sm">
+                <div className="border-t border-gold/10 mt-4 pt-4 space-y-1.5 md:space-y-2 text-xs md:text-sm">
                   <div className="flex justify-between text-cream/70">
                     <span>Subtotal</span>
                     <span className="font-medium text-cream">
@@ -494,7 +494,7 @@ export default function CheckoutPage() {
                       </span>
                     </span>
                   </div>
-                  <div className="flex justify-between text-lg font-bold text-gold border-t border-gold/10 pt-3 mt-3">
+                  <div className="flex justify-between text-base md:text-lg font-bold text-gold border-t border-gold/10 pt-2 md:pt-3 mt-2 md:mt-3">
                     <span>Total</span>
                     <span><FaRupeeSign size={13} className="inline" />{formatPrice(total)}</span>
                   </div>
@@ -521,7 +521,7 @@ export default function CheckoutPage() {
                   )}
                 </button>
 
-                <p className="text-[10px] text-cream/30 text-center mt-3 flex items-center justify-center gap-1">
+                <p className="text-[10px] text-cream/30 text-center mt-2 md:mt-3 flex items-center justify-center gap-1">
                   <FaLock size={10} />
                   Your information is secure and will not be shared
                 </p>
