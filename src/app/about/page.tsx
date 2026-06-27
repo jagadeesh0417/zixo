@@ -129,7 +129,7 @@ export default function AboutPage() {
               className="w-full lg:w-1/2"
             >
               <div className="relative w-full h-72 md:h-[400px] rounded-2xl border border-gold/20 overflow-hidden shadow-lg">
-                <Image src="/images/general/about-story.svg" alt="Zixo Cookies bakery story" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+                <Image src="/images/ourstory.png" alt="Zixo Cookies bakery story" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
             </motion.div>
 

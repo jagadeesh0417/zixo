@@ -19,7 +19,7 @@ export default function AboutSection() {
             className="w-full md:w-1/2"
           >
             <div className="relative h-64 md:h-full min-h-[200px] md:min-h-[400px] rounded-xl md:rounded-none overflow-hidden">
-              <Image src="/images/general/about-story.svg" alt="Our bakery story" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" />
+              <Image src="/images/ourstory.png" alt="Our bakery story" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" />
             </div>
           </motion.div>
 
