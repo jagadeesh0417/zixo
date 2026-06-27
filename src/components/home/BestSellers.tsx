@@ -70,7 +70,7 @@ export default function BestSellers() {
         </motion.div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
             {[...Array(8)].map((_, i) => (
               <SkeletonCard key={i} />
             ))}
@@ -86,7 +86,7 @@ export default function BestSellers() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6"
           >
             {products.map((product) => (
               <motion.div key={product.id} variants={itemVariants}>

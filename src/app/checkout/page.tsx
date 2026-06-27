@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
-  FaArrowLeft, FaArrowRight, FaCheck, FaCreditCard, FaLock, FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCity, FaMapPin, FaCookieBite, FaHome, FaRupeeSign, FaTimes, FaEdit,
+  FaCheck, FaCreditCard, FaLock, FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCity, FaMapPin, FaHome, FaRupeeSign, FaCookieBite,
 } from "react-icons/fa";
-import { useCartStore } from "@/store/cart";
 import { formatPrice } from "@/lib/utils";
 import { toast } from "react-hot-toast";
+import { ProductType } from "@/types";
 
 interface FormData {
   fullName: string;
@@ -19,7 +19,6 @@ interface FormData {
   city: string;
   state: string;
   pincode: string;
-  upiId: string;
 }
 
 interface FormErrors {
@@ -44,22 +43,39 @@ const indianStates = [
   "Lakshadweep", "Puducherry",
 ];
 
-const paymentMethods = [
-  { id: "razorpay", label: "Razorpay", icon: FaCreditCard },
-];
-
-export default function CheckoutPage() {
-  const { items, getCartTotal, clearCart } = useCartStore();
+function CheckoutForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const productId = searchParams.get("product");
+  const qtyParam = searchParams.get("qty");
+
+  const [product, setProduct] = useState<ProductType | null>(null);
+  const [loadingProduct, setLoadingProduct] = useState(true);
   const [step, setStep] = useState<"form" | "success">("form");
   const [loading, setLoading] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("razorpay");
   const [formData, setFormData] = useState<FormData>({
     fullName: "", mobile: "", email: "", address: "", city: "", state: "",
-    pincode: "", upiId: "",
+    pincode: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
+
+  const quantity = Math.max(1, parseInt(qtyParam || "1", 10) || 1);
+
+  useEffect(() => {
+    if (!productId) {
+      setLoadingProduct(false);
+      return;
+    }
+    fetch(`/api/products/${productId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setProduct(data.product);
+        }
+      })
+      .finally(() => setLoadingProduct(false));
+  }, [productId]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -69,7 +85,15 @@ export default function CheckoutPage() {
     return () => { document.body.removeChild(script); };
   }, []);
 
-  const subtotal = getCartTotal();
+  useEffect(() => {
+    if (step === "success") {
+      const timer = setTimeout(() => router.push("/"), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [step, router]);
+
+  const price = product ? (product.discountPrice || product.price) : 0;
+  const subtotal = price * quantity;
   const shipping = 0;
   const total = subtotal + shipping;
 
@@ -92,8 +116,6 @@ export default function CheckoutPage() {
     else if (!/^\d{6}$/.test(formData.pincode))
       errs.pincode = "Enter a valid 6-digit pincode";
 
-    if (!paymentMethod) errs.paymentMethod = "Please select a payment method";
-
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -111,7 +133,7 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate() || !product) return;
 
     setLoading(true);
 
@@ -155,11 +177,11 @@ export default function CheckoutPage() {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
               customerInfo: formData,
-              items: items.map((item) => ({
-                productId: item.productId,
-                quantity: item.quantity,
-                price: item.product.discountPrice || item.product.price,
-              })),
+              items: [{
+                productId: product.id,
+                quantity,
+                price,
+              }],
               subtotal,
               discount: 0,
               shipping,
@@ -171,7 +193,6 @@ export default function CheckoutPage() {
           const verifyData = await verifyRes.json();
           if (verifyData.success) {
             setOrderNumber(verifyData.order.orderNumber);
-            clearCart();
             setStep("success");
             toast.success(`Order placed! Order #${verifyData.order.orderNumber}`);
           } else {
@@ -200,7 +221,7 @@ export default function CheckoutPage() {
     }
   };
 
-  if (items.length === 0 && step !== "success") {
+  if (!productId || (!loadingProduct && !product)) {
     return (
       <div className="min-h-screen bg-dark">
         <div className="relative py-16 md:py-20">
@@ -223,21 +244,31 @@ export default function CheckoutPage() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-lg mx-auto px-4 py-20 text-center"
         >
-          <div className="text-8xl mb-6 opacity-20 text-gold">🛒</div>
+          <div className="text-8xl mb-6 opacity-20 text-gold">🍪</div>
           <h2 className="font-playfair text-2xl font-semibold text-cream mb-2">
-            Your cart is empty
+            No product selected
           </h2>
           <p className="text-cream/70 mb-8">
-            Add some cookies to your cart before checking out.
+            Select a cookie to buy and proceed to checkout.
           </p>
           <Link href="/shop" className="btn-primary inline-flex">
             <FaCookieBite size={16} />
-            Start Shopping
+            Browse Cookies
           </Link>
         </motion.div>
       </div>
     );
   }
+
+  if (loadingProduct) {
+    return (
+      <div className="min-h-screen bg-dark flex items-center justify-center">
+        <div className="animate-pulse text-cream/60">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!product) return null;
 
   if (step === "success") {
     return (
@@ -445,8 +476,6 @@ export default function CheckoutPage() {
                   Razorpay
                   <FaCheck size={12} className="text-gold ml-auto" />
                 </div>
-
-
               </motion.div>
             </div>
 
@@ -462,20 +491,15 @@ export default function CheckoutPage() {
                 </h2>
 
                 <div className="space-y-3">
-                  {items.map((item) => {
-                    const price = item.product.discountPrice || item.product.price;
-                    return (
-                      <div key={item.productId} className="flex justify-between text-sm">
-                        <span className="text-cream/80 truncate pr-2">
-                          {item.product.name} <span className="text-cream/40">x{item.quantity}</span>
-                        </span>
-                        <span className="font-medium text-cream whitespace-nowrap">
-                          <FaRupeeSign size={11} className="inline" />
-                          {formatPrice(price * item.quantity)}
-                        </span>
-                      </div>
-                    );
-                  })}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-cream/80 truncate pr-2">
+                      {product.name} <span className="text-cream/40">x{quantity}</span>
+                    </span>
+                    <span className="font-medium text-cream whitespace-nowrap">
+                      <FaRupeeSign size={11} className="inline" />
+                      {formatPrice(price * quantity)}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="border-t border-gold/10 mt-4 pt-4 space-y-1.5 md:space-y-2 text-xs md:text-sm">
@@ -531,5 +555,17 @@ export default function CheckoutPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-dark flex items-center justify-center">
+        <div className="animate-pulse text-cream/60">Loading...</div>
+      </div>
+    }>
+      <CheckoutForm />
+    </Suspense>
   );
 }

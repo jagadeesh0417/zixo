@@ -113,13 +113,6 @@ export interface BannerType {
   order: number;
 }
 
-export interface CartItemType {
-  id: string;
-  productId: string;
-  product: ProductType;
-  quantity: number;
-}
-
 export interface AdminType {
   id: string;
   name: string;

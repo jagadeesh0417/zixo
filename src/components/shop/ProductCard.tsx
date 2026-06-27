@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FaStar, FaShoppingCart, FaEye, FaHeart } from "react-icons/fa";
+import { FaStar, FaEye, FaHeart } from "react-icons/fa";
 import { useCartStore } from "@/store/cart";
 import { toast } from "react-hot-toast";
 import { formatPrice, getDiscountPercentage } from "@/lib/utils";
@@ -17,7 +17,6 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const router = useRouter();
-  const addToCart = useCartStore((s) => s.addToCart);
   const toggleWishlist = useCartStore((s) => s.toggleWishlist);
   const isInWishlist = useCartStore((s) => s.isInWishlist);
   const [wishlistState, setWishlistState] = useState(isInWishlist(product.id));
@@ -29,11 +28,10 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const imageSrc = product.images?.[0] && !imgError ? product.images[0] : `/images/products/${product.slug}.svg`;
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleBuyNow = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product);
-    toast.success(`${product.name} added to cart!`);
+    router.push(`/checkout?product=${product.id}&qty=1`);
   };
 
   const handleQuickView = (e: React.MouseEvent) => {
@@ -84,11 +82,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         <div className="absolute inset-0 bg-dark/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 md:gap-3">
           <button
-            onClick={handleAddToCart}
+            onClick={handleBuyNow}
             className="btn-primary p-2 md:p-3 rounded-full"
-            title="Add to Cart"
+            title="Buy Now"
           >
-            <FaShoppingCart size={14} />
+            <FaStar size={14} />
           </button>
           <button
             onClick={handleQuickView}
@@ -146,12 +144,11 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <button
-          onClick={handleAddToCart}
+          onClick={handleBuyNow}
           className="w-full btn-primary mt-auto justify-center text-xs md:text-sm py-2 md:py-2.5"
         >
-          <FaShoppingCart size={12} />
-          <span className="hidden xs:inline">Add to Cart</span>
-          <span className="xs:hidden">Add</span>
+          <FaStar size={12} />
+          Buy Now
         </button>
       </div>
     </motion.div>

@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
-  FaStar, FaHeart, FaShoppingCart, FaMinus, FaPlus, FaShare,
-  FaArrowLeft, FaChevronDown, FaCheck, FaTruck,
-  FaShieldAlt, FaExchangeAlt, FaLeaf,
+  FaStar, FaHeart, FaMinus, FaPlus, FaShare,
+  FaArrowLeft, FaChevronDown,
 } from "react-icons/fa";
 import { useCartStore } from "@/store/cart";
 import { toast } from "react-hot-toast";
@@ -47,9 +46,9 @@ function AccordionSection({
     <div className="border-b border-gold/10 last:border-b-0">
       <button
         onClick={() => setOpen(!open)}
-                  className="w-full flex items-center justify-between py-3 md:py-4 text-left"
-                >
-                  <span className="font-playfair text-base md:text-lg font-semibold text-cream">{title}</span>
+        className="w-full flex items-center justify-between py-3 md:py-4 text-left"
+      >
+        <span className="font-playfair text-base md:text-lg font-semibold text-cream">{title}</span>
         <FaChevronDown
           className={`text-gold transition-transform duration-300 ${open ? "rotate-180" : ""}`}
           size={14}
@@ -68,8 +67,8 @@ function AccordionSection({
 
 export default function ProductDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const id = params.id as string;
-  const addToCart = useCartStore((s) => s.addToCart);
   const toggleWishlist = useCartStore((s) => s.toggleWishlist);
   const isInWishlist = useCartStore((s) => s.isInWishlist);
 
@@ -116,16 +115,9 @@ export default function ProductDetailPage() {
     ? productImages
     : ["", "", "", ""];
 
-  const handleAddToCart = () => {
-    if (!product) return;
-    addToCart(product, quantity);
-    toast.success(`${product.name} added to cart!`);
-  };
-
   const handleBuyNow = () => {
     if (!product) return;
-    addToCart(product, quantity);
-    toast.success("Proceeding to checkout...");
+    router.push(`/checkout?product=${product.id}&qty=${quantity}`);
   };
 
   const handleToggleWishlist = () => {
@@ -227,18 +219,18 @@ export default function ProductDetailPage() {
                     priority
                   />
                 </div>
-        ) : (
-                  <div className="w-full h-full bg-amber-900/30 flex items-center justify-center">
-                    <Image
-                      src="/images/products/classic-chocolate-chip.svg"
-                      alt={product.name}
-                      fill
-                      className="object-cover opacity-50"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
+              ) : (
+                <div className="w-full h-full bg-amber-900/30 flex items-center justify-center">
+                  <Image
+                    src="/images/products/classic-chocolate-chip.svg"
+                    alt={product.name}
+                    fill
+                    className="object-cover opacity-50"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    loading="lazy"
+                  />
+                </div>
+              )}
               {discountPct > 0 && (
                 <span className="absolute top-4 left-4 bg-gold text-dark text-sm font-bold px-3 py-1.5 rounded-full">
                   -{discountPct}%
@@ -309,25 +301,6 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-4 md:mb-6 text-xs md:text-sm text-cream/60">
-              <span className="flex items-center gap-1.5">
-                <FaCheck size={12} className="text-gold" />
-                {product.stockQuantity > 0 ? "In Stock" : "Out of Stock"}
-              </span>
-              {product.isBestSeller && (
-                <span className="flex items-center gap-1.5 text-gold font-medium">
-                  <FaStar size={12} />
-                  Best Seller
-                </span>
-              )}
-              {product.ingredients?.includes("Butter") && (
-                <span className="flex items-center gap-1.5">
-                  <FaLeaf size={12} className="text-gold" />
-                  Vegetarian
-                </span>
-              )}
-            </div>
-
             <p className="text-cream/70 leading-relaxed mb-6">
               {truncate(product.description, 200)}
             </p>
@@ -352,21 +325,13 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2 md:gap-3 mb-4 md:mb-6">
-              <button
-                onClick={handleAddToCart}
-                className="btn-primary flex-1"
-              >
-                <FaShoppingCart size={16} />
-                Add to Cart &mdash; {formatPrice((product.discountPrice || product.price) * quantity)}
-              </button>
-              <button
-                onClick={handleBuyNow}
-                className="btn-outline flex-1"
-              >
-                Buy Now
-              </button>
-            </div>
+            <button
+              onClick={handleBuyNow}
+              className="btn-primary w-full justify-center mb-4 md:mb-6"
+            >
+              <FaStar size={16} />
+              Buy Now &mdash; {formatPrice((product.discountPrice || product.price) * quantity)}
+            </button>
 
             <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
               <button
@@ -387,21 +352,6 @@ export default function ProductDetailPage() {
                 <FaShare size={14} />
                 Share
               </button>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 p-3 md:p-4 glass rounded-xl border border-gold/10">
-              {[
-                { icon: FaTruck, label: "Free delivery", sub: "On orders above ₹499" },
-                { icon: FaShieldAlt, label: "Secure payment", sub: "100% secure" },
-                { icon: FaExchangeAlt, label: "Easy returns", sub: "7-day return" },
-                { icon: FaLeaf, label: "Fresh baked", sub: "Made to order" },
-              ].map((item, i) => (
-                <div key={i} className="text-center">
-                  <item.icon className="mx-auto text-gold mb-1" size={18} />
-                  <p className="text-xs font-medium text-cream">{item.label}</p>
-                  <p className="text-[10px] text-cream/50">{item.sub}</p>
-                </div>
-              ))}
             </div>
           </motion.div>
         </div>

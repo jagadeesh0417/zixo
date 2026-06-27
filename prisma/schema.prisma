@@ -82,7 +82,7 @@ model Product {
   orderItems       OrderItem[]
   reviews          Review[]
   wishlists        Wishlist[]
-  cartItems        CartItem[]
+
 }
 
 model Order {
@@ -135,7 +135,7 @@ model Customer {
   orders    Order[]
   reviews   Review[]
   wishlists Wishlist[]
-  carts     Cart[]
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -204,26 +204,6 @@ model ContactMessage {
   subject   String?
   message   String
   isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
-}
-
-model Cart {
-  id        String     @id @default(cuid())
-  sessionId String?
-  customerId String?
-  customer  Customer?  @relation(fields: [customerId], references: [id])
-  items     CartItem[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-}
-
-model CartItem {
-  id        String  @id @default(cuid())
-  cartId    String
-  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
-  quantity  Int     @default(1)
   createdAt DateTime @default(now())
 }
 
