@@ -62,7 +62,7 @@ export default function BestSellers() {
   const [products, setProducts] = useState<BestSellerProduct[]>([]);
 
   useEffect(() => {
-    fetch("/api/products?sort=rating")
+    fetch("/api/products?sort=rating&limit=999")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -195,7 +195,7 @@ export default function BestSellers() {
                         <FaShoppingCart size={14} />
                       </button>
                       <Link
-                        href={`/shop`}
+                        href={`/product/${product.id}`}
                         className="bg-cream/90 text-dark p-2 md:p-3 rounded-full hover:bg-cream transition-colors"
                         title="Quick View"
                       >
@@ -216,7 +216,7 @@ export default function BestSellers() {
                   </div>
 
                   <div className="p-3 md:p-5 flex flex-col flex-1">
-                    <Link href={`/shop`}>
+                    <Link href={`/product/${product.id}`}>
                       <h3 className="font-playfair text-sm md:text-lg font-semibold text-cream mb-1 md:mb-2 hover:text-gold transition-colors leading-tight">
                         {product.name}
                       </h3>
